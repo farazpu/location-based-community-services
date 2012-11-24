@@ -2,6 +2,7 @@ package net.fast.lbcs.admin.controller;
 
 import java.util.List;
 
+import net.fast.lbcs.admin.Administrator;
 import net.fast.lbcs.admin.group.ServiceItemGroup;
 import net.fast.lbcs.admin.group.ServiceItemGroupID;
 import net.fast.lbcs.admin.item.ServiceItem;
@@ -18,6 +19,7 @@ import net.fast.lbcs.admin.service.ServiceID;
 public abstract class AdminController {
 	public abstract boolean login(String user, String password);
 	public abstract boolean isLoggedIn();
+	public abstract Administrator getCurrentUser();
 	
 	public abstract List<LocationService> listServices();
 	public abstract LocationService createService(String name, String description) throws ServiceCreationException;
