@@ -15,7 +15,7 @@ import net.fast.lbcs.admin.service.ServiceDeleteException;
 import net.fast.lbcs.admin.service.ServiceEditException;
 import net.fast.lbcs.admin.service.ServiceID;
 
-public abstract class AbstractController {
+public abstract class AdminController {
 	public abstract boolean login(String user, String password);
 	public abstract boolean isLoggedIn();
 	
