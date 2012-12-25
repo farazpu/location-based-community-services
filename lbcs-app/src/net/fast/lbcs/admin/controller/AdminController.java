@@ -35,7 +35,5 @@ public abstract class AdminController {
 	public abstract ServiceItemGroup createItemGroup(ServiceID serviceId, String name, String description) throws ServiceItemCreationException;
 	public abstract void deleteItemGroup(ServiceItemGroupID itemGroupId) throws ServiceItemDeleteException;
 	public abstract ServiceItem editGroup(ServiceItemGroupID itemGroupId, String description) throws ServiceEditException;
-	
-	
-	
+
 }
