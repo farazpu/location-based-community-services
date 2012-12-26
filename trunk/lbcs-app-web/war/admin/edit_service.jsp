@@ -1,3 +1,7 @@
+<%@page import="net.fast.lbcs.admin.service.LocationService"%>
+<%@page import="java.util.List"%>
+<%@page import="net.fast.lbcs.HttpControllerFactory"%>
+<%@page import="net.fast.lbcs.admin.controller.AdminController"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -7,6 +11,20 @@
   </head>
  <body>
 		<a href="logout.jsp">logout</a>
+		
+		<%
+			AdminController controller = new HttpControllerFactory(request).getAdminController();
+			List<LocationService> list = controller.listServices();
+			
+			for(LocationService ls : list) {
+				%>
+				
+			
+	<b><%=ls %></b> <br>
+				<%
+			}
+		
+		%>
 		<h1>Managing Service: Service 1</h1>
 		<TABLE>
 		<TR>
@@ -21,6 +39,7 @@
 		</TABLE>
 	
 	
+
 	
 		<h2>Objects</h2>
 		<table width="98%" border="1">
