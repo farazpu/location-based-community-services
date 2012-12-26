@@ -1,5 +1,7 @@
 package net.fast.lbcs.admin.controller;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,16 +27,24 @@ public class HttpAdminController extends AdminController{
 
 	private static final String USER_ATTR = HttpAdminController.class.getName() + ".user";
 	private static final Map<String,String> USERS = new HashMap<String,String>();
+	private static final Map<String,List<ServiceID>> ADMIN_SERVICES = new HashMap<String,List<ServiceID>>();
+	private static List<LocationService> services;
+	
 	private HttpServletRequest request;
 	
 	static {
 		USERS.put("admin", "password123");
 		USERS.put("aizaz", "password");
+		USERS.put("awain", "awain");
 	}
+	
+	
+	
 	
 	public HttpAdminController(HttpServletRequest request) {
 		this.request = request;
-		
+		//temporary method;
+		staticServices();
 	}
 	
 	@Override
@@ -59,8 +69,22 @@ public class HttpAdminController extends AdminController{
 
 	@Override
 	public List<LocationService> listServices() {
-		// TODO Auto-generated method stub
-		return null;
+		List<LocationService> service_list=new ArrayList<LocationService>();
+		List<ServiceID> idList=ADMIN_SERVICES.get(getCurrentUser().getId());
+		if(idList!=null)
+		{
+			for(int i = 0 ; i < services.size() ; i++) {
+				LocationService service=services.get(i);
+				boolean found=false;
+				for(int j = 0 ; j < idList.size() && !found ; j++) {
+					if( idList.get(j).getId().equals(service.getId().getId()) ) {
+						service_list.add(service);
+						found=true;
+					}
+				}
+			}
+		}		
+		return service_list;
 	}
 
 	@Override
@@ -136,6 +160,37 @@ public class HttpAdminController extends AdminController{
 			String description) throws ServiceEditException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	
+	
+/*
+ * temp methods for prototype	
+ */
+	private void staticServices() {
+		services=new ArrayList<LocationService>();
+		LocationService service;
+		for(int i=1;i<=8;i++) {			
+			service = new LocationService();
+			service.setId(new ServiceID(""+i));
+			service.setName("service"+i);
+			service.setCreated(new Date(2011, i, 10+i));
+			service.setLastModified(new Date(2012, i, i));
+			service.setDesciption("Discription "+i);
+			services.add(service);
+		}
+		List list1=new ArrayList<ServiceID>();
+		for(int i=1;i<=6;i++)
+			list1.add(new ServiceID(""+i));
+		ADMIN_SERVICES.put("admin",list1);
+		
+		List list2=new ArrayList<ServiceID>();
+		for(int i=4;i<=8;i++)
+			list2.add(new ServiceID(""+i));
+		ADMIN_SERVICES.put("aizaz",list2);
+		
+		
+
 	}
 	
 }
