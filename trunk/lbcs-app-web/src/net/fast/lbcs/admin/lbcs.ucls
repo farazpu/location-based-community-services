@@ -19,22 +19,22 @@
   <class id="3" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.admin.service.LocationService" 
     project="lbcs-app-web" file="/lbcs-app-web/src/net/fast/lbcs/admin/service/LocationService.java" binary="false">    
     <position height="-1" width="-1" x="288" y="865"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
   <class id="4" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.admin.item.ServiceItem" project="lbcs-app-web" 
     file="/lbcs-app-web/src/net/fast/lbcs/admin/item/ServiceItem.java" binary="false">    
-    <position height="-1" width="-1" x="398" y="1184"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+    <position height="-1" width="-1" x="489" y="1214"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
   <class id="5" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.admin.item.ServiceItemAttributes" 
     project="lbcs-app-web" file="/lbcs-app-web/src/net/fast/lbcs/admin/item/ServiceItemAttributes.java" binary="false">    
-    <position height="-1" width="-1" x="398" y="1322"/>    
+    <position height="-1" width="-1" x="287" y="1416"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
@@ -42,37 +42,21 @@
   </class>  
   <class id="6" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.admin.item.ServiceItemAttribute" 
     project="lbcs-app-web" file="/lbcs-app-web/src/net/fast/lbcs/admin/item/ServiceItemAttribute.java" binary="false">    
-    <position height="-1" width="-1" x="397" y="1473"/>    
+    <position height="-1" width="-1" x="280" y="1626"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="7" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.admin.item.Context" project="lbcs-app-web" 
-    file="/lbcs-app-web/src/net/fast/lbcs/admin/item/Context.java" binary="false">    
-    <position height="-1" width="-1" x="214" y="1648"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true"/>      
-      <operations public="true" package="true" protected="true" private="true"/>    
-    </display>  
-  </class>  
-  <enumeration id="8" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.admin.item.ItemType" 
-    project="lbcs-app-web" file="/lbcs-app-web/src/net/fast/lbcs/admin/item/ItemType.java" binary="false">    
-    <position height="-1" width="-1" x="396" y="1653"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true"/>      
-      <operations public="true" package="true" protected="true" private="true"/>    
-    </display>  
-  </enumeration>  
-  <enumeration id="9" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.admin.item.Validation" 
+  <enumeration id="7" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.admin.item.Validation" 
     project="lbcs-app-web" file="/lbcs-app-web/src/net/fast/lbcs/admin/item/Validation.java" binary="false">    
-    <position height="-1" width="-1" x="573" y="1645"/>    
+    <position height="-1" width="-1" x="569" y="1608"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </enumeration>  
-  <class id="10" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.admin.group.ServiceItemGroup" 
+  <class id="8" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.admin.group.ServiceItemGroup" 
     project="lbcs-app-web" file="/lbcs-app-web/src/net/fast/lbcs/admin/group/ServiceItemGroup.java" binary="false">    
     <position height="-1" width="-1" x="99" y="1175"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
@@ -80,7 +64,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="11" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.user.controller.UserController" 
+  <class id="9" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.user.controller.UserController" 
     project="lbcs-app-web" file="/lbcs-app-web/src/net/fast/lbcs/user/controller/UserController.java" binary="false">    
     <position height="-1" width="-1" x="692" y="374"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
@@ -88,23 +72,23 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="12" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.user.User" project="lbcs-app-web" 
+  <class id="10" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.user.User" project="lbcs-app-web" 
     file="/lbcs-app-web/src/net/fast/lbcs/user/User.java" binary="false">    
-    <position height="-1" width="-1" x="939" y="696"/>    
+    <position height="-1" width="-1" x="1119" y="749"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="13" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.user.controller.Product" 
+  <class id="11" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.user.controller.Product" 
     project="lbcs-app-web" file="/lbcs-app-web/src/net/fast/lbcs/user/controller/Product.java" binary="false">    
-    <position height="-1" width="-1" x="610" y="697"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+    <position height="-1" width="-1" x="615" y="638"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
-      <operations public="true" package="true" protected="true" private="true"/>    
+      <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
-  <class id="14" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.user.controller.ProductAttribute" 
+  <class id="12" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.user.controller.ProductAttribute" 
     project="lbcs-app-web" file="/lbcs-app-web/src/net/fast/lbcs/user/controller/ProductAttribute.java" binary="false">    
     <position height="-1" width="-1" x="891" y="921"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
@@ -112,15 +96,15 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="15" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.user.controller.ProductReview" 
+  <class id="13" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.user.controller.ProductReview" 
     project="lbcs-app-web" file="/lbcs-app-web/src/net/fast/lbcs/user/controller/ProductReview.java" binary="false">    
-    <position height="-1" width="-1" x="593" y="991"/>    
+    <position height="-1" width="-1" x="679" y="1055"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="16" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.user.controller.UserSettings" 
+  <class id="14" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.user.controller.UserSettings" 
     project="lbcs-app-web" file="/lbcs-app-web/src/net/fast/lbcs/user/controller/UserSettings.java" binary="false">    
     <position height="-1" width="-1" x="1054" y="918"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
@@ -128,7 +112,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="17" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.user.controller.Location" 
+  <class id="15" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.user.controller.Location" 
     project="lbcs-app-web" file="/lbcs-app-web/src/net/fast/lbcs/user/controller/Location.java" binary="false">    
     <position height="-1" width="-1" x="735" y="925"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
@@ -136,7 +120,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="18" corner="BOTTOM_RIGHT" language="java" 
+  <class id="16" corner="BOTTOM_RIGHT" language="java" 
     name="net.fast.lbcs.serviceProvider.controller.ServiceProviderController" project="lbcs-app-web" 
     file="/lbcs-app-web/src/net/fast/lbcs/serviceProvider/controller/ServiceProviderController.java" binary="false">    
     <position height="-1" width="-1" x="1034" y="322"/>    
@@ -145,7 +129,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="19" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.serviceProvider.ServiceProvider" 
+  <class id="17" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.serviceProvider.ServiceProvider" 
     project="lbcs-app-web" file="/lbcs-app-web/src/net/fast/lbcs/serviceProvider/ServiceProvider.java" binary="false">    
     <position height="-1" width="-1" x="1091" y="527"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
@@ -153,7 +137,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="20" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.ControllerFactory" project="lbcs-app-web" 
+  <class id="18" corner="BOTTOM_RIGHT" language="java" name="net.fast.lbcs.ControllerFactory" project="lbcs-app-web" 
     file="/lbcs-app-web/src/net/fast/lbcs/ControllerFactory.java" binary="false">    
     <position height="-1" width="-1" x="705" y="81"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
@@ -161,150 +145,134 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <dependency id="21">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="2"/>  
-  </dependency>  
-  <association id="22">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="23" name="location"/>      
-      <multiplicity id="24" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="17" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="25">    
-    <end type="SOURCE" refId="20"/>    
-    <end type="TARGET" refId="1"/>  
-  </dependency>  
-  <association id="26">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="27" name="attrs"/>      
-      <multiplicity id="28" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="29">    
-    <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="30" name="favourites"/>      
-      <multiplicity id="31" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="13" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="32">    
-    <end type="SOURCE" refId="20"/>    
-    <end type="TARGET" refId="18"/>  
-  </dependency>  
-  <association id="33">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="34" name="serviceItem"/>      
-      <multiplicity id="35" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="36">    
+  <association id="19">    
     <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="37" name="context"/>      
-      <multiplicity id="38" minimum="0" maximum="1"/>    
+      <attribute id="20" name="validation"/>      
+      <multiplicity id="21" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="39">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="40" name="items"/>      
-      <multiplicity id="41" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="42">    
-    <end type="SOURCE" refId="18"/>    
-    <end type="TARGET" refId="19"/>  
-  </dependency>  
-  <association id="43">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="44" name="reviews"/>      
-      <multiplicity id="45" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="15" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="46">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="47" name="groups"/>      
-      <multiplicity id="48" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="10" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="49">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="50" name="validation"/>      
-      <multiplicity id="51" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="52">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="13"/>  
-  </dependency>  
-  <association id="53">    
+  <association id="22">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="54" name="attrs"/>      
-      <multiplicity id="55" minimum="0" maximum="2147483647"/>    
+      <attribute id="23" name="attrs"/>      
+      <multiplicity id="24" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <dependency id="56">    
-    <end type="SOURCE" refId="20"/>    
-    <end type="TARGET" refId="11"/>  
+  <dependency id="25">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="1"/>  
   </dependency>  
-  <dependency id="57">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="3"/>  
+  <dependency id="26">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="17"/>  
   </dependency>  
-  <association id="58">    
+  <association id="27">    
     <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="59" name="group"/>      
-      <multiplicity id="60" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="10" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="61">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="12"/>  
-  </dependency>  
-  <association id="62">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="63" name="attrs"/>      
-      <multiplicity id="64" minimum="0" maximum="1"/>    
+      <attribute id="28" name="attrs"/>      
+      <multiplicity id="29" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="65">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="66" name="type"/>      
-      <multiplicity id="67" minimum="0" maximum="1"/>    
+  <association id="30">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="31" name="attrs"/>      
+      <multiplicity id="32" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="33">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="16"/>  
+  </dependency>  
+  <association id="34">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="35" name="serviceItem"/>      
+      <multiplicity id="36" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="37">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="38" name="settings"/>      
+      <multiplicity id="39" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="40">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <dependency id="41">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="10"/>  
+  </dependency>  
+  <association id="42">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="43" name="items"/>      
+      <multiplicity id="44" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="45">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <association id="46">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="47" name="group"/>      
+      <multiplicity id="48" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="8" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="68">    
-    <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="69" name="settings"/>      
-      <multiplicity id="70" minimum="0" maximum="1"/>    
+  <dependency id="49">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="11"/>  
+  </dependency>  
+  <association id="50">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="51" name="reviews"/>      
+      <multiplicity id="52" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="16" navigable="true"/>    
+    <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <association id="53">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="54" name="location"/>      
+      <multiplicity id="55" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="56">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="57" name="favourites"/>      
+      <multiplicity id="58" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="59">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="60" name="groups"/>      
+      <multiplicity id="61" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="62">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="9"/>  
+  </dependency>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     visibility="false">    
     <attributes public="true" package="true" protected="true" private="true"/>    

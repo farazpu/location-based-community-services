@@ -8,7 +8,6 @@ public class ServiceID {
 		this.id = "";
 	}
 	
-	
 	public ServiceID(String id) {
 		this.id = id;
 	}
@@ -19,6 +18,11 @@ public class ServiceID {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	@Override
+	public String toString() {
+		return "ServiceID [id=" + id + "]\r\n";
 	}
 	
 	
