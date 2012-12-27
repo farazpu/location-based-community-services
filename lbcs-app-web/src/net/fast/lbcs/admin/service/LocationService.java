@@ -17,7 +17,24 @@ public class LocationService {
 	private List<ServiceItem> items;
 	private List<ServiceItemGroup> groups;
 
+	public LocationService() {}
 	
+	
+	
+	public LocationService(ServiceID id, String name, String desciption,
+			Date lastModified, Date created, List<ServiceItem> items,
+			List<ServiceItemGroup> groups) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.desciption = desciption;
+		this.lastModified = lastModified;
+		this.created = created;
+		this.items = items;
+		this.groups = groups;
+	}
+
+
 	public ServiceID getId() {
 		return id;
 	}
@@ -59,6 +76,15 @@ public class LocationService {
 	}
 	public void setGroups(List<ServiceItemGroup> groups) {
 		this.groups = groups;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "LocationService [id=" + id + ", name=" + name + ", desciption="
+				+ desciption + ", lastModified=" + lastModified + ", created="
+				+ created + ", items=" + items + ", groups=" + groups + "]\r\n";
 	}
 	
 	
