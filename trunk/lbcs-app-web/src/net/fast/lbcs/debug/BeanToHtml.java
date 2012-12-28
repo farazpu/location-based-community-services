@@ -102,12 +102,18 @@ public class BeanToHtml {
 							if(readMethod != null) {
 								Object value = readMethod.invoke(bean);
 								if(!isInspected(value)) {
-									inspected.add(value);
+									if(value != null) {
+										inspected.add(value);
+									}
 									int id = inspected.size() - 1;
 									start("div class='typeContainer' id='id" + prepareId(id) + "'");
 									createLabel(descriptor);
 									sb.append("<a name='" + prepareId(id) + "'></a>");
-									sb.append(new BeanToHtml(value, value.getClass(), inspected, key).createPropertiesIndentedList());
+									if(value != null) {
+										sb.append(new BeanToHtml(value, value.getClass(), inspected, key).createPropertiesIndentedList());
+									} else {
+										sb.append("null");
+									}
 									end("div");
 								} else {
 									int id = inspected.indexOf(value);
