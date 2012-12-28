@@ -69,7 +69,7 @@ public class BeanToHtml {
 
 			for (Object bean : beans) {
 				start("li");
-				start("b");
+				start("b class='label'");
 				sb.append(bean.getClass().getSimpleName());
 				end("b");
 				start("ul");
@@ -83,18 +83,14 @@ public class BeanToHtml {
 						if(descriptor.getPropertyType().isPrimitive() || primitives.contains(descriptor.getPropertyType())) {
 							Method readMethod = descriptor.getReadMethod();
 							if(readMethod != null) {
-								start("b");
-								sb.append(descriptor.getDisplayName()).append(": ");
-								end("b");
+								createLabel(descriptor);
 								sb.append(readMethod.invoke(bean));
 							}
 						} else if (List.class.isAssignableFrom(descriptor.getPropertyType())) {
 							Method readMethod = descriptor.getReadMethod();
 							if(readMethod != null) {
 								start("div class='typeContainer'");
-								start("b");
-								sb.append(descriptor.getDisplayName()).append(": ");
-								end("b");
+								createLabel(descriptor);
 								sb.append(new BeanToHtml((List<?>)readMethod.invoke(bean), null, inspected, key).createPropertiesIndentedList());
 								end("div");
 
@@ -109,17 +105,13 @@ public class BeanToHtml {
 									inspected.add(value);
 									int id = inspected.size() - 1;
 									start("div class='typeContainer' id='id" + prepareId(id) + "'");
-									start("b");
-									sb.append(descriptor.getDisplayName()).append(": ");
-									end("b");
+									createLabel(descriptor);
 									sb.append("<a name='" + prepareId(id) + "'></a>");
 									sb.append(new BeanToHtml(value, value.getClass(), inspected, key).createPropertiesIndentedList());
 									end("div");
 								} else {
 									int id = inspected.indexOf(value);
-									start("b");
-									sb.append(descriptor.getDisplayName()).append(": ");
-									end("b");
+									createLabel(descriptor);
 									prepareLink(id);
 								}
 							}
@@ -138,6 +130,12 @@ public class BeanToHtml {
 		end("ul");
 
 		return sb.toString();
+	}
+
+	private void createLabel(PropertyDescriptor descriptor) {
+		start("b");
+		sb.append(descriptor.getDisplayName()).append(": ");
+		end("b");
 	}
 
 	private void prepareLink(int id) {

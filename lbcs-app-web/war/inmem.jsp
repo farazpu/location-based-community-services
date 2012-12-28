@@ -25,8 +25,26 @@ function select(targetId) {
 	$("#id" + targetId).addClass("selected");
 	
 }
+
+$(document).ready(function() {
+	$(".label").click(function() {
+		if(this.isHidden) {
+			this.isHidden = false;
+			$(this).parent().children("ul").show("slow");
+		} else {
+			this.isHidden = true;
+			$(this).parent().children("ul").hide("slow");
+		}
+		
+		
+		});
+	});
 </script>
 <style type="text/css">
+.label {
+	cursor: hand; 
+	cursor: pointer;
+}
 
 ul .typeContainer {
 
