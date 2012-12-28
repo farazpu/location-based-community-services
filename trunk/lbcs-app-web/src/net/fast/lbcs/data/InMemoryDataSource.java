@@ -20,7 +20,7 @@ import net.fast.lbcs.user.controller.Product;
 import net.fast.lbcs.user.controller.ProductID;
 import net.fast.lbcs.user.controller.UserSettings;
 
-public class InMemoryDataSource {
+class InMemoryDataSource implements DataSource {
 	private static List<Administrator> admins = new ArrayList<Administrator>();
 	private static List<LocationService> locationServices = new ArrayList<LocationService>();
 
@@ -29,6 +29,24 @@ public class InMemoryDataSource {
 	
 	static {
 		createTestData();
+	}
+	
+	
+
+	public static List<Administrator> getAdmins() {
+		return admins;
+	}
+
+	public static List<LocationService> getLocationServices() {
+		return locationServices;
+	}
+
+	public static List<User> getUsers() {
+		return users;
+	}
+
+	public static List<Product> getProducts() {
+		return products;
 	}
 
 	private static Administrator createAdmin(String id, String password) {
@@ -151,6 +169,24 @@ public class InMemoryDataSource {
 		System.out.println("========== Products ==========");
 		System.out.println(products);
 		
+	}
+
+	@Override
+	public Administrator queryAdministratorByUserIdAndPassword(String user,
+			String password) {
+		
+		for (Administrator administrator : admins) {
+			if(administrator.getId().equals(user) && 
+					administrator.getPassword().equals(password) ) {
+				return administrator;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public List<LocationService> getAllServices() {
+		return locationServices;
 	}
 	
 }
