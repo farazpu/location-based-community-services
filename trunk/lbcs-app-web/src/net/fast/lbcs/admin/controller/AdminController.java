@@ -21,7 +21,8 @@ public abstract class AdminController {
 	public abstract boolean isLoggedIn();
 	public abstract Administrator getCurrentUser();
 	
-	public abstract List<LocationService> listServices();
+	public abstract List<LocationService> listServices(int startIndex, int endIndex);
+	public abstract LocationService getServiceById(ServiceID serviceId);
 	public abstract LocationService createService(String name, String description) throws ServiceCreationException;
 	public abstract void deleteService(ServiceID serviceId) throws ServiceDeleteException;
 	public abstract LocationService editService(ServiceID serviceId, String description) throws ServiceEditException;

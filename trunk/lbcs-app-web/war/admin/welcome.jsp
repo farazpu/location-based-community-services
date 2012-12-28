@@ -15,15 +15,24 @@
   <title>Edit Service</title>
   </head>
  <body>
+ 		
 		<a href="logout.jsp">logout</a>
 		<%
 			AdminController controller = new HttpControllerFactory(request).getAdminController();
+			int pageNumber=Integer.parseInt(request.getParameter("pageNum"));
+			int pagesize=3;
 		%>
-		<h1> Welcome <%=controller.getCurrentUser().getId() %>
+		<h1> Welcome <%=controller.getCurrentUser().getId() %> </h1>
 		<%
 //			AdminController controller = new HttpControllerFactory(request).getAdminController();
-			List<LocationService> list = controller.listServices();
+			List<LocationService> list = controller.listServices(pageNumber*pagesize,(1+pageNumber)*pagesize);
 			if(list.size()==0) {
+				if(pageNumber!=0)
+				{
+					%>			
+					<a href="welcome.jsp?pageNum=<%= pageNumber-1%>" >Previus Page</a>
+					<%
+				}
 		%>
 		no service available
 		<%
@@ -31,10 +40,21 @@
 			else
 			{
 		%>
-				
-			
-	
-		<h2>Objects</h2>
+		<%
+		if(pageNumber!=0)
+		{
+			%>			
+			<a href="welcome.jsp?pageNum=<%= pageNumber-1%>" >Previus Page</a>
+			<%
+		}
+		if(list.size()==pagesize)
+		{
+		%>	
+		
+			<a href="welcome.jsp?pageNum=<%= pageNumber+1%>" >Next Page</a>
+		<%
+		}
+		%>			
 		<table width="98%" border="1">
 		 <tr>
 		  <th></th><th>Service Name</th><th>Creation Date</th><th>Last Modified</th><th>Description</th>
@@ -45,7 +65,7 @@
 		 
 			 <tr>
 			 <td><input type="checkbox" name=" " value=" " /></td>
-			  <td><%=ls.getName() %></td> <td><%=ls.getCreated()%></td><td><%=ls.getLastModified()%></td><td><%=ls.getDesciption() %></td>
+			  <td><a href="edit_service.jsp?serviceId=<%=ls.getId().getId()%>"><%=ls.getName() %></a></td> <td><%=ls.getCreated()%></td><td><%=ls.getLastModified()%></td><td><%=ls.getDesciption() %></td>
 			 </tr>
 		<%
 				}
