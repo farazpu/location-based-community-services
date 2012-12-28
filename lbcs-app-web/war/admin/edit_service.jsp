@@ -1,4 +1,5 @@
 <%@page import="net.fast.lbcs.admin.service.LocationService"%>
+<%@page import="net.fast.lbcs.admin.service.ServiceID"%>
 <%@page import="java.util.List"%>
 <%@page import="net.fast.lbcs.HttpControllerFactory"%>
 <%@page import="net.fast.lbcs.admin.controller.AdminController"%>
@@ -10,36 +11,32 @@
   <title>Edit Service</title>
   </head>
  <body>
-		<a href="logout.jsp">logout</a>
-		
-		<%
+ 		<%
 			AdminController controller = new HttpControllerFactory(request).getAdminController();
-			List<LocationService> list = controller.listServices();
+ 			ServiceID serviceId = new ServiceID();
+ 			serviceId.setId(request.getParameter("serviceId"));
+ 			LocationService ls = controller.getServiceById(serviceId);
+ 			if(ls==null) {
+ 				ls=new LocationService(serviceId, "", "", null, null, null, null );
+ 			}
 			
-			for(LocationService ls : list) {
-				%>
-				
 			
-	<b><%=ls %></b> <br>
-				<%
-			}
+ 		%>
 		
-		%>
 		<h1>Managing Service: Service 1</h1>
 		<TABLE>
 		<TR>
 		  <TD>Name: </td>
-				<td><input type="text" name="Service_name"></input> </TD>
+				<td><input type="text" name="Service_name" value="<%=ls.getName() %>"></input> </TD>
 		  <TD><button type="button">Save</button><button type="button">Cancel</button></TD>
 		</TR>
 		<TR>
 		  <TD>Discription:</TD>
-		  <td><input type="text" name="discription"></input></td> 
+		  <td><input type="text" name="discription" value="<%=ls.getDesciption() %>"></input></td> 
 		</TR>
 		</TABLE>
 	
 	
-
 	
 		<h2>Objects</h2>
 		<table width="98%" border="1">

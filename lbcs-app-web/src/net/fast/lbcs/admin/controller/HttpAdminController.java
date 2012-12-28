@@ -58,10 +58,10 @@ public class HttpAdminController extends AdminController{
 	}
 
 	@Override
-	public List<LocationService> listServices() {
+	public List<LocationService> listServices(int startIndex, int endIndex) {
 		
 		DataSource source = DataSourceFactory.getDataSource();
-		return source.getAllServices();
+		return source.getAllServices(startIndex,endIndex);
 
 	}
 
@@ -138,6 +138,15 @@ public class HttpAdminController extends AdminController{
 			String description) throws ServiceEditException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public LocationService getServiceById(ServiceID serviceId) {
+		// TODO Auto-generated method stub
+		DataSource source = DataSourceFactory.getDataSource();
+		if(serviceId==null)
+			return null;
+		return source.getServiceById(serviceId);		
 	}
 	
 	

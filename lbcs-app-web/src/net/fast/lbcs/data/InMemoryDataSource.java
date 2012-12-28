@@ -2,6 +2,7 @@ package net.fast.lbcs.data;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import net.fast.lbcs.admin.Administrator;
@@ -97,6 +98,10 @@ class InMemoryDataSource implements DataSource {
 	private static void createLocationServices() {
 		locationServices.add(createLocationService("Lahore"));	
 		locationServices.add(createLocationService("Karachi"));	
+		locationServices.add(createLocationService("Islamabad"));	
+		locationServices.add(createLocationService("Pishawar"));	
+		locationServices.add(createLocationService("Sahiwal"));	
+		locationServices.add(createLocationService("Multan"));	
 	}
 
 	private static LocationService createLocationService(String name) {
@@ -185,8 +190,24 @@ class InMemoryDataSource implements DataSource {
 	}
 
 	@Override
-	public List<LocationService> getAllServices() {
-		return locationServices;
+	public List<LocationService> getAllServices(int startIndex, int endIndex) {
+		List<LocationService> servicePage=new ArrayList<LocationService>();
+		System.out.println(locationServices.size()+"");
+		for(int i=startIndex;i<endIndex && i<locationServices.size();i++) {
+			servicePage.add(locationServices.get(i));
+		}
+		return servicePage;
+	}
+
+	@Override
+	public LocationService getServiceById(ServiceID serviceId) {
+		// TODO Auto-generated method stub
+		for (LocationService ls : locationServices) {
+			if(ls.getId().getId().equals(serviceId.getId())) {
+				return ls;
+			}
+		}
+		return null;
 	}
 	
 }

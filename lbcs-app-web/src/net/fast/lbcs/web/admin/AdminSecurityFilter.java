@@ -58,7 +58,7 @@ public class AdminSecurityFilter implements Filter {
 			String user = request.getParameter("user");
 			String password = request.getParameter("password");
 			if(adminController.login(user, password)){
-				forward("/admin/welcome.jsp", request, response);
+				forward("/admin/welcome.jsp?pageNum=0", request, response);
 			}
 			else {
 				forward("/admin/login.jsp", request, response);				
