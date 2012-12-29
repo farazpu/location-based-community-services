@@ -4,21 +4,21 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.fast.lbcs.admin.Administrator;
-import net.fast.lbcs.admin.group.ServiceItemGroup;
-import net.fast.lbcs.admin.group.ServiceItemGroupID;
-import net.fast.lbcs.admin.item.ServiceItem;
-import net.fast.lbcs.admin.item.ServiceItemAttributes;
 import net.fast.lbcs.admin.item.ServiceItemCreationException;
 import net.fast.lbcs.admin.item.ServiceItemDeleteException;
-import net.fast.lbcs.admin.item.ServiceItemID;
-import net.fast.lbcs.admin.service.LocationService;
 import net.fast.lbcs.admin.service.ServiceCreationException;
 import net.fast.lbcs.admin.service.ServiceDeleteException;
 import net.fast.lbcs.admin.service.ServiceEditException;
-import net.fast.lbcs.admin.service.ServiceID;
 import net.fast.lbcs.data.DataSource;
 import net.fast.lbcs.data.DataSourceFactory;
+import net.fast.lbcs.data.entities.admin.Administrator;
+import net.fast.lbcs.data.entities.admin.group.ServiceItemGroup;
+import net.fast.lbcs.data.entities.admin.group.ServiceItemGroupID;
+import net.fast.lbcs.data.entities.admin.item.ServiceItem;
+import net.fast.lbcs.data.entities.admin.item.ServiceItemAttributes;
+import net.fast.lbcs.data.entities.admin.item.ServiceItemID;
+import net.fast.lbcs.data.entities.admin.service.LocationService;
+import net.fast.lbcs.data.entities.admin.service.ServiceID;
 
 public class HttpAdminController extends AdminController{
 

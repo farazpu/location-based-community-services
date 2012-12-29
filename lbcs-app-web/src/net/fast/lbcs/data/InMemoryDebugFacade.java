@@ -2,10 +2,11 @@ package net.fast.lbcs.data;
 
 import java.util.List;
 
-import net.fast.lbcs.admin.Administrator;
-import net.fast.lbcs.admin.service.LocationService;
-import net.fast.lbcs.user.User;
-import net.fast.lbcs.user.controller.Product;
+import net.fast.lbcs.data.entities.admin.Administrator;
+import net.fast.lbcs.data.entities.admin.service.LocationService;
+import net.fast.lbcs.data.entities.user.Product;
+import net.fast.lbcs.data.entities.user.User;
+
 
 public class InMemoryDebugFacade {
 	public static List<Administrator> getAdmins() {
