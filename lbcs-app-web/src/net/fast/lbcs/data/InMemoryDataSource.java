@@ -16,7 +16,9 @@ import net.fast.lbcs.data.entities.admin.service.LocationService;
 import net.fast.lbcs.data.entities.admin.service.ServiceID;
 import net.fast.lbcs.data.entities.user.Location;
 import net.fast.lbcs.data.entities.user.Product;
+import net.fast.lbcs.data.entities.user.ProductAttribute;
 import net.fast.lbcs.data.entities.user.ProductID;
+import net.fast.lbcs.data.entities.user.ProductReview;
 import net.fast.lbcs.data.entities.user.User;
 import net.fast.lbcs.data.entities.user.UserSettings;
 
@@ -83,7 +85,9 @@ class InMemoryDataSource implements DataSource {
 	}
 
 	private static Product createProduct(String name, ServiceItem serviceItem, int price, int distance, Location location) {
-		Product p = new Product(new ProductID(), name, serviceItem, price, 0, distance, location, null, 0, null);
+		List<ProductAttribute> attrs = new ArrayList<ProductAttribute>();
+		List<ProductReview> rvs = new ArrayList<ProductReview>();
+		Product p = new Product(new ProductID(name + "-id"), name, serviceItem, price, 0, distance, location, attrs, 0, rvs);
 		return p;
 	}
 
