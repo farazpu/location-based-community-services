@@ -2,24 +2,23 @@ package net.fast.lbcs.data;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
-import net.fast.lbcs.admin.Administrator;
-import net.fast.lbcs.admin.group.ServiceItemGroup;
-import net.fast.lbcs.admin.group.ServiceItemGroupID;
-import net.fast.lbcs.admin.item.ServiceItem;
-import net.fast.lbcs.admin.item.ServiceItemAttribute;
-import net.fast.lbcs.admin.item.ServiceItemAttributes;
-import net.fast.lbcs.admin.item.ServiceItemID;
-import net.fast.lbcs.admin.item.Validation;
-import net.fast.lbcs.admin.service.LocationService;
-import net.fast.lbcs.admin.service.ServiceID;
-import net.fast.lbcs.user.User;
-import net.fast.lbcs.user.controller.Location;
-import net.fast.lbcs.user.controller.Product;
-import net.fast.lbcs.user.controller.ProductID;
-import net.fast.lbcs.user.controller.UserSettings;
+import net.fast.lbcs.data.entities.admin.Administrator;
+import net.fast.lbcs.data.entities.admin.group.ServiceItemGroup;
+import net.fast.lbcs.data.entities.admin.group.ServiceItemGroupID;
+import net.fast.lbcs.data.entities.admin.item.ServiceItem;
+import net.fast.lbcs.data.entities.admin.item.ServiceItemAttribute;
+import net.fast.lbcs.data.entities.admin.item.ServiceItemAttributes;
+import net.fast.lbcs.data.entities.admin.item.ServiceItemID;
+import net.fast.lbcs.data.entities.admin.item.Validation;
+import net.fast.lbcs.data.entities.admin.service.LocationService;
+import net.fast.lbcs.data.entities.admin.service.ServiceID;
+import net.fast.lbcs.data.entities.user.Location;
+import net.fast.lbcs.data.entities.user.Product;
+import net.fast.lbcs.data.entities.user.ProductID;
+import net.fast.lbcs.data.entities.user.User;
+import net.fast.lbcs.data.entities.user.UserSettings;
 
 class InMemoryDataSource implements DataSource {
 	private static List<Administrator> admins = new ArrayList<Administrator>();

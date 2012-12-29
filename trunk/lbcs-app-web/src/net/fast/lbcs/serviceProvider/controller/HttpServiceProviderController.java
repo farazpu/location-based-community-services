@@ -2,7 +2,8 @@ package net.fast.lbcs.serviceProvider.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.fast.lbcs.serviceProvider.ServiceProvider;
+import net.fast.lbcs.data.entities.serviceProvider.ServiceProvider;
+
 
 public class HttpServiceProviderController extends ServiceProviderController{
 

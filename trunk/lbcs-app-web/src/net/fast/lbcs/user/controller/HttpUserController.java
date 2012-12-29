@@ -4,9 +4,14 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.fast.lbcs.admin.item.ServiceItemID;
-import net.fast.lbcs.admin.service.ServiceID;
-import net.fast.lbcs.user.User;
+import net.fast.lbcs.data.entities.admin.item.ServiceItemID;
+import net.fast.lbcs.data.entities.admin.service.ServiceID;
+import net.fast.lbcs.data.entities.user.Location;
+import net.fast.lbcs.data.entities.user.Product;
+import net.fast.lbcs.data.entities.user.ProductID;
+import net.fast.lbcs.data.entities.user.ProductRawData;
+import net.fast.lbcs.data.entities.user.User;
+import net.fast.lbcs.data.entities.user.UserSettings;
 
 public class HttpUserController extends UserController{
 

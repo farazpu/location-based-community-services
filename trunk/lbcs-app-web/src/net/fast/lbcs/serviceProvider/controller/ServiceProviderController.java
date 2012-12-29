@@ -1,6 +1,6 @@
 package net.fast.lbcs.serviceProvider.controller;
 
-import net.fast.lbcs.serviceProvider.ServiceProvider;
+import net.fast.lbcs.data.entities.serviceProvider.ServiceProvider;
 
 public abstract class ServiceProviderController {
 	public abstract boolean login(String user, String password);

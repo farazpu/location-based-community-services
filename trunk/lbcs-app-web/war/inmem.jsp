@@ -1,9 +1,9 @@
-<%@page import="net.fast.lbcs.user.controller.Product"%>
-<%@page import="net.fast.lbcs.user.User"%>
+<%@page import="net.fast.lbcs.data.entities.user.Product"%>
+<%@page import="net.fast.lbcs.data.entities.user.User"%>
+<%@page import="net.fast.lbcs.data.entities.admin.service.LocationService"%>
+<%@page import="net.fast.lbcs.data.entities.admin.Administrator"%>
 <%@page import="net.fast.lbcs.debug.BeanToHtml"%>
-<%@page import="net.fast.lbcs.admin.service.LocationService"%>
 <%@page import="net.fast.lbcs.data.InMemoryDebugFacade"%>
-<%@page import="net.fast.lbcs.admin.Administrator"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
