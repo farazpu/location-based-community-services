@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.fast.lbcs.data.DataSource;
+import net.fast.lbcs.data.DataSourceFactory;
+import net.fast.lbcs.data.entities.admin.Administrator;
 import net.fast.lbcs.data.entities.admin.item.ServiceItemID;
 import net.fast.lbcs.data.entities.admin.service.ServiceID;
 import net.fast.lbcs.data.entities.user.Location;
@@ -23,9 +26,15 @@ public class HttpUserController extends UserController{
 	}
 	
 	@Override
-	public boolean login(String user, String password, ServiceID serviceId) {
-		// TODO Auto-generated method stub
+	public boolean login(String username, String password, ServiceID serviceId) {
+		DataSource source = DataSourceFactory.getDataSource();
+		User user = source.queryUserByUserIdAndPassword(username, password);
+		if(user != null) {
+			return true;
+		}
+
 		return false;
+
 	}
 
 	@Override
@@ -76,5 +85,6 @@ public class HttpUserController extends UserController{
 		// TODO Auto-generated method stub
 		
 	}
+
 
 }

@@ -1,5 +1,5 @@
 <%@page import="net.fast.lbcs.admin.controller.HttpAdminController"%>
-<%@page import="net.fast.lbcs.admin.service.LocationService"%>
+<%@page import="net.fast.lbcs.data.entities.admin.service.*"%>
 <%@page import="java.util.List"%>
 <%@page import="net.fast.lbcs.HttpControllerFactory"%>
 <%@page import="net.fast.lbcs.admin.controller.AdminController"%>
@@ -77,7 +77,7 @@
 
     <table >
 	      <tr>	
-		<td><button type="button">Create</button></td><td><button type="button">Edit</button></td><td><button type="button">Delete</button></td>
+		<td><button type="button" onclick="window.location = 'new_service.jsp'">Create</button></td><td><button type="button">Edit</button></td><td><button type="button">Delete</button></td>
 		 </tr>
 	   </table>   
  </body>

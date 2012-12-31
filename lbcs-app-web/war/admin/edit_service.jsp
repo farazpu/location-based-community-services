@@ -1,5 +1,8 @@
-<%@page import="net.fast.lbcs.admin.service.LocationService"%>
-<%@page import="net.fast.lbcs.admin.service.ServiceID"%>
+<%@page import="java.util.Date"%>
+<%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
+<%@page import="net.fast.lbcs.data.entities.admin.item.*"%>
+<%@page import="net.fast.lbcs.data.entities.admin.group.*"%>
+<%@page import="net.fast.lbcs.data.entities.admin.service.*"%>
 <%@page import="java.util.List"%>
 <%@page import="net.fast.lbcs.HttpControllerFactory"%>
 <%@page import="net.fast.lbcs.admin.controller.AdminController"%>
@@ -13,17 +16,23 @@
  <body>
  		<%
 			AdminController controller = new HttpControllerFactory(request).getAdminController();
+ 			LocationService ls;
  			ServiceID serviceId = new ServiceID();
  			serviceId.setId(request.getParameter("serviceId"));
- 			LocationService ls = controller.getServiceById(serviceId);
- 			if(ls==null) {
- 				ls=new LocationService(serviceId, "", "", null, null, null, null );
+ 			if(serviceId.getId().equals("New_Service1")){
+ 				ls = new LocationService(serviceId , request.getParameter("name"), 
+ 						request.getParameter("description"), new Date(), new Date(), 
+ 						null, null);
  			}
-			
+ 			else{
+	 			ls= controller.getServiceById(serviceId); 				
+ 			}
+ 			
+ 						
 			
  		%>
 		
-		<h1>Managing Service: Service 1</h1>
+		<h1>Managing Service: <%=ls.getId().getId() %></h1>
 		<TABLE>
 		<TR>
 		  <TD>Name: </td>
@@ -41,21 +50,25 @@
 		<h2>Objects</h2>
 		<table width="98%" border="1">
 		 <tr>
-		  <th></th><th>Object Name</th><th>Creation Date</th><th>Last Modified</th><th>Description</th>
+		  <th></th><th>Object Name</th><th>Object Group</th><th>Last Modified</th><th>Description</th>
 		 </tr>
-		 <tr>
-		 <td><input type="checkbox" name=" " value=" " /></td>
-		  <td>T-shirt</td><td></td><td></td><td></td>
-		 </tr>
-		 <tr>
-		 <td><input type="checkbox" name=" " value=" " /></td>
-		  <td>Show</td><td></td><td></td><td></td>
-		 </tr>
-		 
+		 <%
+		 List<ServiceItem> itemList=ls.getItems();
+		 if(itemList!=null) {
+			for(ServiceItem si : itemList) {
+		 %>
+			<tr>
+			<td><input type="checkbox" name=" " value=" " /></td>
+			<td><a href="edit_object.jsp?objectId=<%=si.getId().getId() %>&locationService=<%=ls.getId().getId() %>" ><%=si.getName() %></a></td><td><%=si.getGroup().getName() %></td><td><%=si.getDateModified() %></td><td><%=si.getDescription()%></td>
+			</tr>
+		<%
+			}
+		}
+		%>
 		</table>
 		    <table >
 	      <tr>	
-		<td><button type="button">Create</button></td><td><button type="button">Edit</button></td><td><button type="button">Delete</button></td>
+		<td><button type="button"  onclick="window.location = 'new_object.jsp?locationService=<%=serviceId.getId()%>'">Create</button></td><td><button type="button">Edit</button></td><td><button type="button">Delete</button></td>
 		 </tr>
 	   </table>   
 	   
@@ -64,22 +77,23 @@
 		 <tr>
 		  <th></th><th>Object Name</th><th>Creation Date</th><th>Last Modified</th><th>Description</th>
 		 </tr>
-		 <tr>
-		 <td><input type="checkbox" name=" " value=" " /></td>
-		  <td>Food</td><td></td><td></td><td></td>
-		 </tr>
-		 <tr>
-		 <td><input type="checkbox" name=" " value=" " /></td>
-		  <td>Foot Wear</td><td></td><td></td><td></td>
-		 </tr>
-		 <td><input type="checkbox" name=" " value=" " /></td>
-		  <td>Clothing</td><td></td><td></td><td></td>
-		 </tr>
-		 
+		 <%
+		 List<ServiceItemGroup> groupList=ls.getGroups();
+		 if(groupList!=null) {
+			 for(ServiceItemGroup sig : groupList) {
+		 %>
+			 <tr>
+			 <td><input type="checkbox" name=" " value=" " /></td>
+			  <td><%=sig.getName() %></td><td><%=sig.getDateCreated() %></td><td><%=sig.getDateModified()%></td><td><%=sig.getDescription() %></td>
+			 </tr>
+		 <%
+			 }
+		 }
+		 %>
 		</table>
 		    <table >
 	      <tr>	
-		<td><button type="button">Create</button></td><td><button type="button">Edit</button></td><td><button type="button">Delete</button></td>
+		<td><button type="button" onclick="window.location = 'new_group.jsp?serviceId=<%=serviceId.getId() %>'">Create</button></td><td><button type="button">Edit</button></td><td><button type="button">Delete</button></td>
 		 </tr>
 	   </table>   
  </body>

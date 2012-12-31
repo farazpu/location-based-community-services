@@ -73,12 +73,21 @@ class InMemoryDataSource implements DataSource {
 				for (int i = 0; i < 5; i++) {
 					Location location = null;
 					if("Lahore".equals(locationService.getName())) {
-						location = new Location(31.5758, 74.3269);
+						location = new Location(31.575-0.1*i, 74.3269+0.1*i);
 					} else if("Karachi".equals(locationService.getName())) {
-						location = new Location(24.8508, 67.0181);
+						location = new Location(24.8508-0.1*i, 67.0181+0.1*i);
+					} else if("Pishawar".equals(locationService.getName())) {
+						location = new Location(33.9959-0.1*i, 71.5526+0.1*i);
+					} else if("Islamabad".equals(locationService.getName())) {
+						location = new Location(33.6720-0.1*i, 73.0439+0.1*i);
+					} else if("Sahiwal".equals(locationService.getName())) {
+						location = new Location(30.6586-0.1*i, 73.0898+0.1*i);
+					} else if("Multan".equals(locationService.getName())) {
+						location = new Location(30.1832-0.1*i, 71.4805+0.1*i);
 						
 					}
 					products.add(createProduct(serviceItem.getName() + " " + i, serviceItem, (i * 3) + 5, (i * 3) + 3, location));
+					
 				}
 			}
 		}
@@ -126,7 +135,7 @@ class InMemoryDataSource implements DataSource {
 	}
 
 	private static ServiceItemGroup createGroup(String name) {
-		ServiceItemGroup group = new ServiceItemGroup(new ServiceItemGroupID(name + "-id"), name, "Description of " + name + " group.");
+		ServiceItemGroup group = new ServiceItemGroup(new ServiceItemGroupID(name + "-id"), name, "Description of " + name + " group.", new Date(), new Date());
 		return group;
 	}
 
@@ -138,22 +147,41 @@ class InMemoryDataSource implements DataSource {
 		items.add(createItem("Pizza", groups.get(0)));
 		items.add(createItem("Chaat", groups.get(0)));
 		
-		items.add(createItem("Shirt", groups.get(0)));
-		items.add(createItem("Pants", groups.get(0)));
+		items.add(createItem("Shirt", groups.get(1)));
+		items.add(createItem("Pants", groups.get(1)));
 		
 		return items;
 	}
 
 	private static ServiceItem createItem(String name,
 			ServiceItemGroup serviceItemGroup) {
-		return new ServiceItem(new ServiceItemID(name + "-id"), name, createItemAttributes(name), serviceItemGroup);
+		return new ServiceItem(new ServiceItemID(name + "-id"), name, createItemAttributes(name), serviceItemGroup, new Date(), "Description of " + name + " item.");
 	}
 
 	private static ServiceItemAttributes createItemAttributes(String name) {
 		List<ServiceItemAttribute> list = new ArrayList<ServiceItemAttribute>();
 		if("Shirt".equals(name)) {
 			list.add(new ServiceItemAttribute("Make", Validation.string));
-			list.add(new ServiceItemAttribute("Size", Validation.string));
+			list.add(new ServiceItemAttribute("Size", Validation.number));
+			list.add(new ServiceItemAttribute("Brand", Validation.string));
+		} 
+		if("Burger".equals(name)) {
+			list.add(new ServiceItemAttribute("Price", Validation.number));
+		} 
+		if("Pizza".equals(name)) {
+			list.add(new ServiceItemAttribute("Price", Validation.number));
+			list.add(new ServiceItemAttribute("Size", Validation.number));
+			list.add(new ServiceItemAttribute("Flavour", Validation.string));
+		} 
+		if("Chaat".equals(name)) {
+			list.add(new ServiceItemAttribute("Flavour", Validation.string));
+			list.add(new ServiceItemAttribute("Price", Validation.string));
+		} 
+		if("pants".equals(name)) {
+			list.add(new ServiceItemAttribute("Make", Validation.string));
+			list.add(new ServiceItemAttribute("Length", Validation.number));
+			list.add(new ServiceItemAttribute("Waist", Validation.number));
+			list.add(new ServiceItemAttribute("Brand", Validation.string));
 		} 
 
 		ServiceItemAttributes attrs = new ServiceItemAttributes(list);
@@ -191,6 +219,22 @@ class InMemoryDataSource implements DataSource {
 		}
 		return null;
 	}
+	
+	
+	@Override
+	public User queryUserByUserIdAndPassword(String username,
+			String password) {
+		
+		for (User user : users) {
+			if(user.getId().equals(username) && 
+					user.getPassword().equals(password) ) {
+				return user;
+			}
+		}
+		return null;
+	}
+	
+	
 
 	@Override
 	public List<LocationService> getAllServices(int startIndex, int endIndex) {
