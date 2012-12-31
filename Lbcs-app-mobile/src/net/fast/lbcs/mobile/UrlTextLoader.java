@@ -1,7 +1,10 @@
 package net.fast.lbcs.mobile;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -13,6 +16,7 @@ import android.os.AsyncTask;
 
 public abstract class UrlTextLoader extends AsyncTask<String, Void, String> {
 
+	
 	@Override
 	protected String doInBackground(String... params) {
         HttpClient client = new DefaultHttpClient();
@@ -28,6 +32,7 @@ public abstract class UrlTextLoader extends AsyncTask<String, Void, String> {
 			return e.getMessage();
 		}
 	}
+	
 	
 	@Override
 	protected void onPostExecute(String result) {

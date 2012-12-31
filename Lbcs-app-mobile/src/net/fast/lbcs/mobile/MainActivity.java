@@ -1,8 +1,14 @@
 package net.fast.lbcs.mobile;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import net.fast.lbcs.data.entities.Pair;
+import net.fast.lbcs.data.entities.admin.service.LocationServices;
+import net.fast.lbcs.data.entities.user.ProductResultSet;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -16,10 +22,13 @@ import org.simpleframework.xml.core.Persister;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -27,6 +36,10 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    	EditText usernameEditText = (EditText) findViewById(R.id.username);
+    	EditText passwordEditText = (EditText) findViewById(R.id.password);
+    	usernameEditText.setText("user1");
+    	passwordEditText.setText("pass1");
     }
 
     @Override
@@ -36,10 +49,9 @@ public class MainActivity extends Activity {
     }
     
     public void readPoint(View view) {
-    	EditText editText1 = (EditText) findViewById(R.id.editText1);
-    	TextView textView1 = (TextView) findViewById(R.id.textView1);
-    	
-    	textView1.setText("Fetching from " + editText1.getText().toString() + "...");
+    	EditText usernameEditText = (EditText) findViewById(R.id.username);
+    	EditText passwordEditText = (EditText) findViewById(R.id.password);
+    	    	
     	
     	UrlTextLoader urlTextLoader = new UrlTextLoader() {
 			@Override
@@ -47,60 +59,28 @@ public class MainActivity extends Activity {
 				updateResult(result);
 			}
 		};
-    	
-		urlTextLoader.execute(editText1.getText().toString());
+		urlTextLoader.execute("http://"  + TempIP.ip + ":8888/user/login.jsp?username=" + usernameEditText.getText().toString() + "&password=" + passwordEditText.getText().toString());
     }
     
     public void updateResult(String result) {
-    	TextView textView1 = (TextView) findViewById(R.id.textView1);
-    	textView1.setText(result);
+    	TextView textView1 = (TextView) findViewById(R.id.error);
     	
     	Serializer serializer = new Persister();
 
     	try {
-			Pair p = serializer.read(Pair.class, result);
-			String t = p.getFirst() + ", " + p.getSecond();
-			textView1.setText(t);
+			LocationServices lss = serializer.read(LocationServices.class, result);
+			if(!lss.isValidation()) {
+				textView1.setText("Login Failed");
+			}
+			else {
+				Intent intent=new Intent(this,ServiceListActivity.class);
+				intent.putExtra("locationServices", result);
+				startActivity(intent);
+			}
 		} catch (Exception e) {
-			textView1.setText(e.getMessage());
+			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
 		}
 
     }
     
-    /*private class UrlTextLoader extends AsyncTask<String, Void, String> {
-
-		@Override
-		protected String doInBackground(String... params) {
-	        HttpClient client = new DefaultHttpClient();
-	        String url = params[0];
-			HttpGet request = new HttpGet(url);
-	        ResponseHandler<String> responseHandler = new BasicResponseHandler();
-	        try {
-				String response = client.execute(request, responseHandler);
-				return response;
-			} catch (ClientProtocolException e) {
-				return e.getMessage();
-			} catch (IOException e) {
-				return e.getMessage();
-			}
-		}
-		
-		@Override
-		protected void onPostExecute(String result) {
-	    	TextView textView1 = (TextView) findViewById(R.id.textView1);
-	    	textView1.setText(result);
-	    	
-	    	Serializer serializer = new Persister();
-
-	    	try {
-				Pair p = serializer.read(Pair.class, result);
-				String t = p.getFirst() + ", " + p.getSecond();
-				textView1.setText(t);
-			} catch (Exception e) {
-				textView1.setText(e.getMessage());
-			}
-	    	
-		}
-    	
-    }*/
 }
