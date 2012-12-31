@@ -18,10 +18,11 @@ ProductResultSet prs = new ProductResultSet();
 List<Product> products= new ArrayList<Product>(InMemoryDebugFacade.getProducts().subList(0, 5));
 
 prs.setProducts(products);
-prs.setLocation(new Location(21,33));
+prs.setLocation(new Location(32,73));
 //ServiceItemGroupID gid = new ServiceItemGroupID("The id");
 //ServiceItemGroup p = new ServiceItemGroup(gid, "Name 1", "Description 1");
-
+boolean value=true;
+serializer.write(value, response.getWriter());
 serializer.write(prs, response.getWriter());
 
 %>
