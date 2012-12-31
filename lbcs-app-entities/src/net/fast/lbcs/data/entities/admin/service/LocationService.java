@@ -5,8 +5,11 @@ import java.util.List;
 
 import org.simpleframework.xml.Default;
 
+import net.fast.lbcs.data.entities.MyDate;
 import net.fast.lbcs.data.entities.admin.group.ServiceItemGroup;
+import net.fast.lbcs.data.entities.admin.group.ServiceItemGroupID;
 import net.fast.lbcs.data.entities.admin.item.ServiceItem;
+import net.fast.lbcs.data.entities.admin.item.ServiceItemID;
 
 
 @Default
@@ -14,8 +17,8 @@ public class LocationService {
 	private ServiceID id;
 	private String name;
 	private String desciption;
-	private Date lastModified;
-	private Date created;
+	private MyDate lastModified;
+	private MyDate created;
 	
 	
 	private List<ServiceItem> items;
@@ -26,7 +29,7 @@ public class LocationService {
 	
 	
 	public LocationService(ServiceID id, String name, String desciption,
-			Date lastModified, Date created, List<ServiceItem> items,
+			MyDate lastModified, MyDate created, List<ServiceItem> items,
 			List<ServiceItemGroup> groups) {
 		super();
 		this.id = id;
@@ -34,6 +37,19 @@ public class LocationService {
 		this.desciption = desciption;
 		this.lastModified = lastModified;
 		this.created = created;
+		this.items = items;
+		this.groups = groups;
+	}
+
+	public LocationService(ServiceID id, String name, String desciption,
+			Date lastModified, Date created, List<ServiceItem> items,
+			List<ServiceItemGroup> groups) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.desciption = desciption;
+		this.lastModified = new MyDate(lastModified);
+		this.created = new MyDate(created);
 		this.items = items;
 		this.groups = groups;
 	}
@@ -57,17 +73,23 @@ public class LocationService {
 	public void setDesciption(String desciption) {
 		this.desciption = desciption;
 	}
-	public Date getLastModified() {
+	public MyDate getLastModified() {
 		return lastModified;
 	}
-	public void setLastModified(Date lastModified) {
+	public void setLastModified(MyDate lastModified) {
 		this.lastModified = lastModified;
 	}
-	public Date getCreated() {
+	public void setLastModified(Date lastModified) {
+		this.lastModified = new MyDate(lastModified);
+	}
+	public MyDate getCreated() {
 		return created;
 	}
-	public void setCreated(Date created) {
+	public void setCreated(MyDate created) {
 		this.created = created;
+	}
+	public void setCreated(Date created) {
+		this.created = new MyDate(created);
 	}
 	public List<ServiceItem> getItems() {
 		return items;
@@ -83,7 +105,25 @@ public class LocationService {
 	}
 
 
+	public ServiceItem getItemById(ServiceItemID serviceItemId)
+	{
+		for(ServiceItem si : items) {
+			if(si.getId().getId().equals(serviceItemId.getId()))
+				return si;
+		}
+		return null;
+	}
+	
+	public ServiceItemGroup getItemById(ServiceItemGroupID serviceItemGroupId)
+	{
+		for(ServiceItemGroup sig : groups) {
+			if(sig.getId().getId().equals(serviceItemGroupId.getId()))
+				return sig;
+		}
+		return null;
+	}
 
+	
 	@Override
 	public String toString() {
 		return "LocationService [id=" + id + ", name=" + name + ", desciption="
