@@ -239,7 +239,6 @@ class InMemoryDataSource implements DataSource {
 	@Override
 	public List<LocationService> getAllServices(int startIndex, int endIndex) {
 		List<LocationService> servicePage=new ArrayList<LocationService>();
-		System.out.println(locationServices.size()+"");
 		for(int i=startIndex;i<endIndex && i<locationServices.size();i++) {
 			servicePage.add(locationServices.get(i));
 		}
