@@ -1,0 +1,161 @@
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video
+	{
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+/* ------- HTML5 display-role reset for older browsers ------- */
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section
+	{
+	display: block;
+}
+
+body {
+	line-height: 1;
+}
+
+ol,ul {
+	list-style: none;
+}
+
+blockquote,q {
+	quotes: none;
+}
+
+blockquote:before,blockquote:after,q:before,q:after {
+	content: '';
+	content: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* ------- Remove Chrome's border around active fields ------- */
+*:focus {
+	outline: none;
+}
+
+/* ------- Disable background and border for input fields ------- */
+input {
+	background: transparent;
+	border: 0;
+}
+
+/* --------------------------------------------------------------- */
+
+/* ------- Body ------- */
+body {
+	background: #eeeeee url(../images/bg.jpg) top left repeat;
+}
+
+.top-menu {
+	background-color: #373737;
+	height: 40px;
+	text-align: right;
+}
+
+.menu-item {
+	background-color: #9B9B9B;
+	height: 25px;
+	display: inline-block;
+	padding: 10px 5px 5px 5px;
+	font-size: 20px;
+	color: #ffffff;
+}
+
+.menu-title {
+	height: 25px;
+	display: inline-block;
+	padding: 10px 5px 5px 5px;
+	font-size: 20px;
+	color: #ffffff;
+	float: left;
+}
+/********************** Listing *******************/
+.listing-table {
+	margin: 20px 5px 10px 5px;
+	background-color: #373737;
+	font-size: 16px;
+	color: #ffffff;
+}
+
+.listing-table table {
+	width: 100%;
+}
+
+.listing-table thead {
+	background-color: #35BBDB;
+	border-bottom: solid 3px #D7F1F8;
+}
+
+.listing-table th {
+	text-align: left;
+	padding: 5px 5px 5px 5px;
+}
+
+.listing-table td {
+	text-align: left;
+	border-bottom: solid 1px #9B9B9B;
+	padding: 5px 5px 5px 5px;
+}
+
+.listing-table td a {
+	color: #ffffff;
+	font-size: 20px;
+}
+
+.listing-table tfoot {
+	background-color: #ffffff;
+	border: solid 3px #ffffff;
+	color: #000000;
+}
+
+.listing-table tfoot td {
+	vertical-align: bottom;
+}
+
+.listing-table tfoot .page-buttons {
+	float: right;
+}
+
+.listing-table tfoot a {
+	margin-left: 5px;
+}
+
+.listing-table thead .focus {
+	background-color: #258399;
+	border-bottom: solid 3px #ACC1C6;
+}
+
+.listing-table tbody .focus {
+	background-color: #5F5F5F;
+}
+
+/******************* Buttons ********************/
+.button {
+	background-color: #35BBDB; 
+	margin: 3px 3px 3px 3px;
+	padding: 5px 5px 5px 5px;
+	border: solid 1px #258399;
+	
+}
+
+/********** Footer *********/
+#footer {
+	margin: auto;
+	margin-top: 50px;
+	width: 500px;
+	height: 30px;
+	background: url(../images/footer-bg.png) bottom center no-repeat;
+	text-align: center;
+	font-family: "Times New Roman", Times, Georgia;
+	font-weight: normal;
+	font-size: 16px;
+	color: #8d8d8d;
+}

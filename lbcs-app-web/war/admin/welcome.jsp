@@ -11,74 +11,109 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Welcome</title>
+
+<link rel="stylesheet" href="../css/style.css" type="text/css" />
+
 <head>
   <title>Edit Service</title>
   </head>
  <body>
- 		
-		<a href="logout.jsp">logout</a>
+ 	<jsp:include page="menu_include.jsp">
+ 		<jsp:param value="Welcome to LBCS administration!" name="title"/>
+ 	</jsp:include>
 		<%
 			AdminController controller = new HttpControllerFactory(request).getAdminController();
-			int pageNumber=Integer.parseInt(request.getParameter("pageNum"));
+
+			int pageNumber=0;
+			try {
+				pageNumber = Integer.parseInt(request.getParameter("pageNum"));
+			}catch(Exception exp){}
 			int pagesize=3;
-		%>
-		<h1> Welcome <%=controller.getCurrentUser().getId() %> </h1>
-		<%
-//			AdminController controller = new HttpControllerFactory(request).getAdminController();
 			List<LocationService> list = controller.listServices(pageNumber*pagesize,(1+pageNumber)*pagesize);
 			if(list.size()==0) {
-				if(pageNumber!=0)
-				{
+				if(pageNumber!=0) {
 					%>			
-					<a href="welcome.jsp?pageNum=<%= pageNumber-1%>" >Previus Page</a>
+					<a href="welcome.jsp?pageNum=<%= pageNumber-1%>" >Previous Page</a>
 					<%
 				}
 		%>
 		no service available
-		<%
-			}
-			else
-			{
-		%>
-		<%
-		if(pageNumber!=0)
-		{
-			%>			
-			<a href="welcome.jsp?pageNum=<%= pageNumber-1%>" >Previus Page</a>
-			<%
-		}
-		if(list.size()==pagesize)
-		{
-		%>	
-		
-			<a href="welcome.jsp?pageNum=<%= pageNumber+1%>" >Next Page</a>
-		<%
-		}
-		%>			
-		<table width="98%" border="1">
+				<%
+					} else {
+						%>
+		<div class="listing-table">
+		<table>
+		<thead>
 		 <tr>
-		  <th></th><th>Service Name</th><th>Creation Date</th><th>Last Modified</th><th>Description</th>
+		  <th></th><th class="focus">Service Name</th><th>Creation Date</th><th>Last Modified</th><th>Description</th>
 		 </tr>
+		</thead>
+		<tfoot>
+			<tr>
+				
+				<td colspan="100%">
+					<span class="message">
+					Please select or click on a service to perform desired action.
+					</span>
+					<span class="page-buttons">
+						<%
+						
+						if(pageNumber!=0) {
+					%>			
+					<a href="welcome.jsp?pageNum=<%= pageNumber-1%>" ><img alt="Previous Page" src="../images/prev_page.png"></a>
+					<%
+						}
+						
+						if(list.size()==pagesize) {
+				%>	
+				
+					<a href="welcome.jsp?pageNum=<%= pageNumber+1%>" ><img alt="Next Page" src="../images/next_page.png"></a>
+				<%
+						}
+				%>			
+					</span>
+				</td>
+			</tr>
+		</tfoot>
+		<tbody>
 		<%
 				for(LocationService ls : list) {
 		%>
 		 
 			 <tr>
 			 <td><input type="checkbox" name=" " value=" " /></td>
-			  <td><a href="edit_service.jsp?serviceId=<%=ls.getId().getId()%>"><%=ls.getName() %></a></td> <td><%=ls.getCreated()%></td><td><%=ls.getLastModified()%></td><td><%=ls.getDesciption() %></td>
+			  <td class="focus"><a href="edit_service.jsp?serviceId=<%=ls.getId().getId()%>"><%=ls.getName() %></a></td> 
+			  <td><%=ls.getCreated()%></td>
+			  <td><%=ls.getLastModified()%></td>
+			  <td><%=ls.getDesciption() %></td>
 			 </tr>
 		<%
 				}
+		
+		
+		
 			}
 		%>
-		 
+		 </tbody>
 		</table>
+	</div>
 
-
-    <table >
-	      <tr>	
-		<td><button type="button" onclick="window.location = 'new_service.jsp'">Create</button></td><td><button type="button">Edit</button></td><td><button type="button">Delete</button></td>
-		 </tr>
-	   </table>   
+	<table>
+		<tr>	
+			<td>
+				<input class="button" type="button" onclick="window.location = 'new_service.jsp'" value="Create"/>
+			</td>
+			<td>
+				<input class="button" type="button" value="Edit"/>
+			</td>
+			<td>
+				<input class="button" type="button" value="Delete"/>
+			</td>
+		</tr>
+	</table>
+	<div id="footer">
+		Location Based Community Service - Administration
+	</div>
+	   
  </body>
 </html>
