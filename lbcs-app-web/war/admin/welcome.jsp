@@ -1,3 +1,4 @@
+<%@page import="net.fast.lbcs.web.listing.Listing"%>
 <%@page import="net.fast.lbcs.admin.controller.HttpAdminController"%>
 <%@page import="net.fast.lbcs.data.entities.admin.service.*"%>
 <%@page import="java.util.List"%>
@@ -14,93 +15,53 @@
 
 <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-<head>
-  <title>Edit Service</title>
-  </head>
+</head>
  <body>
  	<jsp:include page="menu_include.jsp">
  		<jsp:param value="Welcome to LBCS administration!" name="title"/>
  	</jsp:include>
-		<%
-			AdminController controller = new HttpControllerFactory(request).getAdminController();
+ 	<%
+ 		Listing lst = new Listing();
+ 		
+		lst.getColumns().add(" ");
+		lst.getColumns().add("Service Name");
+ 		lst.getColumns().add("Creation Date");
+ 		lst.getColumns().add("Last Modified");
+ 		lst.getColumns().add("Description");
+ 		
+ 		lst.getFocusColumns().add("Service Name");
+ 		
+ 		lst.setFooterNote("List of available services.");
+ 		lst.setCreateSelectionColumn(false);
+ 		lst.setDeleteButton(false);
+ 		lst.setEditButton(false);
 
-			int pageNumber=0;
-			try {
-				pageNumber = Integer.parseInt(request.getParameter("pageNum"));
-			}catch(Exception exp){}
-			int pagesize=3;
-			List<LocationService> list = controller.listServices(pageNumber*pagesize,(1+pageNumber)*pagesize);
-		%>
-		<div class="listing-table">
-		<table>
-		<thead>
-		 <tr>
-		  <th></th><th class="focus">Service Name</th><th>Creation Date</th><th>Last Modified</th><th>Description</th>
-		 </tr>
-		</thead>
-		<tfoot>
-			<tr>
-				
-				<td colspan="100%">
-				
-				<input class="button" type="button" onclick="window.location = 'new_service.jsp'" value="Create"/>
-				<input class="button" type="button" value="Edit"/>
-				<input class="button" type="button" value="Delete"/>
-				
-					<span class="message">
-					Please select or click on a service to perform desired action.
-					</span>
-					<span class="page-buttons">
-						<%
-						
-						if(pageNumber!=0) {
-					%>			
-					<a href="welcome.jsp?pageNum=<%= pageNumber-1%>" ><img alt="Previous Page" src="../images/prev_page.png"></a>
-					<%
-						}
-						
-						if(list.size()==pagesize) {
-				%>	
-				
-					<a href="welcome.jsp?pageNum=<%= pageNumber+1%>" ><img alt="Next Page" src="../images/next_page.png"></a>
-				<%
-						}
-				%>			
-					</span>
-				</td>
-			</tr>
-		</tfoot>
-		<tbody>
-			
-		<%
-			if(list.size()==0) {
-				if(pageNumber!=0) {
-					%>			
-					 <tr>
-					 	<td colspan="100%">
-							No record on this page.
-					 	</td>
-					</tr>
-					<%
-				}
-			}
-
-				for(LocationService ls : list) {
-		%>
-		 
-			 <tr>
-			 <td><input type="checkbox" name=" " value=" " /></td>
-			  <td class="focus"><a href="edit_service.jsp?serviceId=<%=ls.getId().getId()%>"><%=ls.getName() %></a></td> 
-			  <td><%=ls.getCreated()%></td>
-			  <td><%=ls.getLastModified()%></td>
-			  <td><%=ls.getDesciption() %></td>
-			 </tr>
-		<%
-				}
-		%>
-		 </tbody>
-		</table>
-	</div>
+ 		int pageNumber=0;
+		try {
+			pageNumber = Integer.parseInt(request.getParameter("pageNum"));
+		}catch(Exception exp){}
+		lst.setCurrentPage(pageNumber);
+		
+		int pagesize=3;
+		AdminController controller = new HttpControllerFactory(request).getAdminController();
+		List<LocationService> list = controller.listServices(pageNumber*pagesize,(1+pageNumber)*pagesize);
+		
+ 		lst.setCanGoNext(list.size() > 0);
+ 		
+ 		for(LocationService ls : list) {
+ 			lst.addRow(
+ 					"<a href='delete_service.jsp?serviceId=" + ls.getId().getId() + "'><img src='../images/delete.png'/></a>",
+ 					"<a href='edit_service.jsp?serviceId=" + ls.getId().getId() + "'>" + ls.getName() + "</a>",  
+				  ls.getCreated(), 
+				  ls.getLastModified(), 
+				  ls.getDesciption()
+			);
+ 		}
+ 	
+ 		request.setAttribute("listing", lst);
+ 	%>
+ 	<jsp:include page="../common/listing.jsp"></jsp:include>
+ 	
 
 	<div id="footer">
 		Location Based Community Service - Administration

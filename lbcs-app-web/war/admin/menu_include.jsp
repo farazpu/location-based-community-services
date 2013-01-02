@@ -8,6 +8,7 @@
 		AdminController controller = new HttpControllerFactory(request).getAdminController();
 	%>
 	<span class="menu-title"><%=request.getParameter("title") %></span>
-	<span class="menu-item"> <img src="../images/user.png"><%=controller.getCurrentUser().getId() %>
-	</span> <a class="menu-item" href="logout.jsp">logout</a>
+	<span class="menu-item"> <img src="../images/user.png"><%=controller.getCurrentUser().getId() %></span> 
+	<a class="menu-item" href="welcome.jsp">Home</a>
+	<a class="menu-item" href="logout.jsp">logout</a>
 </div>
