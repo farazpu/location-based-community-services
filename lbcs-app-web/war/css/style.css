@@ -111,9 +111,10 @@ body {
 }
 
 .listing-table tfoot {
-	background-color: #ffffff;
 	border: solid 3px #ffffff;
 	color: #000000;
+	background: url(../images/footer-bg.png) top center no-repeat;
+	background-color: #ffffff;
 }
 
 .listing-table tfoot td {

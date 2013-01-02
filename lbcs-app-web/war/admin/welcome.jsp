@@ -30,17 +30,7 @@
 			}catch(Exception exp){}
 			int pagesize=3;
 			List<LocationService> list = controller.listServices(pageNumber*pagesize,(1+pageNumber)*pagesize);
-			if(list.size()==0) {
-				if(pageNumber!=0) {
-					%>			
-					<a href="welcome.jsp?pageNum=<%= pageNumber-1%>" >Previous Page</a>
-					<%
-				}
 		%>
-		no service available
-				<%
-					} else {
-						%>
 		<div class="listing-table">
 		<table>
 		<thead>
@@ -52,6 +42,11 @@
 			<tr>
 				
 				<td colspan="100%">
+				
+				<input class="button" type="button" onclick="window.location = 'new_service.jsp'" value="Create"/>
+				<input class="button" type="button" value="Edit"/>
+				<input class="button" type="button" value="Delete"/>
+				
 					<span class="message">
 					Please select or click on a service to perform desired action.
 					</span>
@@ -76,7 +71,20 @@
 			</tr>
 		</tfoot>
 		<tbody>
+			
 		<%
+			if(list.size()==0) {
+				if(pageNumber!=0) {
+					%>			
+					 <tr>
+					 	<td colspan="100%">
+							No record on this page.
+					 	</td>
+					</tr>
+					<%
+				}
+			}
+
 				for(LocationService ls : list) {
 		%>
 		 
@@ -89,28 +97,11 @@
 			 </tr>
 		<%
 				}
-		
-		
-		
-			}
 		%>
 		 </tbody>
 		</table>
 	</div>
 
-	<table>
-		<tr>	
-			<td>
-				<input class="button" type="button" onclick="window.location = 'new_service.jsp'" value="Create"/>
-			</td>
-			<td>
-				<input class="button" type="button" value="Edit"/>
-			</td>
-			<td>
-				<input class="button" type="button" value="Delete"/>
-			</td>
-		</tr>
-	</table>
 	<div id="footer">
 		Location Based Community Service - Administration
 	</div>
