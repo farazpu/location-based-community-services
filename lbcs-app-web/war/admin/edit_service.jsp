@@ -1,3 +1,4 @@
+<%@page import="net.fast.lbcs.web.listing.Listing"%>
 <%@page import="java.util.Date"%>
 <%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
 <%@page import="net.fast.lbcs.data.entities.admin.item.*"%>
@@ -12,8 +13,14 @@
 <html>
  <head>
   <title>Edit Service</title>
+<script type="text/javascript" src="../scripts/jquery.js"></script>
+<script type="text/javascript" src="../scripts/jquery.simplemodal.js"></script>
+<script type="text/javascript" src="../scripts/listing.js"></script>
+
+<link rel="stylesheet" href="../css/style.css" type="text/css" />
   </head>
  <body>
+ 
  		<%
 			AdminController controller = new HttpControllerFactory(request).getAdminController();
  			LocationService ls;
@@ -29,72 +36,100 @@
  			}
  			
  						
-			
+		String title = "Edit Service: " + ls.getName() + " (" + ls.getId().getId() + ")";
  		%>
+	  	<jsp:include page="title_include.jsp">
+	 		<jsp:param value="<%=title %>" name="title"/>
+	 	</jsp:include>
 		
-		<h1>Managing Service: <%=ls.getId().getId() %></h1>
-		<TABLE>
-		<TR>
-		  <TD>Name: </td>
-				<td><input type="text" name="Service_name" value="<%=ls.getName() %>"></input> </TD>
-		  <TD><button type="button">Save</button><button type="button">Cancel</button></TD>
-		</TR>
-		<TR>
-		  <TD>Discription:</TD>
-		  <td><input type="text" name="discription" value="<%=ls.getDesciption() %>"></input></td> 
-		</TR>
-		</TABLE>
-	
-	
-	
-		<h2>Objects</h2>
-		<table width="98%" border="1">
-		 <tr>
-		  <th></th><th>Object Name</th><th>Object Group</th><th>Last Modified</th><th>Description</th>
-		 </tr>
-		 <%
-		 List<ServiceItem> itemList=ls.getItems();
-		 if(itemList!=null) {
+	<form>
+		<div class="form">
+			<h1>Edit Service:</h1>
+			<label>
+				<span>Name:</span>
+				<input type="text" value="<%=ls.getName() %>" class="input_text" name="Service_name" id="Service_name"/>
+			</label>
+			<label>
+				<span>Discription</span>
+				<textarea class="message" name="discription" id="discription"><%=ls.getDesciption() %></textarea>
+			</label>
+			<label class="submit">
+				<input type="button" class="button" value="Save" />
+			</label>
+			
+		</div>
+	</form>
+		
+		
+	<%
+		Listing lst = new Listing();
+		
+		lst.setTitle("Objects");
+		
+		lst.getColumns().add(" ");
+		lst.getColumns().add("Object Name");
+		lst.getColumns().add("Object Group");
+		lst.getColumns().add("Last Modified");
+		lst.getColumns().add("Description");
+
+		lst.getFocusColumns().add("Object Name");
+		
+ 		lst.setCreateSelectionColumn(false);
+ 		lst.setDeleteButton(false);
+ 		lst.setEditButton(false);
+ 		
+ 		lst.setCanGoNext(false);
+
+		List<ServiceItem> itemList=ls.getItems();
+		if(itemList!=null) {
 			for(ServiceItem si : itemList) {
-		 %>
-			<tr>
-			<td><input type="checkbox" name=" " value=" " /></td>
-			<td><a href="edit_object.jsp?objectId=<%=si.getId().getId() %>&locationService=<%=ls.getId().getId() %>" ><%=si.getName() %></a></td><td><%=si.getGroup().getName() %></td><td><%=si.getDateModified() %></td><td><%=si.getDescription()%></td>
-			</tr>
-		<%
+				lst.addRow(
+						Listing.popupValue("<img src='../images/delete.png'/>", "delete_object.jsp?objectId=" + si.getId().getId() + "&locationService=" + si.getId().getId(), "90%", "90%"),
+						Listing.popupValue(si.getName(), "edit_object.jsp?objectId=" + si.getId().getId() + "&locationService=" + ls.getId().getId(), "90%", "90%"),
+						si.getGroup().getName(), si.getDateModified(), si.getDescription());
 			}
 		}
-		%>
-		</table>
-		    <table >
-	      <tr>	
-		<td><button type="button"  onclick="window.location = 'new_object.jsp?locationService=<%=serviceId.getId()%>'">Create</button></td><td><button type="button">Edit</button></td><td><button type="button">Delete</button></td>
-		 </tr>
-	   </table>   
-	   
-	   <h2>Object Group</h2>
-		<table width="98%" border="1">
-		 <tr>
-		  <th></th><th>Object Name</th><th>Creation Date</th><th>Last Modified</th><th>Description</th>
-		 </tr>
-		 <%
+
+ 		request.setAttribute("listing", lst);
+ 	%>
+ 	<jsp:include page="../common/listing.jsp"></jsp:include>
+
+
+	<%
+		lst = new Listing();
+		
+		lst.setTitle("Object Group");
+		
+		lst.getColumns().add(" ");
+		lst.getColumns().add("Group Name");
+		lst.getColumns().add("Creation Date");
+		lst.getColumns().add("Last Modified");
+		lst.getColumns().add("Description");
+
+		lst.getFocusColumns().add("Group Name");
+		
+ 		lst.setCreateSelectionColumn(false);
+ 		lst.setDeleteButton(false);
+ 		lst.setEditButton(false);
+ 		
+ 		lst.setCanGoNext(false);
+
 		 List<ServiceItemGroup> groupList=ls.getGroups();
 		 if(groupList!=null) {
 			 for(ServiceItemGroup sig : groupList) {
-		 %>
-			 <tr>
-			 <td><input type="checkbox" name=" " value=" " /></td>
-			  <td><%=sig.getName() %></td><td><%=sig.getDateCreated() %></td><td><%=sig.getDateModified()%></td><td><%=sig.getDescription() %></td>
-			 </tr>
-		 <%
+					lst.addRow(
+							Listing.popupValue("<img src='../images/delete.png'/>", "delete_group.jsp?objectId=" + sig.getId().getId() + "&locationService=" + ls.getId().getId(), "200px", "300px"),
+							Listing.popupValue(sig.getName(), "edit_group.jsp?objectId=" + sig.getId().getId() + "&locationService=" + ls.getId().getId(), "90%", "90%"),
+							sig.getDateCreated(), sig.getDateModified(), sig.getDescription());
 			 }
 		 }
-		 %>
-		</table>
-		    <table >
-	      <tr>	
-		<td><button type="button" onclick="window.location = 'new_group.jsp?serviceId=<%=serviceId.getId() %>'">Create</button></td><td><button type="button">Edit</button></td><td><button type="button">Delete</button></td>
-		 </tr>
-	   </table>   
+
+ 		request.setAttribute("listing", lst);
+ 	%>
+ 	<jsp:include page="../common/listing.jsp"></jsp:include>
+
+	<div id="footer">
+		Location Based Community Service - Administration
+	</div>
  </body>
 </html>

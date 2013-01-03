@@ -12,6 +12,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Welcome</title>
+<script type="text/javascript" src="../scripts/jquery.js"></script>
+<script type="text/javascript" src="../scripts/jquery.simplemodal.js"></script>
+<script type="text/javascript" src="../scripts/listing.js"></script>
 
 <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
@@ -50,11 +53,11 @@
  		
  		for(LocationService ls : list) {
  			lst.addRow(
- 					"<a href='delete_service.jsp?serviceId=" + ls.getId().getId() + "'><img src='../images/delete.png'/></a>",
- 					"<a href='edit_service.jsp?serviceId=" + ls.getId().getId() + "'>" + ls.getName() + "</a>",  
-				  ls.getCreated(), 
-				  ls.getLastModified(), 
-				  ls.getDesciption()
+ 					Listing.popupValue("<img src='../images/delete.png'/>", "delete_service.jsp?serviceId=" + ls.getId().getId(), "100px", "300px"), 
+ 					Listing.popupValue(ls.getName(), "edit_service.jsp?serviceId=" + ls.getId().getId(), "90%", "90%"), 
+ 					ls.getCreated(),
+ 					ls.getLastModified(), 
+					  ls.getDesciption()
 			);
  		}
  	
@@ -62,7 +65,6 @@
  	%>
  	<jsp:include page="../common/listing.jsp"></jsp:include>
  	
-
 	<div id="footer">
 		Location Based Community Service - Administration
 	</div>
