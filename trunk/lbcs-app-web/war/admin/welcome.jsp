@@ -26,7 +26,9 @@
  	<%
  		Listing lst = new Listing();
  		
-		lst.getColumns().add(" ");
+		lst.getColumns().add(">delete");
+		lst.getColumns().add(">edit");
+		
 		lst.getColumns().add("Service Name");
  		lst.getColumns().add("Creation Date");
  		lst.getColumns().add("Last Modified");
@@ -54,7 +56,8 @@
  		for(LocationService ls : list) {
  			lst.addRow(
  					Listing.popupValue("<img src='../images/delete.png'/>", "delete_service.jsp?serviceId=" + ls.getId().getId(), "100px", "300px"), 
- 					Listing.popupValue(ls.getName(), "edit_service.jsp?serviceId=" + ls.getId().getId(), "90%", "90%"), 
+ 					Listing.popupValue("<img src='../images/edit.png'/>", "delete_service.jsp?serviceId=" + ls.getId().getId(), "100px", "300px"), 
+ 					Listing.popupValue(ls.getName(), "edit_service.jsp?serviceId=" + ls.getId().getId(), "640px", "90%"), 
  					ls.getCreated(),
  					ls.getLastModified(), 
 					  ls.getDesciption()

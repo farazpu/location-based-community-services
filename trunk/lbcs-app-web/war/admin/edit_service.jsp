@@ -42,7 +42,8 @@
 	 		<jsp:param value="<%=title %>" name="title"/>
 	 	</jsp:include>
 		
-	<form>
+	<div class="popup-wrapper">
+ 	<form>
 		<div class="form">
 			<h1>Edit Service:</h1>
 			<label>
@@ -50,7 +51,7 @@
 				<input type="text" value="<%=ls.getName() %>" class="input_text" name="Service_name" id="Service_name"/>
 			</label>
 			<label>
-				<span>Discription</span>
+				<span>Description</span>
 				<textarea class="message" name="discription" id="discription"><%=ls.getDesciption() %></textarea>
 			</label>
 			<label class="submit">
@@ -59,14 +60,15 @@
 			
 		</div>
 	</form>
-		
+	
 		
 	<%
 		Listing lst = new Listing();
 		
 		lst.setTitle("Objects");
 		
-		lst.getColumns().add(" ");
+		lst.getColumns().add(">delete");
+		lst.getColumns().add(">edit");
 		lst.getColumns().add("Object Name");
 		lst.getColumns().add("Object Group");
 		lst.getColumns().add("Last Modified");
@@ -85,7 +87,8 @@
 			for(ServiceItem si : itemList) {
 				lst.addRow(
 						Listing.popupValue("<img src='../images/delete.png'/>", "delete_object.jsp?objectId=" + si.getId().getId() + "&locationService=" + si.getId().getId(), "90%", "90%"),
-						Listing.popupValue(si.getName(), "edit_object.jsp?objectId=" + si.getId().getId() + "&locationService=" + ls.getId().getId(), "90%", "90%"),
+						Listing.popupValue("<img src='../images/edit.png'/>", "edit_object.jsp?objectId=" + si.getId().getId() + "&locationService=" + ls.getId().getId(), "385px", "525px"),
+						Listing.popupValue(si.getName(), "objects.jsp?objectId=" + si.getId().getId() + "&locationService=" + ls.getId().getId(), "90%", "90%"),
 						si.getGroup().getName(), si.getDateModified(), si.getDescription());
 			}
 		}
@@ -100,7 +103,8 @@
 		
 		lst.setTitle("Object Group");
 		
-		lst.getColumns().add(" ");
+		lst.getColumns().add(">delete");
+		lst.getColumns().add(">edit");
 		lst.getColumns().add("Group Name");
 		lst.getColumns().add("Creation Date");
 		lst.getColumns().add("Last Modified");
@@ -119,6 +123,7 @@
 			 for(ServiceItemGroup sig : groupList) {
 					lst.addRow(
 							Listing.popupValue("<img src='../images/delete.png'/>", "delete_group.jsp?objectId=" + sig.getId().getId() + "&locationService=" + ls.getId().getId(), "200px", "300px"),
+							Listing.popupValue("<img src='../images/edit.png'/>", "delete_group.jsp?objectId=" + sig.getId().getId() + "&locationService=" + ls.getId().getId(), "200px", "300px"),
 							Listing.popupValue(sig.getName(), "edit_group.jsp?objectId=" + sig.getId().getId() + "&locationService=" + ls.getId().getId(), "90%", "90%"),
 							sig.getDateCreated(), sig.getDateModified(), sig.getDescription());
 			 }
@@ -130,6 +135,7 @@
 
 	<div id="footer">
 		Location Based Community Service - Administration
+	</div>
 	</div>
  </body>
 </html>
