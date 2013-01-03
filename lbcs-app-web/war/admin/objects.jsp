@@ -48,36 +48,45 @@
 
 	String title = "Edit Object: " + si.getName() + " (" + si.getId().getId() + ")";
  %>
+ 	  	<jsp:include page="title_include.jsp">
+	 		<jsp:param value="<%=title %>" name="title"/>
+	 	</jsp:include>
 
-		<form>
-			<div class="form">
-				<h1>Edit Object</h1>
-				<label>
-					<span>Name:</span>
-					<input type="text" value="<%=si.getName() %>" class="input_text" name="Service_name" id="Service_name"/>
-				</label>
-				<label>
-					<span>Description</span>
-					<textarea class="message" name="discription" id="discription"><%=si.getDescription() %></textarea>
-				</label>
-				<label>
-					<span>Group:</span>
-					<select name="group">
-						  <%
-						  for(ServiceItemGroup sig : groupList){			  
-						  %>
-						  <option <%=si.getGroup().getName().equals(sig.getName()) ? "selected='selected'" : "" %> > <%=sig.getName() %> </option>
-						  <%
-						  }
-						  %>
-				 	 </select>
-				</label>
-				<label class="submit">
-					<input type="button" class="button" value="Save" />
-				</label>
-				
-			</div>
-		</form> 
+			<%
+		Listing lst = new Listing();
+		
+		lst.setTitle("Attributes");
+		
+		lst.getColumns().add(">delete");
+		lst.getColumns().add(">edit");
+		lst.getColumns().add("Attribute Name");
+		lst.getColumns().add("Type");
+		lst.getColumns().add("Validation");
+		lst.getColumns().add("Context");
+
+		lst.getFocusColumns().add("Attribute Name");
+		
+ 		lst.setCreateSelectionColumn(false);
+ 		lst.setDeleteButton(false);
+ 		lst.setEditButton(false);
+ 		
+ 		lst.setCanGoNext(false);
+
+		 List<ServiceItemAttribute> attributeList = si.getAttrs().getAttrs();
+		if(attributeList!=null) {
+			 for(ServiceItemAttribute sia : attributeList) {
+				lst.addRow(
+						Listing.popupValue("<img src='../images/delete.png'/>", "delete_attribute.jsp", "200", "300"),
+						Listing.popupValue("<img src='../images/edit.png'/>", "delete_attribute.jsp", "200", "300"),
+						Listing.popupValue(sia.getName(), "edit_attribute.jsp", "90%", "90%"),
+						"Type", sia.getValidation(), "Context");
+			}
+		}
+
+ 		request.setAttribute("listing", lst);
+ 	%>
+ 	<jsp:include page="../common/listing.jsp"></jsp:include>
+		
  		
 </body>
 </html>

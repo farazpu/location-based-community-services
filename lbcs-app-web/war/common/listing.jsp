@@ -22,8 +22,9 @@ No Record
 				}
 					List<String> cols = lst.getColumns();
 					for(String col : cols) {
+						
 				%>
-				<th <%=lst.isFocusColumn(col)? "class='focus'" : "" %>><%=col %></th>
+				<th <%=col.startsWith(">") ? "width='18'" : "" %> <%=lst.isFocusColumn(col)? "class='focus'" : "" %>><%=col.startsWith(">") ? "" : col %></th>
 				<%
 					}
 			}
