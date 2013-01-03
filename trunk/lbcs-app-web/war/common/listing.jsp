@@ -12,6 +12,7 @@ No Record
 	} else {
 %>
 <div class="listing-table">
+	<h1><%=lst.getTitle() %></h1>
 	<table>
 		<thead>
 			<tr>

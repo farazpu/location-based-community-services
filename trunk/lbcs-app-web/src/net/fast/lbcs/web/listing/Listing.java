@@ -15,7 +15,8 @@ public class Listing {
 	private boolean canGoNext = true;
 	private boolean createSelectionColumn = true;
 	private List<Object[]> rows = new ArrayList<Object[]>();
-	private Set<String> focusColumns = new HashSet<String>(); 
+	private Set<String> focusColumns = new HashSet<String>();
+	private String title = "";
 
 	public void addRow(Object... row) {
 		rows.add(row);
@@ -109,4 +110,20 @@ public class Listing {
 		return getFocusColumns().contains(getColumns().get(col));
 	}
 	
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public static String popupValue(String caption, String url, String height, String width) {
+		return "<a href='#' onclick='loadPopup(" + 
+				 "\"" + url + "\", " + 
+				 "\"" + height + "\", " + 
+				 "\"" + width + "\" " + 
+					")'>" +  caption + "</a>";		
+	}
 }
