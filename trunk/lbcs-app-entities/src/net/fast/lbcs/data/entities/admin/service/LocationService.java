@@ -114,7 +114,7 @@ public class LocationService {
 		return null;
 	}
 	
-	public ServiceItemGroup getItemById(ServiceItemGroupID serviceItemGroupId)
+	public ServiceItemGroup getItemGroupById(ServiceItemGroupID serviceItemGroupId)
 	{
 		for(ServiceItemGroup sig : groups) {
 			if(sig.getId().getId().equals(serviceItemGroupId.getId()))

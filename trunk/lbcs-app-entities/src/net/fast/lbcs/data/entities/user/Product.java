@@ -1,10 +1,12 @@
 package net.fast.lbcs.data.entities.user;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.simpleframework.xml.Default;
 
 import net.fast.lbcs.data.entities.admin.item.ServiceItem;
+import net.fast.lbcs.data.entities.admin.item.ServiceItemAttribute;
 
 
 @Default
@@ -27,7 +29,8 @@ public class Product {
 	
 	private List<ProductReview> reviews;
 	
-	public Product() {}
+	public Product() {
+	}
 	
 	public Product(ProductID id, String name, ServiceItem serviceItem, int price,
 			int priceDeci, int distance, Location location,
@@ -44,6 +47,27 @@ public class Product {
 		this.attrs = attrs;
 		this.averageRatting = averageRatting;
 		this.reviews = reviews;
+		initAttributes();
+	}
+	
+	public void initAttributes(){
+		attrs = new ArrayList<ProductAttribute>();
+		List<ServiceItemAttribute> attributes = serviceItem.getAttrs().getAttrs();
+		for(ServiceItemAttribute attribute : attributes) {
+			ProductAttribute pa = new ProductAttribute(attribute.getName(),"");
+			attrs.add(pa);
+		}
+	}
+
+	public void initAttributesWithDefaultValues(){
+		attrs = new ArrayList<ProductAttribute>();
+		int a=0;
+		List<ServiceItemAttribute> attributes = serviceItem.getAttrs().getAttrs();
+		for(ServiceItemAttribute attribute : attributes) {
+			ProductAttribute pa = new ProductAttribute(attribute.getName(),a + "");
+			a++;
+			attrs.add(pa);
+		}
 	}
 
 	public ProductReview getReviewForUser(String userId) {
@@ -130,5 +154,28 @@ public class Product {
 		this.name = name;
 	}
 	
-	
+	public boolean setAttributeValue(String key, String value)
+	{
+		for(int i = 0 ; i < attrs.size() ; i++){
+			if(attrs.get(i).getKey().equals(key)) {
+				ProductAttribute pa = attrs.get(i);
+				attrs.remove(i);
+				pa.setValue(value);
+				attrs.add(pa);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public String getAttributeValue(String key)
+	{
+		for(ProductAttribute pa : attrs){
+			if(pa.getKey().equals(key)) {
+				return pa.getValue();
+			}
+		}
+		return "";
+	}
+
 }
