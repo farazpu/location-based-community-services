@@ -51,7 +51,8 @@ public class MainActivity extends Activity {
     public void readPoint(View view) {
     	EditText usernameEditText = (EditText) findViewById(R.id.username);
     	EditText passwordEditText = (EditText) findViewById(R.id.password);
-    	    	
+		Toast.makeText(this, "clicked", Toast.LENGTH_LONG).show();
+
     	
     	UrlTextLoader urlTextLoader = new UrlTextLoader() {
 			@Override
@@ -73,6 +74,7 @@ public class MainActivity extends Activity {
 				textView1.setText("Login Failed");
 			}
 			else {
+				Toast.makeText(this, "going", Toast.LENGTH_LONG).show();
 				Intent intent=new Intent(this,ServiceListActivity.class);
 				intent.putExtra("locationServices", result);
 				startActivity(intent);
