@@ -1,0 +1,41 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent" 
+	android:orientation="vertical"
+	android:background="@drawable/theme">
+
+    
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+    	<Button 
+			android:layout_weight="1"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="Review Item"
+			android:id="@+id/review"
+    	    android:background="@drawable/button_menu"
+    	    />
+    	<Button 
+			android:layout_weight="1"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="Favourite"
+			android:id="@+id/favourite"
+			android:background="@drawable/button_menu"
+    	    />
+    	</LinearLayout>
+		<com.google.android.maps.MapView
+		    android:id="@+id/map"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:enabled="true"
+			android:clickable="true"
+			android:apiKey="0_-0ibaEUqMDQrfpmtfny2gDjYY26jnkvZkeeuw"
+		/>
+		
+</LinearLayout>

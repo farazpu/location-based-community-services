@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.fast.lbcs.data.entities.admin.service.LocationService;
 import net.fast.lbcs.data.entities.admin.service.LocationServices;
+import net.fast.lbcs.data.entities.admin.service.ServiceInfo;
 
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
@@ -58,7 +59,8 @@ public class ServiceListActivity extends Activity {
 	        						updateResult(result);
 	        					}
 	        				};
-	        				urlTextLoader.execute("http://"  + TempIP.ip + ":8888/user/login.jsp?serviceID=" + ls.getId().getId());
+	        				urlTextLoader.execute("http://"  + TempIP.ip + ":8888/user/getServiceInfoById.jsp?serviceID=" + ls.getId().getId());
+	        				break;
 	        			}
 	        		}
 	        	}
@@ -81,10 +83,19 @@ public class ServiceListActivity extends Activity {
     	Serializer serializer = new Persister();
 
     	try {
-			LocationServices lss = serializer.read(LocationServices.class, result);
-			Intent intent=new Intent(this,ServiceListActivity.class);
-			intent.putExtra("locationServices", result);
-			startActivity(intent);
+			XMLToServiceInfo xmlToServiceInfo = new XMLToServiceInfo() {
+				
+				@Override
+				public void responseComplete(ServiceInfo result) {
+					// TODO Auto-generated method stub
+					CurrentServiceInfo.currentServiceInfo = result;
+					Intent intent=new Intent(context,WelcomeUser.class);
+					startActivity(intent);
+										
+				}
+			};
+			
+			xmlToServiceInfo.execute(result);
 		} catch (Exception e) {
 			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
 		}

@@ -1,0 +1,52 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    
+    <ListView 
+        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/review_attributes"
+		></ListView>
+
+
+    <LinearLayout
+        android:id="@+id/review_rating"
+        android:layout_height="wrap_content" 
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal"
+        android:layout_above="@+id/review_post"
+        >
+        <TextView 
+            android:layout_height="wrap_content" 
+	        android:layout_width="match_parent"
+	        android:text="Rate : "
+            />
+        <Spinner 
+            android:layout_height="wrap_content" 
+        	android:layout_width="match_parent"
+        	android:id="@+id/rating_spinner"
+            />
+    </LinearLayout>
+    
+    <Button 
+        android:id="@+id/review_post"
+        android:layout_height="wrap_content" 
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:text="Post Review"
+        android:layout_above="@+id/review_total"
+        />
+    <TextView
+        android:id="@+id/review_total"
+        android:layout_height="wrap_content" 
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:text="300 reviews. Rating \'Average\'"
+    />
+</RelativeLayout>

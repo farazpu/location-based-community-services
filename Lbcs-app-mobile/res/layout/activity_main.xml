@@ -1,63 +1,88 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    android:orientation="horizontal"
+    android:background="@drawable/theme"
     >
 
+    <LinearLayout
+           
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent" 
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:layout_margin="20dp"
+    >
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="37dp"
+        android:layout_marginTop="47dp"
+        android:layout_gravity="center"
+		android:layout_marginBottom="30dp"
+		android:textSize="24.5sp" 
         android:text="Welcome to LBCS"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-    
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="37dp"
-        android:text="Username"
-        />
-    
-    
-    <EditText
-        android:id="@+id/username"
+        android:textAppearance="?android:attr/textAppearanceLarge" 
+        android:textColor="#8B3A62"/>
+      
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
-        android:ems="10" 
+        android:orientation="horizontal" 
         >
-        <requestFocus />
-        </EditText>
-        
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Username: "
+            android:textColor="#8B3A62" />
+
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10" >
+            
+            <requestFocus />
+            
+            </EditText>
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+    
     
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="37dp"
-        android:text="Password"
+        android:layout_marginTop="20dp"
+        android:text="Password:"
+        android:textColor="#8B3A62"
         />
 
         <EditText
         android:id="@+id/password"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="22dp"
         android:ems="10" 
         android:password="true"
         />
     
-    
+    </LinearLayout>
     <Button
         android:id="@+id/Login"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/Login"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="52dp"
         android:text="Log in" 
-        android:onClick="readPoint" />
+        android:onClick="readPoint"
+        android:background="@drawable/button_menu" />
     
     
     <TextView
@@ -67,6 +92,6 @@
         android:layout_marginTop="37dp"
         android:text=""
         />
-    
+    </LinearLayout>
 
 </LinearLayout>
