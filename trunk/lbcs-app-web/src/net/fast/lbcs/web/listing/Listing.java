@@ -17,6 +17,7 @@ public class Listing {
 	private List<Object[]> rows = new ArrayList<Object[]>();
 	private Set<String> focusColumns = new HashSet<String>();
 	private String title = "";
+	private String createClickURL = "";
 
 	public void addRow(Object... row) {
 		rows.add(row);
@@ -119,11 +120,29 @@ public class Listing {
 		this.title = title;
 	}
 
+	public String getCreateClickURL() {
+		return createClickURL;
+	}
+
+	public void setCreateClickURL(String createClickURL) {
+		this.createClickURL = createClickURL;
+	}
+
 	public static String popupValue(String caption, String url, String height, String width) {
 		return "<a href='#' onclick='loadPopup(" + 
 				 "\"" + url + "\", " + 
 				 "\"" + height + "\", " + 
 				 "\"" + width + "\" " + 
 					")'>" +  caption + "</a>";		
+	}
+	
+	public static String onClickCreateButton(String url, String height, String width) {
+		if("".equals(url))
+			return "";
+		return "onclick='loadPopup(" + 
+				 "\"" + url + "\", " + 
+				 "\"" + height + "\", " + 
+				 "\"" + width + "\" " + 
+					")'";
 	}
 }

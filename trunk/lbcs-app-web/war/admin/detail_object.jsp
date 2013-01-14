@@ -76,13 +76,13 @@
 		if(attributeList!=null) {
 			 for(ServiceItemAttribute sia : attributeList) {
 				lst.addRow(
-						Listing.popupValue("<img src='../images/delete.png'/>", "delete_attribute.jsp", "200", "300"),
-						Listing.popupValue("<img src='../images/edit.png'/>", "delete_attribute.jsp", "200", "300"),
-						Listing.popupValue(sia.getName(), "edit_attribute.jsp", "90%", "90%"),
-						"Type", sia.getValidation(), "Context");
+						Listing.popupValue("<img src='../images/delete.png'/>", "delete_attribute.jsp?objectId=" + si.getId().getId() + "&locationService=" + ls.getId().getId() + "&attribute=" + sia.getName(), "140px", "330px"),
+						Listing.popupValue("<img src='../images/edit.png'/>", "edit_attribute.jsp?objectId=" + si.getId().getId() + "&locationService=" + ls.getId().getId() + "&attribute=" + sia.getName(), "385px", "525px"),
+//						Listing.popupValue(sia.getName(), "edit_attribute.jsp", "90%", "90%"),
+						sia.getName(),"Type", sia.getValidation(), "Context");
 			}
 		}
-
+		lst.setCreateClickURL("new_attribute.jsp");
  		request.setAttribute("listing", lst);
  	%>
  	<jsp:include page="../common/listing.jsp"></jsp:include>

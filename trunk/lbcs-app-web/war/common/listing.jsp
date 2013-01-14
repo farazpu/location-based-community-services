@@ -37,7 +37,7 @@ No Record
 					<%
 					if(lst.isCreateButton()) {
 					%>
-					<input class="button" type="button" onclick="window.location = 'new_service.jsp'" value="Create" /> 
+					<input class="button" type="button" <%=lst.onClickCreateButton(lst.getCreateClickURL(), "400px", "530px") %> value="Create" /> 
 					<%
 					}
 					if(lst.isEditButton()) {
