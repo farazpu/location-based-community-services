@@ -15,13 +15,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Edit Object</title>
 <script type="text/javascript" src="../scripts/jquery.js"></script>
 <script type="text/javascript" src="../scripts/jquery.simplemodal.js"></script>
 <script type="text/javascript" src="../scripts/listing.js"></script>
 
 <link rel="stylesheet" href="../css/style.css" type="text/css" />
-
+<title>Insert title here</title>
 </head>
 <body>
 <%	
@@ -30,37 +29,28 @@
 	serviceId.setId(request.getParameter("locationService"));
 	
 	LocationService ls = controller.getServiceById(serviceId);
-	List<ServiceItemGroup> groupList=ls.getGroups();
-	ServiceItemID serviceItemId = new ServiceItemID(request.getParameter("objectId"));
-	ServiceItem si= ls.getItemById(serviceItemId);
+	ServiceItemGroupID serviceItemGroupId = new ServiceItemGroupID(request.getParameter("groupId"));
+	ServiceItemGroup sig= ls.getItemGroupById(serviceItemGroupId);
 	
 	
 
-	String title = "Edit Object: " + si.getName() + " (" + si.getId().getId() + ")";
- %>
-
+	String title = "Edit Group: " + sig.getName() + " (" + sig.getId().getId() + ")";
+%>
+		<jsp:include page="title_include.jsp">
+	 		<jsp:param value="<%=title %>" name="title"/>
+	 	</jsp:include>
+		
+		
 		<form>
 			<div class="form">
-				<h1>Edit Object</h1>
+				<h1>New Group</h1>
 				<label>
 					<span>Name:</span>
-					<input type="text" value="<%=si.getName() %>" class="input_text" name="Service_name" id="Service_name"/>
+					<input type="text" value="<%=sig.getName() %>" class="input_text" name="Group_name" id="Group_name"/>
 				</label>
 				<label>
 					<span>Description</span>
-					<textarea class="message" name="discription" id="discription"><%=si.getDescription() %></textarea>
-				</label>
-				<label>
-					<span>Group:</span>
-					<select name="group">
-						  <%
-						  for(ServiceItemGroup sig : groupList){			  
-						  %>
-						  <option <%=si.getGroup().getName().equals(sig.getName()) ? "selected='selected'" : "" %> > <%=sig.getName() %> </option>
-						  <%
-						  }
-						  %>
-				 	 </select>
+					<textarea class="message" name="discription" id="discription" ><%=sig.getDescription() %></textarea>
 				</label>
 				<label class="submit">
 					<input type="button" class="button" value="Save" />
@@ -68,6 +58,6 @@
 				
 			</div>
 		</form> 
- 		
+		
 </body>
 </html>

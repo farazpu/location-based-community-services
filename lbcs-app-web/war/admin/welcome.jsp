@@ -40,6 +40,7 @@
  		lst.setCreateSelectionColumn(false);
  		lst.setDeleteButton(false);
  		lst.setEditButton(false);
+ 
 
  		int pageNumber=0;
 		try {
@@ -55,14 +56,17 @@
  		
  		for(LocationService ls : list) {
  			lst.addRow(
- 					Listing.popupValue("<img src='../images/delete.png'/>", "delete_service.jsp?serviceId=" + ls.getId().getId(), "100px", "300px"), 
- 					Listing.popupValue("<img src='../images/edit.png'/>", "delete_service.jsp?serviceId=" + ls.getId().getId(), "100px", "300px"), 
- 					Listing.popupValue(ls.getName(), "edit_service.jsp?serviceId=" + ls.getId().getId(), "640px", "90%"), 
+ 					Listing.popupValue("<img src='../images/delete.png'/>", "delete_service.jsp?serviceId=" + ls.getId().getId(), "140px", "330px"), 
+ 					Listing.popupValue("<img src='../images/edit.png'/>", "edit_service.jsp?serviceId=" + ls.getId().getId(), "400px", "530px"), 
+ 					Listing.popupValue(ls.getName(), "detail_service.jsp?serviceId=" + ls.getId().getId(), "640px", "90%"), 
  					ls.getCreated(),
  					ls.getLastModified(), 
 					  ls.getDesciption()
 			);
  		}
+ 		
+ 		if(lst.isCreateButton())
+ 			lst.setCreateClickURL("new_service.jsp");
  	
  		request.setAttribute("listing", lst);
  	%>

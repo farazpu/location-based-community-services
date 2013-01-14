@@ -18,6 +18,7 @@ public abstract class UserController {
 	public abstract User getCurrentUser();
 	
 
+	public abstract List<Product> getProductsByServiceId(ServiceID serviceId);
 	public abstract List<Product> getProductsAtLocation(Location location);
 	public abstract Product createNewProductEntry(ServiceItemID serviceItemId, ProductRawData data);
 	public abstract Product editProduct(ProductID productId, ProductRawData data);

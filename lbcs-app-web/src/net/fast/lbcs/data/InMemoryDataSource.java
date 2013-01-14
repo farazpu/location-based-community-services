@@ -67,10 +67,11 @@ class InMemoryDataSource implements DataSource {
 	private static void createProducts() {
 		
 		
+		int x=2;
 		for (LocationService locationService : locationServices) {
 			List<ServiceItem> items = locationService.getItems();
 			for (ServiceItem serviceItem : items) {
-				for (int i = 0; i < 5; i++) {
+				for (int i = 0; i < x; i++) {
 					Location location = null;
 					if("Lahore".equals(locationService.getName())) {
 						location = new Location(31.575-0.1*i, 74.3269+0.1*i);
@@ -86,10 +87,11 @@ class InMemoryDataSource implements DataSource {
 						location = new Location(30.1832-0.1*i, 71.4805+0.1*i);
 						
 					}
-					products.add(createProduct(serviceItem.getName() + " " + i, serviceItem, (i * 3) + 5, (i * 3) + 3, location));
+					products.add(createProduct(serviceItem.getName() + " " + locationService.getName()  + " " + i, serviceItem, (i * 3) + 5, (i * 3) + 3, location));
 					
 				}
 			}
+			x++;
 		}
 	}
 
@@ -97,6 +99,7 @@ class InMemoryDataSource implements DataSource {
 		List<ProductAttribute> attrs = new ArrayList<ProductAttribute>();
 		List<ProductReview> rvs = new ArrayList<ProductReview>();
 		Product p = new Product(new ProductID(name + "-id"), name, serviceItem, price, 0, distance, location, attrs, 0, rvs);
+		p.initAttributesWithDefaultValues();
 		return p;
 	}
 
@@ -123,6 +126,7 @@ class InMemoryDataSource implements DataSource {
 				name, "Desciption of " + name, 
 				new Date(), new Date(), 
 				createItems(groups), groups);
+		
 		return service;
 		
 	}
