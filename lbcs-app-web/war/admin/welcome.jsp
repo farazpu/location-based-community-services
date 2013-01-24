@@ -58,7 +58,7 @@
  			lst.addRow(
  					Listing.popupValue("<img src='../images/delete.png'/>", "delete_service.jsp?serviceId=" + ls.getId().getId(), "140px", "330px"), 
  					Listing.popupValue("<img src='../images/edit.png'/>", "edit_service.jsp?serviceId=" + ls.getId().getId(), "400px", "530px"), 
- 					Listing.popupValue(ls.getName(), "detail_service.jsp?serviceId=" + ls.getId().getId(), "640px", "90%"), 
+ 					Listing.anchorValue(ls.getName(), "detail_service.jsp?serviceId=" + ls.getId().getId()), 
  					ls.getCreated(),
  					ls.getLastModified(), 
 					  ls.getDesciption()

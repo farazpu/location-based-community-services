@@ -38,7 +38,7 @@
  						
 		String title = "Service Detail: " + ls.getName() + " (" + ls.getId().getId() + ")";
  		%>
-	  	<jsp:include page="title_include.jsp">
+	  	<jsp:include page="menu_include.jsp">
 	 		<jsp:param value="<%=title %>" name="title"/>
 	 	</jsp:include>
 		
@@ -70,8 +70,8 @@
 			for(ServiceItem si : itemList) {
 				lst.addRow(
 						Listing.popupValue("<img src='../images/delete.png'/>", "delete_object.jsp?objectId=" + si.getId().getId() + "&locationService=" + ls.getId().getId(), "140px", "330px"),
-						Listing.popupValue("<img src='../images/edit.png'/>", "edit_object.jsp?objectId=" + si.getId().getId() + "&locationService=" + ls.getId().getId(), "385px", "525px"),
-						Listing.popupValue(si.getName(), "detail_object.jsp?objectId=" + si.getId().getId() + "&locationService=" + ls.getId().getId(), "90%", "90%"),
+						Listing.popupValue("<img src='../images/edit.png'/>", "edit_object.jsp?objectId=" + si.getId().getId() + "&locationService=" + ls.getId().getId(), "445px", "525px"),
+						Listing.anchorValue(si.getName(), "detail_object.jsp?objectId=" + si.getId().getId() + "&locationService=" + ls.getId().getId()),
 						si.getGroup().getName(), si.getDateModified(), si.getDescription());
 			}
 		}

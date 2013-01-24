@@ -48,7 +48,7 @@
 
 	String title = "Edit Object: " + si.getName() + " (" + si.getId().getId() + ")";
  %>
- 	  	<jsp:include page="title_include.jsp">
+ 	  	<jsp:include page="menu_include.jsp">
 	 		<jsp:param value="<%=title %>" name="title"/>
 	 	</jsp:include>
 
@@ -77,7 +77,7 @@
 			 for(ServiceItemAttribute sia : attributeList) {
 				lst.addRow(
 						Listing.popupValue("<img src='../images/delete.png'/>", "delete_attribute.jsp?objectId=" + si.getId().getId() + "&locationService=" + ls.getId().getId() + "&attribute=" + sia.getName(), "140px", "330px"),
-						Listing.popupValue("<img src='../images/edit.png'/>", "edit_attribute.jsp?objectId=" + si.getId().getId() + "&locationService=" + ls.getId().getId() + "&attribute=" + sia.getName(), "385px", "525px"),
+						Listing.popupValue("<img src='../images/edit.png'/>", "edit_attribute.jsp?objectId=" + si.getId().getId() + "&locationService=" + ls.getId().getId() + "&attribute=" + sia.getName(), "420px", "525px"),
 //						Listing.popupValue(sia.getName(), "edit_attribute.jsp", "90%", "90%"),
 						sia.getName(),"Type", sia.getValidation(), "Context");
 			}

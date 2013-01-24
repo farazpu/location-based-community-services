@@ -20,7 +20,6 @@
 <script type="text/javascript" src="../scripts/listing.js"></script>
 
 <link rel="stylesheet" href="../css/style.css" type="text/css" />
-<title>Insert title here</title>
 </head>
 <body>
 <%	
@@ -43,7 +42,7 @@
 		
 		<form>
 			<div class="form">
-				<h1>Edit Attribute</h1>
+				<h1>Edit Attribute '<%=attribute %>'</h1>
 				<label>
 					<span>Name:</span>
 					<input type="text" value="<%=attribute %>" class="input_text" name="Group_name" id="Group_name"/>

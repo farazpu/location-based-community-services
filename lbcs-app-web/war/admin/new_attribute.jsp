@@ -20,17 +20,9 @@
 <script type="text/javascript" src="../scripts/listing.js"></script>
 
 <link rel="stylesheet" href="../css/style.css" type="text/css" />
-<title>Insert title here</title>
 </head>
 <body>
 <%	
-	AdminController controller = new HttpControllerFactory(request).getAdminController();
-	ServiceID serviceId = new ServiceID();
-	serviceId.setId(request.getParameter("locationService"));
-	
-	LocationService ls = controller.getServiceById(serviceId);
-	ServiceItemGroupID serviceItemGroupId = new ServiceItemGroupID(request.getParameter("groupId"));
-	ServiceItemGroup sig= ls.getItemGroupById(serviceItemGroupId);
 	
 	String title = "New Attribute";
 %>
