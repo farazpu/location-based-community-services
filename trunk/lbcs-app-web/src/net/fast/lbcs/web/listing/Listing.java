@@ -135,6 +135,10 @@ public class Listing {
 				 "\"" + width + "\" " + 
 					")'>" +  caption + "</a>";		
 	}
+
+	public static String anchorValue(String caption, String url ) {
+		return "<a href='" + url + "'>" +  caption + "</a>";		
+	}
 	
 	public static String onClickCreateButton(String url, String height, String width) {
 		if("".equals(url))

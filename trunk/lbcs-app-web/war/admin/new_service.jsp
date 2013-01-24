@@ -26,13 +26,13 @@
 
 <body>
 		<jsp:include page="title_include.jsp">
-	 		<jsp:param value="New Service :" name="title"/>
+	 		<jsp:param value="New Service" name="title"/>
 	 	</jsp:include>
 		
 		
 		<form>
 			<div class="form">
-				<h1>Create New Service</h1>
+				<h1>New Service</h1>
 				<label>
 					<span>Name:</span>
 					<input type="text" value="" class="input_text" name="Service_name" id="Service_name"/>

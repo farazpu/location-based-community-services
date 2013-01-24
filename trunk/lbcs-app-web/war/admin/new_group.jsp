@@ -9,12 +9,11 @@
 <script type="text/javascript" src="../scripts/listing.js"></script>
 
 <link rel="stylesheet" href="../css/style.css" type="text/css" />
-<title>Insert title here</title>
 </head>
 <body>
 
 		<jsp:include page="title_include.jsp">
-	 		<jsp:param value="New Group :" name="title"/>
+	 		<jsp:param value="New Group" name="title"/>
 	 	</jsp:include>
 		
 		

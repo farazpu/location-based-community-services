@@ -15,7 +15,6 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Edit Object</title>
 <script type="text/javascript" src="../scripts/jquery.js"></script>
 <script type="text/javascript" src="../scripts/jquery.simplemodal.js"></script>
 <script type="text/javascript" src="../scripts/listing.js"></script>
@@ -39,9 +38,12 @@
 	String title = "Edit Object: " + si.getName() + " (" + si.getId().getId() + ")";
  %>
 
+		<jsp:include page="title_include.jsp">
+	 		<jsp:param value="<%=title %>" name="title"/>
+	 	</jsp:include>
 		<form>
 			<div class="form">
-				<h1>Edit Object</h1>
+				<h1>Edit Object '<%=si.getName() %>'</h1>
 				<label>
 					<span>Name:</span>
 					<input type="text" value="<%=si.getName() %>" class="input_text" name="Service_name" id="Service_name"/>
