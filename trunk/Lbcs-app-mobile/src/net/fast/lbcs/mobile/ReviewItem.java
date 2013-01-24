@@ -26,7 +26,7 @@ public class ReviewItem extends Activity {
        	ids.add("Average");
        	ids.add("High");
        	ids.add("Very High");
-
+       	
        	ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
        			android.R.layout.simple_spinner_item, ids);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -43,6 +43,9 @@ public class ReviewItem extends Activity {
         	resource.add( new KeyValuePair(pa.getKey(),pa.getValue()));
         }
         resource.add(new KeyValuePair("Comment", ""));
+        ReviewAttriburesAdapter attrAdapter = new ReviewAttriburesAdapter(this, 0, resource);
+        ListView lw = (ListView) findViewById(R.id.review_attributes);
+        lw.setAdapter(attrAdapter);
     }
 
     @Override

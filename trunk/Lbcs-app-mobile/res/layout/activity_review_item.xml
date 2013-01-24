@@ -1,7 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent" 
+    android:background="@drawable/theme"
+    >
     
     
     <ListView 
@@ -22,12 +24,15 @@
         >
         <TextView 
             android:layout_height="wrap_content" 
-	        android:layout_width="match_parent"
+	        android:layout_width="wrap_content"
 	        android:text="Rate : "
+			android:textColor="#8B3A62"
             />
         <Spinner 
             android:layout_height="wrap_content" 
-        	android:layout_width="match_parent"
+        	android:layout_width="fill_parent"
+        	android:spinnerMode="dialog"
+        	android:gravity="left"
         	android:id="@+id/rating_spinner"
             />
     </LinearLayout>
@@ -40,13 +45,15 @@
         android:layout_marginBottom="5dp"
         android:text="Post Review"
         android:layout_above="@+id/review_total"
-        />
+        android:background="@drawable/button_menu" />
     <TextView
         android:id="@+id/review_total"
         android:layout_height="wrap_content" 
         android:layout_width="match_parent"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
+        android:layout_alignParentBottom="true"
+		android:textColor="#8B3A62"
         android:text="300 reviews. Rating \'Average\'"
     />
 </RelativeLayout>
