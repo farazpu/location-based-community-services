@@ -20,23 +20,12 @@
 <link rel="stylesheet" href="../css/style.css" type="text/css" />
 </head>
 
-<script type="text/javascript">
-
-	function goToEditObject(locationService)
-	{
-		var name=document.getElementById("name").value;
-		var description=document.getElementById("description").value;
-		var group=document.getElementById("group").value;
-		window.location = "edit_object.jsp?objectId=new_object&name=" + name + "&description=" + description + "&group=" + group + "&locationService=" + locationService;
-	}
-
-</script>
 
 
 <%	
 	AdminController controller = new HttpControllerFactory(request).getAdminController();
 	ServiceID serviceId = new ServiceID();
-	serviceId.setId(request.getParameter("locationService"));
+	serviceId.setId(request.getParameter("serviceId"));
 	
 	LocationService ls = controller.getServiceById(serviceId);
 	List<ServiceItemGroup> groupList;
@@ -51,16 +40,29 @@
 		<jsp:include page="title_include.jsp">
 	 		<jsp:param value="New Object" name="title"/>
 	 	</jsp:include>
-		<form>
+
+		<%
+			String msg = request.getParameter("msg");
+			if(!(msg.equals("a"))){
+		%>
+		<div class="statusMessage">
+			<%=msg %>
+		</div>
+		<%
+			}
+		%>
+
+
+		<form action="../transaction/create_object.jsp" method="get">
 			<div class="form">
 				<h1>New Object</h1>
 				<label>
 					<span>Name:</span>
-					<input type="text" value="" class="input_text" name="Service_name" id="Service_name"/>
+					<input type="text" value="" class="input_text" name="object_name" id="Service_name"/>
 				</label>
 				<label>
 					<span>Description</span>
-					<textarea class="message" name="discription" id="discription"></textarea>
+					<textarea class="message" name="description" id="description"></textarea>
 				</label>
 				<label>
 					<span>Group:</span>
@@ -68,14 +70,15 @@
 						  <%
 						  for(ServiceItemGroup sig : groupList){			  
 						  %>
-						  <option > <%=sig.getName() %> </option>
+						  <option value="<%=sig.getId().getId()%>" > <%=sig.getName() %> </option>
 						  <%
 						  }
 						  %>
 				 	 </select>
 				</label>
+				<input name = "serviceId" type="hidden" value = "<%=serviceId.getId() %>">
 				<label class="submit">
-					<input type="button" class="button" value="Save" onclick="goToEditObject('<%=serviceId.getId()%>')" />
+					<input type="submit" class="button" value="Save" />
 				</label>
 				
 			</div>

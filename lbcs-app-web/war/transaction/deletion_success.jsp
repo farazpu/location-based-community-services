@@ -26,39 +26,11 @@
 
 <body>
 		<jsp:include page="title_include.jsp">
-	 		<jsp:param value="New Service" name="title"/>
+	 		<jsp:param value="Deletion Successfull" name="title"/>
 	 	</jsp:include>
+	 	
+	 	Deletion Successfull!!!
 		
-		<%
-			String msg = request.getParameter("msg");
-			if(!(msg.equals("a"))){
-		%>
-		<div class="statusMessage">
-			<%=msg %>
-		</div>
-		<%
-			}
-		%>
-
-		
-		<form action="../transaction/create_service.jsp" method="get">
-			<div class="form" >
-				<h1>New Service</h1>
-				<label>
-					<span>Name:</span>
-					<input type="text" class="input_text" name="service_name" id="Service_name"/>
-				</label>
-				<label>
-					<span>Description</span>
-					<textarea class="message" name="description" id="description"></textarea>
-				</label>
-				<label class="submit">
-					<input type="submit" class="button" value="Save" />
-				</label>
-				
-			</div>
-		</form> 
- 		
 		
 </body>
 </html>

@@ -69,13 +69,13 @@
 		if(itemList!=null) {
 			for(ServiceItem si : itemList) {
 				lst.addRow(
-						Listing.popupValue("<img src='../images/delete.png'/>", "delete_object.jsp?objectId=" + si.getId().getId() + "&locationService=" + ls.getId().getId(), "140px", "330px"),
-						Listing.popupValue("<img src='../images/edit.png'/>", "edit_object.jsp?objectId=" + si.getId().getId() + "&locationService=" + ls.getId().getId(), "445px", "525px"),
-						Listing.anchorValue(si.getName(), "detail_object.jsp?objectId=" + si.getId().getId() + "&locationService=" + ls.getId().getId()),
+						Listing.popupValue("<img src='../images/delete.png'/>", "delete_object.jsp?objectId=" + si.getId().getId() + "&serviceId=" + ls.getId().getId(), "140px", "330px"),
+						Listing.popupValue("<img src='../images/edit.png'/>", "edit_object.jsp?objectId=" + si.getId().getId() + "&serviceId=" + ls.getId().getId() + "&msg=a", "445px", "525px"),
+						Listing.anchorValue(si.getName(), "detail_object.jsp?objectId=" + si.getId().getId() + "&serviceId=" + ls.getId().getId()),
 						si.getGroup().getName(), si.getDateModified(), si.getDescription());
 			}
 		}
-		lst.setCreateClickURL("new_object.jsp?locationService="+ls.getId().getId());
+		lst.setCreateClickURL("new_object.jsp?serviceId="+ls.getId().getId() + "&msg=a");
 
  		request.setAttribute("listing", lst);
  	%>
@@ -107,14 +107,14 @@
 		 if(groupList!=null) {
 			 for(ServiceItemGroup sig : groupList) {
 					lst.addRow(
-							Listing.popupValue("<img src='../images/delete.png'/>", "delete_group.jsp?groupId=" + sig.getId().getId() + "&locationService=" + ls.getId().getId(), "140px", "330px"),
-							Listing.popupValue("<img src='../images/edit.png'/>", "edit_group.jsp?groupId=" + sig.getId().getId() + "&locationService=" + ls.getId().getId(), "385px", "525px"),
+							Listing.popupValue("<img src='../images/delete.png'/>", "delete_group.jsp?groupId=" + sig.getId().getId() + "&serviceId=" + ls.getId().getId(), "140px", "330px"),
+							Listing.popupValue("<img src='../images/edit.png'/>", "edit_group.jsp?groupId=" + sig.getId().getId() + "&serviceId=" + ls.getId().getId() + "&msg=a", "385px", "525px"),
 //							Listing.popupValue(sig.getName(), "edit_group.jsp?objectId=" + sig.getId().getId() + "&locationService=" + ls.getId().getId(), "90%", "90%"),
 							sig.getName(),sig.getDateCreated(), sig.getDateModified(), sig.getDescription());
 			 }
 		 }
 
-		lst.setCreateClickURL("new_group.jsp?locationService="+ls.getId().getId());
+		lst.setCreateClickURL("new_group.jsp?serviceId="+ls.getId().getId() + "&msg=a");
  		request.setAttribute("listing", lst);
  	%>
  	<jsp:include page="../common/listing.jsp"></jsp:include>

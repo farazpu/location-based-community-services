@@ -25,7 +25,7 @@
 <%	
 	AdminController controller = new HttpControllerFactory(request).getAdminController();
 	ServiceID serviceId = new ServiceID();
-	serviceId.setId(request.getParameter("locationService"));
+	serviceId.setId(request.getParameter("serviceId"));
 	
 	LocationService ls = controller.getServiceById(serviceId);
 	ServiceItemGroupID serviceItemGroupId = new ServiceItemGroupID(request.getParameter("groupId"));
@@ -39,6 +39,16 @@
 	 		<jsp:param value="<%=title %>" name="title"/>
 	 	</jsp:include>
 		
+		<%
+			String msg = request.getParameter("msg");
+			if(!(msg.equals("a"))){
+		%>
+		<div class="statusMessage">
+			<%=msg %>
+		</div>
+		<%
+			}
+		%>
 		
 		<form>
 			<div class="form">

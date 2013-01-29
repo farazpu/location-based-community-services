@@ -27,7 +27,7 @@
  			serviceId.setId(request.getParameter("serviceId"));
  			ls= controller.getServiceById(serviceId); 				
  			
- 		String msg = ls.getName() + " (" + ls.getId().getId() + ")";
+ 		String msg = ls.getName();
 		String title = "Delete Service: " + msg;
  		%>
 	  	<jsp:include page="title_include.jsp">
@@ -35,13 +35,14 @@
 	 	</jsp:include>
 		
 	<div class="popup-wrapper">
- 	<form>
+ 	<form action = "../transaction/delete_service.jsp" method="get">
 		<div class="delform">
 			<label>
 				<span>Are you sure you want to delete service '<%=msg %>'?</span>
 			</label>
+				<input type="hidden" name="serviceId" value="<%=serviceId.getId() %>" />
 			<label class="submit">
-				<input type="button" class="button" value="Yes" />
+				<input type="submit" class="button" value="Yes" />
 			</label>
 			
 		</div>
