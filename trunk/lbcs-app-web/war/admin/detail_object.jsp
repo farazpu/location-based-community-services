@@ -27,7 +27,7 @@
 <%	
 	AdminController controller = new HttpControllerFactory(request).getAdminController();
 	ServiceID serviceId = new ServiceID();
-	serviceId.setId(request.getParameter("locationService"));
+	serviceId.setId(request.getParameter("serviceId"));
 	
 	LocationService ls = controller.getServiceById(serviceId);
 	List<ServiceItemGroup> groupList=ls.getGroups();
@@ -76,13 +76,13 @@
 		if(attributeList!=null) {
 			 for(ServiceItemAttribute sia : attributeList) {
 				lst.addRow(
-						Listing.popupValue("<img src='../images/delete.png'/>", "delete_attribute.jsp?objectId=" + si.getId().getId() + "&locationService=" + ls.getId().getId() + "&attribute=" + sia.getName(), "140px", "330px"),
-						Listing.popupValue("<img src='../images/edit.png'/>", "edit_attribute.jsp?objectId=" + si.getId().getId() + "&locationService=" + ls.getId().getId() + "&attribute=" + sia.getName(), "420px", "525px"),
+						Listing.popupValue("<img src='../images/delete.png'/>", "delete_attribute.jsp?objectId=" + si.getId().getId() + "&serviceId=" + ls.getId().getId() + "&attribute=" + sia.getId(), "140px", "330px"),
+						Listing.popupValue("<img src='../images/edit.png'/>", "edit_attribute.jsp?objectId=" + si.getId().getId() + "&serviceId=" + ls.getId().getId() + "&attribute=" + sia.getName()  + "&msg=a", "420px", "525px"),
 //						Listing.popupValue(sia.getName(), "edit_attribute.jsp", "90%", "90%"),
-						sia.getName(),"Type", sia.getValidation(), "Context");
+						sia.getName(), sia.getType(), sia.getValidation(), sia.getContext());
 			}
 		}
-		lst.setCreateClickURL("new_attribute.jsp");
+		lst.setCreateClickURL("new_attribute.jsp?objectId=" + si.getId().getId() + "&serviceId=" + ls.getId().getId() + "&msg=a");
  		request.setAttribute("listing", lst);
  	%>
  	<jsp:include page="../common/listing.jsp"></jsp:include>

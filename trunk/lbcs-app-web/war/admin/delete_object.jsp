@@ -26,15 +26,15 @@
 <%	
 	AdminController controller = new HttpControllerFactory(request).getAdminController();
 	ServiceID serviceId = new ServiceID();
-	serviceId.setId(request.getParameter("locationService"));
+	serviceId.setId(request.getParameter("serviceId"));
 	
 	LocationService ls = controller.getServiceById(serviceId);
 	ServiceItemID serviceItemId = new ServiceItemID(request.getParameter("objectId"));
 	ServiceItem si= ls.getItemById(serviceItemId);
 	
 	
-	String service = ls.getName() + " (" + ls.getId().getId() + ")";
-	String object = si.getName() + " (" + si.getId().getId() + ")";
+	String service = ls.getName();
+	String object = si.getName();
 	String title = "Delete Object: " + object;
  %>
 
@@ -46,13 +46,14 @@
 	 	</jsp:include>
 		
 	<div class="popup-wrapper">
- 	<form>
+ 	<form action="../transaction/delete_object.jsp" method="get">
 		<div class="delform">
 			<label>
 				<span>Are you sure you want to delete object '<%=object %>' from service '<%=service %>'?</span>
 			</label>
+				<input type="hidden" name="objectId" value="<%=serviceItemId.getId() %>" />
 			<label class="submit">
-				<input type="button" class="button" value="Yes" />
+				<input type="Submit" class="button" value="Yes" />
 			</label>
 			
 		</div>

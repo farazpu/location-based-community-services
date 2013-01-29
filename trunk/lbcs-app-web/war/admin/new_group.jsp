@@ -16,20 +16,31 @@
 	 		<jsp:param value="New Group" name="title"/>
 	 	</jsp:include>
 		
+		<%
+			String msg = request.getParameter("msg");
+			if(!(msg.equals("a"))){
+		%>
+		<div class="statusMessage">
+			<%=msg %>
+		</div>
+		<%
+			}
+		%>
 		
-		<form>
+		<form action="../transaction/create_group.jsp" method="get">
 			<div class="form">
 				<h1>New Group</h1>
 				<label>
 					<span>Name:</span>
-					<input type="text" value="" class="input_text" name="Group_name" id="Group_name"/>
+					<input type="text" value="" class="input_text" name="group_name" id="Group_name"/>
 				</label>
 				<label>
 					<span>Description</span>
-					<textarea class="message" name="discription" id="discription"></textarea>
+					<textarea class="message" name="description" id="description"></textarea>
 				</label>
+				<input type="hidden" name=serviceId value="<%=request.getParameter("serviceId") %>">
 				<label class="submit">
-					<input type="button" class="button" value="Save" />
+					<input type="submit" class="button" value="Save" />
 				</label>
 				
 			</div>

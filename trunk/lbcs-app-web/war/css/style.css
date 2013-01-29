@@ -313,3 +313,8 @@ div.delform .button {
 div.delform .submit {
 	text-align: right;
 }
+
+.statusMessage{
+	color: #FF7F50;
+	font-size: 12px;
+}

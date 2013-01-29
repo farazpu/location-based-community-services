@@ -26,15 +26,15 @@
 <%	
 	AdminController controller = new HttpControllerFactory(request).getAdminController();
 	ServiceID serviceId = new ServiceID();
-	serviceId.setId(request.getParameter("locationService"));
+	serviceId.setId(request.getParameter("serviceId"));
 	
 	LocationService ls = controller.getServiceById(serviceId);
 	ServiceItemGroupID serviceItemGroupId = new ServiceItemGroupID(request.getParameter("groupId"));
 	ServiceItemGroup sig= ls.getItemGroupById(serviceItemGroupId);
 
 	
-	String service = ls.getName() + " (" + ls.getId().getId() + ")";
-	String group = sig.getName() + " (" + sig.getId().getId() + ")";
+	String service = ls.getName();
+	String group = sig.getName();
 	String title = "Delete Group: " + group;
  %>
 
@@ -46,13 +46,15 @@
 	 	</jsp:include>
 		
 	<div class="popup-wrapper">
- 	<form>
+ 	<form action = "../transaction/delete_group.jsp">
 		<div class="delform">
 			<label>
-				<span>Are you sure you want to delete group '<%=group %>' from service '<%=service %>'?</span>
+				<span>Are you sure you want to delete group '<%=group %>' from service '<%=service %>'?<br>
+				WARNING: All Service Objects of this group will be deleted</span>
 			</label>
+				<input type="hidden" name="groupId" value="<%=serviceItemGroupId.getId() %>" />
 			<label class="submit">
-				<input type="button" class="button" value="Yes" />
+				<input type="submit" class="button" value="Yes" />
 			</label>
 			
 		</div>

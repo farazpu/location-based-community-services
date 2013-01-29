@@ -38,7 +38,16 @@
 		<jsp:include page="title_include.jsp">
 	 		<jsp:param value="<%=title %>" name="title"/>
 	 	</jsp:include>
-		
+		<%
+			String msg = request.getParameter("msg");
+			if(!(msg.equals("a"))){
+		%>
+		<div class="statusMessage">
+			<%=msg %>
+		</div>
+		<%
+			}
+		%>
 		
 		<form>
 			<div class="form">

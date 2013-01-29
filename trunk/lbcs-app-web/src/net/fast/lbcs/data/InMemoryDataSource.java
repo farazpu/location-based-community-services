@@ -1,8 +1,22 @@
 package net.fast.lbcs.data;
 
+import com.google.appengine.api.datastore.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
+import com.google.appengine.labs.repackaged.com.google.common.collect.Table;
 
 import net.fast.lbcs.data.entities.admin.Administrator;
 import net.fast.lbcs.data.entities.admin.group.ServiceItemGroup;
@@ -23,6 +37,53 @@ import net.fast.lbcs.data.entities.user.User;
 import net.fast.lbcs.data.entities.user.UserSettings;
 
 class InMemoryDataSource implements DataSource {
+	
+	private final static String KIND_SERVICE = "LBCS Location Service";
+	private final static String KIND_ITEM = "LBCS Service Object";
+	private final static String KIND_GROUP = "LBCS Group";
+	private final static String KIND_ATTRIBUTE = "LBCS Object Attribute";
+	
+	private interface TableService{
+		final static String ID = "id";
+		final static String NAME = "name";
+		final static String DESCRIPTION = "description";
+		final static String CREATION_DATE = "creation date";
+		final static String MODIFIED_DATE = "modified date";
+
+	}
+	
+	private interface TableGroup{
+		final static String ID = "id";
+		final static String SERVICE_ID = "service id";
+		final static String NAME = "name";
+		final static String DESCRIPTION = "description";
+		final static String CREATION_DATE = "creation date";
+		final static String MODIFIED_DATE = "modified date";
+		
+	}
+
+	private interface TableItem{
+		final static String ID = "id";
+		final static String SERVICE_ID = "service id";
+		final static String GROUP_ID = "group id";
+		final static String NAME = "name";
+		final static String DESCRIPTION = "description";
+		final static String MODIFIED_DATE = "modified date";
+		
+	}
+	
+	private interface TableAttribute{
+		final static String ID = "id";
+		final static String SERVICE_ID = "service id";
+		final static String ITEM_ID = "item id";
+		final static String NAME = "name";
+		final static String VALIDATION = "validation";
+		final static String CONTEXT = "context";
+		final static String TYPE = "type";
+		
+				
+	}
+	
 	private static List<Administrator> admins = new ArrayList<Administrator>();
 	private static List<LocationService> locationServices = new ArrayList<LocationService>();
 
@@ -40,6 +101,15 @@ class InMemoryDataSource implements DataSource {
 	}
 
 	public static List<LocationService> getLocationServices() {
+//		return locationServices;
+		List<LocationService> locationServices = new ArrayList<LocationService>();
+		DatastoreService service = DatastoreServiceFactory.getDatastoreService();
+		Query query = new Query(KIND_SERVICE);
+		List<Entity> list = service.prepare(query).asList(FetchOptions.Builder.withDefaults());
+		for(Entity serviceEntity : list){
+			LocationService ls = entityToLocationService(serviceEntity);
+			locationServices.add(ls);
+		}
 		return locationServices;
 	}
 
@@ -57,7 +127,7 @@ class InMemoryDataSource implements DataSource {
 
 	private static void createTestData() {
 		createAdmins();
-		createLocationServices();
+//		createLocationServices();
 		
 		createUsers();
 		
@@ -111,39 +181,82 @@ class InMemoryDataSource implements DataSource {
 	}
 
 	private static void createLocationServices() {
-		locationServices.add(createLocationService("Lahore"));	
+/*		locationServices.add(createLocationService("Lahore"));	
 		locationServices.add(createLocationService("Karachi"));	
 		locationServices.add(createLocationService("Islamabad"));	
 		locationServices.add(createLocationService("Pishawar"));	
 		locationServices.add(createLocationService("Sahiwal"));	
 		locationServices.add(createLocationService("Multan"));	
-	}
+*/	}
 
-	private static LocationService createLocationService(String name) {
-		List<ServiceItemGroup> groups = createGroups();
+	@Override
+	public LocationService createLocationService(String name, String description) {
+
+		String id = name + "-ID";
+		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+		Key key = KeyFactory.createKey(KIND_SERVICE, id);
+		
+		// check for duplicates
+		
+		Filter duplicateFilter = new FilterPredicate(TableService.ID, FilterOperator.EQUAL, id);
+		Query query = new Query(KIND_SERVICE).setFilter(duplicateFilter);
+		Entity entity = datastoreService.prepare(query).asSingleEntity();
+		if(entity != null){
+			return null;
+		}
+		
+		////
+		
+		Entity serviceEntity = new Entity(key);
+		Date currentDate = new Date();
+		serviceEntity.setProperty(TableService.ID, id);
+		serviceEntity.setProperty(TableService.NAME, name);
+		serviceEntity.setProperty(TableService.DESCRIPTION, description);
+		serviceEntity.setProperty(TableService.CREATION_DATE, currentDate);
+		serviceEntity.setProperty(TableService.MODIFIED_DATE, currentDate);
+		datastoreService.put(serviceEntity);
+		
 		LocationService service = new LocationService(
-				new ServiceID(name + "-id"), 
-				name, "Desciption of " + name, 
-				new Date(), new Date(), 
-				createItems(groups), groups);
+				new ServiceID(id), 
+				name, description,
+				currentDate, currentDate, 
+				null, null);
 		
 		return service;
+
+	}
+	
+	@Override
+	public ServiceItemGroup createGroup(ServiceID serviceID, String name, String description) {
+
+		String id = name + "-ID (" + serviceID.getId() + ")";
+		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+		Key key = KeyFactory.createKey(KIND_GROUP, id);
+		// check for duplicates
 		
-	}
-
-	private static List<ServiceItemGroup> createGroups() {
-		List<ServiceItemGroup> groups = new ArrayList<ServiceItemGroup>();
-		groups.add(createGroup("Food"));
-		groups.add(createGroup("Clothing"));
-		return groups;
-	}
-
-	private static ServiceItemGroup createGroup(String name) {
-		ServiceItemGroup group = new ServiceItemGroup(new ServiceItemGroupID(name + "-id"), name, "Description of " + name + " group.", new Date(), new Date());
+		Filter duplicateFilter = new FilterPredicate(TableGroup.ID, FilterOperator.EQUAL, id);
+		Query query = new Query(KIND_GROUP).setFilter(duplicateFilter);
+		Entity entity = datastoreService.prepare(query).asSingleEntity();
+		if(entity != null){
+			return null;
+		}
+		
+		////
+		Entity groupEntity = new Entity(key);
+		Date currentDate = new Date();
+		groupEntity.setProperty(TableGroup.SERVICE_ID, serviceID.getId());
+		groupEntity.setProperty(TableGroup.ID, id);
+		groupEntity.setProperty(TableGroup.NAME, name);
+		groupEntity.setProperty(TableGroup.DESCRIPTION, description);
+		groupEntity.setProperty(TableGroup.CREATION_DATE, currentDate);
+		groupEntity.setProperty(TableGroup.MODIFIED_DATE, currentDate);
+		datastoreService.put(groupEntity);
+		
+		ServiceItemGroup group = new ServiceItemGroup(new ServiceItemGroupID(id), name, description, currentDate, currentDate);
 		return group;
 	}
 
-	private static List<ServiceItem> createItems(List<ServiceItemGroup> groups) {
+/*	private static List<ServiceItem> createItems(List<ServiceItemGroup> groups) {
 		
 		List<ServiceItem> items = new ArrayList<ServiceItem>();
 		
@@ -156,13 +269,37 @@ class InMemoryDataSource implements DataSource {
 		
 		return items;
 	}
-
-	private static ServiceItem createItem(String name,
-			ServiceItemGroup serviceItemGroup) {
-		return new ServiceItem(new ServiceItemID(name + "-id"), name, createItemAttributes(name), serviceItemGroup, new Date(), "Description of " + name + " item.");
+*/
+	@Override
+	public ServiceItem createItem(ServiceID serviceId, String name, 
+			String description, ServiceItemGroupID serviceItemGroupId) {
+		String id = name + "-ID(" + serviceId.getId() + ")";
+		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+		Key key = KeyFactory.createKey(KIND_ITEM, id);
+		// check for duplicates
+		
+		Filter duplicateFilter = new FilterPredicate(TableItem.ID, FilterOperator.EQUAL, id);
+		Query query = new Query(KIND_ITEM).setFilter(duplicateFilter);
+		Entity entity = datastoreService.prepare(query).asSingleEntity();
+		if(entity != null){
+			return null;
+		}
+		
+		////
+		Entity itemEntity = new Entity(key);
+		Date currentDate = new Date();
+		itemEntity.setProperty(TableItem.SERVICE_ID, serviceId.getId());
+		itemEntity.setProperty(TableItem.GROUP_ID, serviceItemGroupId.getId());
+		itemEntity.setProperty(TableItem.ID, id);
+		itemEntity.setProperty(TableItem.NAME, name);
+		itemEntity.setProperty(TableItem.DESCRIPTION, description);
+		itemEntity.setProperty(TableItem.MODIFIED_DATE, currentDate);
+		datastoreService.put(itemEntity);
+		return new ServiceItem(new ServiceItemID(id), name, null, null, currentDate, description);
+			
 	}
 
-	private static ServiceItemAttributes createItemAttributes(String name) {
+/*	private static ServiceItemAttributes createItemAttributes(String name) {
 		List<ServiceItemAttribute> list = new ArrayList<ServiceItemAttribute>();
 		if("Shirt".equals(name)) {
 			list.add(new ServiceItemAttribute("Make", Validation.string));
@@ -192,7 +329,39 @@ class InMemoryDataSource implements DataSource {
 		
 		return attrs;
 	}
-
+*/
+	@Override
+	public ServiceItemAttribute createItemAttribute(String name, String type, 
+			String validation, String context, ServiceID serviceId, ServiceItemID itemId) {
+		String id = name + "-ID(" + itemId.getId() + "-" + serviceId.getId() + ")";
+		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+		Key key = KeyFactory.createKey(KIND_ATTRIBUTE, id);
+		// check for duplicates
+		
+		Filter duplicateFilter = new FilterPredicate(TableAttribute.ID, FilterOperator.EQUAL, id);
+		Query query = new Query(KIND_ATTRIBUTE).setFilter(duplicateFilter);
+		Entity entity = datastoreService.prepare(query).asSingleEntity();
+		if(entity != null){
+			return null;
+		}
+		
+		////
+		Entity attributeEntity = new Entity(key);
+		attributeEntity.setProperty(TableAttribute.SERVICE_ID, serviceId.getId());
+		attributeEntity.setProperty(TableAttribute.ITEM_ID, itemId.getId());
+		attributeEntity.setProperty(TableAttribute.ID, id);
+		attributeEntity.setProperty(TableAttribute.NAME, name);
+		attributeEntity.setProperty(TableAttribute.VALIDATION, validation);
+		attributeEntity.setProperty(TableAttribute.CONTEXT, context);
+		attributeEntity.setProperty(TableAttribute.TYPE, type);
+		datastoreService.put(attributeEntity);
+		
+		return new ServiceItemAttribute(id, name, validation, type, context); 
+	}
+	
+	
+	
+	
 	private static void createAdmins() {
 		admins.add(createAdmin("admin", "pass"));
 		admins.add(createAdmin("aizaz", "pass"));
@@ -242,22 +411,199 @@ class InMemoryDataSource implements DataSource {
 
 	@Override
 	public List<LocationService> getAllServices(int startIndex, int endIndex) {
-		List<LocationService> servicePage=new ArrayList<LocationService>();
+/*		List<LocationService> servicePage=new ArrayList<LocationService>();
 		for(int i=startIndex;i<endIndex && i<locationServices.size();i++) {
 			servicePage.add(locationServices.get(i));
 		}
 		return servicePage;
+*/
+		return getLocationServices();
 	}
 
 	@Override
 	public LocationService getServiceById(ServiceID serviceId) {
-		// TODO Auto-generated method stub
-		for (LocationService ls : locationServices) {
-			if(ls.getId().getId().equals(serviceId.getId())) {
-				return ls;
+		DatastoreService service = DatastoreServiceFactory.getDatastoreService();
+		Filter idFilter = new FilterPredicate(TableService.ID, FilterOperator.EQUAL, serviceId.getId());
+		Query query = new Query(KIND_SERVICE).setFilter(idFilter);
+		Entity serviceEntity = service.prepare(query).asSingleEntity();
+		LocationService ls = entityToLocationService(serviceEntity);
+		return ls;
+	}
+	
+
+	private static List<ServiceItem> getAllServiceItemsByServiceID(ServiceID serviceId){
+		List<ServiceItem> itemList = new ArrayList<ServiceItem>();
+		DatastoreService service = DatastoreServiceFactory.getDatastoreService();
+		Filter idFilter = new FilterPredicate(TableItem.SERVICE_ID, FilterOperator.EQUAL, serviceId.getId());
+		Query query = new Query(KIND_ITEM).setFilter(idFilter);
+		List<Entity> itemEntityList = service.prepare(query).asList(FetchOptions.Builder.withDefaults());
+		for(Entity itemEntity : itemEntityList){
+			ServiceItem si = entityToServiceItem(itemEntity);
+			itemList.add(si);
+		}
+
+		return itemList;
+	}
+	
+	
+	private static List<ServiceItemGroup> getAllServiceGroupsByServiceID(ServiceID serviceId){
+		List<ServiceItemGroup> groupList = new ArrayList<ServiceItemGroup>();
+		DatastoreService service = DatastoreServiceFactory.getDatastoreService();
+		Filter idFilter = new FilterPredicate(TableGroup.SERVICE_ID, FilterOperator.EQUAL, serviceId.getId());
+		Query query = new Query(KIND_GROUP).setFilter(idFilter);
+		List<Entity> groupEntityList = service.prepare(query).asList(FetchOptions.Builder.withDefaults());
+		for(Entity groupEntity : groupEntityList){
+			ServiceItemGroup sig = entityToServiceItemGroup(groupEntity);
+			groupList.add(sig);
+		}
+
+		return groupList;
+	}
+	
+	private static LocationService entityToLocationService(Entity entity){
+		String name = (String) entity.getProperty(TableService.NAME);
+		ServiceID id = new ServiceID((String) entity.getProperty(TableService.ID));
+		String description = (String) entity.getProperty(TableService.DESCRIPTION);
+		Date creationDate = (Date) entity.getProperty(TableService.CREATION_DATE);
+		Date modifiedDate = (Date) entity.getProperty(TableService.MODIFIED_DATE);
+	
+		List<ServiceItemGroup> groupList = getAllServiceGroupsByServiceID(id);
+		List<ServiceItem> itemList = getAllServiceItemsByServiceID(id);
+		return new LocationService(id, name, description, creationDate, modifiedDate, itemList, groupList);
+	}
+	
+	private static ServiceItem entityToServiceItem(Entity entity){
+		String name = (String) entity.getProperty(TableItem.NAME);
+		ServiceItemID id = new ServiceItemID((String) entity.getProperty(TableItem.ID));
+		String description = (String)entity.getProperty(TableItem.DESCRIPTION);
+		Date modifiedDate = (Date) entity.getProperty(TableItem.MODIFIED_DATE);
+		String serviceId = (String)entity.getProperty(TableItem.SERVICE_ID);
+		String groupid = (String) entity.getProperty(TableItem.GROUP_ID); 
+
+
+		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+
+		ServiceItemGroup sig;
+//		get group
+		{
+			Filter filter= new FilterPredicate(TableGroup.ID, FilterOperator.EQUAL, groupid);
+			Query query = new Query(KIND_GROUP).setFilter(filter);
+			Entity groupEntity = datastoreService.prepare(query).asSingleEntity();
+			sig = entityToServiceItemGroup(groupEntity);
+		}
+		
+		
+		List<ServiceItemAttribute> attrList = new ArrayList<ServiceItemAttribute>();
+//		fill Attributes
+		{
+			Filter serviceidFilter = new FilterPredicate(TableAttribute.SERVICE_ID, FilterOperator.EQUAL, serviceId);
+			Filter groupidFilter = new FilterPredicate(TableAttribute.ITEM_ID, FilterOperator.EQUAL, id.getId());
+			Filter filter = CompositeFilterOperator.and(serviceidFilter, groupidFilter);
+			Query query = new Query(KIND_ATTRIBUTE).setFilter(filter);
+			List<Entity> attrEntityList = datastoreService.prepare(query).asList(FetchOptions.Builder.withDefaults());
+			for(Entity attrEntity : attrEntityList){
+				attrList.add(entityToServiceItemAttribute(attrEntity));
 			}
 		}
-		return null;
+		ServiceItemAttributes attributes = new ServiceItemAttributes(attrList) ;
+		
+		return new ServiceItem(id, name, attributes, sig, modifiedDate, description);
+	}
+	
+
+	
+	private static ServiceItemAttribute entityToServiceItemAttribute(
+			Entity entity) {
+		String id = (String) entity.getProperty(TableAttribute.ID);
+		String name = (String) entity.getProperty(TableAttribute.NAME);
+		String type = (String) entity.getProperty(TableAttribute.TYPE);
+		String context = (String) entity.getProperty(TableAttribute.CONTEXT);
+		String validation = (String) entity.getProperty(TableAttribute.VALIDATION);
+		
+		return new ServiceItemAttribute(id, name, validation, type, context);
+	}
+
+	private static ServiceItemGroup entityToServiceItemGroup(Entity entity){
+		String name = (String) entity.getProperty(TableGroup.NAME);
+		ServiceItemGroupID id = new ServiceItemGroupID((String) entity.getProperty(TableGroup.ID));
+		String description = (String)entity.getProperty(TableGroup.DESCRIPTION);
+		Date creationDate = (Date) entity.getProperty(TableGroup.CREATION_DATE);
+		Date modifiedDate = (Date) entity.getProperty(TableGroup.MODIFIED_DATE);
+		return new ServiceItemGroup(id, name, description, creationDate, modifiedDate);
+	}
+
+	@Override
+	public ServiceItem getItemById(	ServiceItemID serviceItemId) {
+
+		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+		Filter filter = new FilterPredicate(TableItem.ID, FilterOperator.EQUAL, serviceItemId.getId());
+		Query query = new Query(KIND_ITEM).setFilter(filter);
+		Entity itemEntity = datastoreService.prepare(query).asSingleEntity();
+		ServiceItem item = entityToServiceItem(itemEntity);
+		
+		return item;
+	}
+
+	@Override
+	public boolean deleteLocationService(ServiceID serviceId) {
+		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+		LocationService ls = getServiceById(serviceId);
+		List<ServiceItemGroup> groupList = ls.getGroups();
+		for(ServiceItemGroup group : groupList){
+			deleteServiceGroup(group.getId());
+		}
+		Key key = KeyFactory.createKey(KIND_SERVICE, serviceId.getId());
+		datastoreService.delete(key);
+		return true;
+	}
+
+	private static List<ServiceItem> getItemsByGroup(ServiceItemGroupID groupId){
+		List<ServiceItem> itemList = new ArrayList<ServiceItem>();
+		DatastoreService service = DatastoreServiceFactory.getDatastoreService();
+		Filter idFilter = new FilterPredicate(TableItem.GROUP_ID, FilterOperator.EQUAL, groupId.getId());
+		Query query = new Query(KIND_ITEM).setFilter(idFilter);
+		List<Entity> itemEntityList = service.prepare(query).asList(FetchOptions.Builder.withDefaults());
+		for(Entity itemEntity : itemEntityList){
+			ServiceItem si = entityToServiceItem(itemEntity);
+			itemList.add(si);
+		}
+
+		return itemList;
+		
+	}
+	
+	@Override
+	public boolean deleteServiceGroup(ServiceItemGroupID groupId) {
+		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+		List<ServiceItem> itemList = getItemsByGroup(groupId);
+		for(ServiceItem item : itemList){
+			deleteServiceItem(item.getId());
+		}
+		Key key = KeyFactory.createKey(KIND_GROUP, groupId.getId());
+		datastoreService.delete(key);
+		return true;
+	}
+
+	@Override
+	public boolean deleteServiceItem(ServiceItemID itemId) {
+		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+		ServiceItem item = getItemById(itemId);
+		List<ServiceItemAttribute> attrList = item.getAttrs().getAttrs();
+		for(ServiceItemAttribute attr : attrList){
+			Key attrKey = KeyFactory.createKey(KIND_ATTRIBUTE, attr.getId());
+			datastoreService.delete(attrKey);
+		}
+		Key key = KeyFactory.createKey(KIND_ITEM, itemId.getId());
+		datastoreService.delete(key);
+		return true;
+	}
+
+	@Override
+	public boolean deleteItemAttribute(String attributeId) {
+		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+		Key key = KeyFactory.createKey(KIND_ATTRIBUTE, attributeId);
+		datastoreService.delete(key);
+		return true;
 	}
 	
 }

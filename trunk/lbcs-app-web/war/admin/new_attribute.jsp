@@ -23,20 +23,31 @@
 </head>
 <body>
 <%	
-	
+	String serviceId = request.getParameter("serviceId");
+	String objectId = request.getParameter("objectId");
 	String title = "New Attribute";
 %>
 		<jsp:include page="title_include.jsp">
 	 		<jsp:param value="<%=title %>" name="title"/>
 	 	</jsp:include>
 		
+		<%
+			String msg = request.getParameter("msg");
+			if(!(msg.equals("a"))){
+		%>
+		<div class="statusMessage">
+			<%=msg %>
+		</div>
+		<%
+			}
+		%>
 		
-		<form>
+		<form action="../transaction/create_attribute.jsp" method="get">
 			<div class="form">
 				<h1>New Attribute</h1>
 				<label>
 					<span>Name:</span>
-					<input type="text"  class="input_text" name="Group_name" id="Group_name"/>
+					<input type="text"  class="input_text" name="attribute_name" id="Group_name"/>
 				</label>
 				<label>
 					<span>Type</span>
@@ -63,8 +74,11 @@
 						<option>Least Important</option>
 					</select>
 				</label>
+					<input type="hidden" name="serviceId" value="<%=serviceId %>" />
+					<input type="hidden" name="objectId" value="<%=objectId %>" />
+				
 				<label class="submit">
-					<input type="button" class="button" value="Save" />
+					<input type="submit" class="button" value="Save" />
 				</label>
 				
 			</div>

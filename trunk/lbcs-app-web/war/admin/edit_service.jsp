@@ -41,6 +41,17 @@
 	 		<jsp:param value="<%=title %>" name="title"/>
 	 	</jsp:include>
 		
+		<%
+			String msg = request.getParameter("msg");
+			if(!(msg.equals("a"))){
+		%>
+		<div class="statusMessage">
+			<%=msg %>
+		</div>
+		<%
+			}
+		%>
+		
 	<div class="popup-wrapper">
  	<form>
 		<div class="form">
