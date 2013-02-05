@@ -85,8 +85,9 @@ public class HttpAdminController extends AdminController{
 	@Override
 	public LocationService editService(ServiceID serviceId, String name, String description)
 			throws ServiceEditException {
-		// TODO Auto-generated method stub
-		return null;
+		DataSource source = DataSourceFactory.getDataSource();
+		return source.editService(serviceId, name, description);
+		
 	}
 
 	@Override
@@ -115,7 +116,8 @@ public class HttpAdminController extends AdminController{
 	@Override
 	public ServiceItem editItem(ServiceItemID itemId, ServiceID serviceId, String name, String description, ServiceItemGroupID groupId) throws ServiceEditException {
 		// TODO Auto-generated method stub
-		return null;
+		DataSource source = DataSourceFactory.getDataSource();
+		return source.editItem(itemId, serviceId, name, description, groupId);
 	}
 
 	@Override
@@ -139,9 +141,9 @@ public class HttpAdminController extends AdminController{
 	}
 
 	@Override
-	public ServiceItem editGroup(ServiceItemGroupID itemGroupId, ServiceID serviceId, String name, String description) throws ServiceEditException {
-		// TODO Auto-generated method stub
-		return null;
+	public ServiceItemGroup editGroup(ServiceItemGroupID itemGroupId, ServiceID serviceId, String name, String description) throws ServiceEditException {
+		DataSource source = DataSourceFactory.getDataSource();
+		return source.editGroup(itemGroupId, serviceId, name, description);
 	}
 
 	@Override
@@ -170,11 +172,11 @@ public class HttpAdminController extends AdminController{
 	}
 
 	@Override
-	public ServiceItem editAttribute(String AttributeId, String name,
+	public ServiceItemAttribute editAttribute(String AttributeId, String name,
 			String type, String validation, String context,
 			ServiceID serviceId, ServiceItemID itemId) {
-		// TODO Auto-generated method stub
-		return null;
+		DataSource source = DataSourceFactory.getDataSource();
+		return source.editAttribute(AttributeId, name, type, validation, context, serviceId, itemId);
 	}
 	
 	

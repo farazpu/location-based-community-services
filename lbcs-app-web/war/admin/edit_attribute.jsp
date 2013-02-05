@@ -31,7 +31,25 @@
 //	ServiceItemID serviceItemId = new ServiceItemID(request.getParameter("objectId"));
 //	ServiceItem sig= ls.getItemById(serviceItemId);
 	
+	String serviceId = request.getParameter("serviceId");
+	String objectId = request.getParameter("objectId");
 	String attribute = request.getParameter("attribute");
+
+	AdminController controller = new HttpControllerFactory(request).getAdminController();
+	ServiceID serId = new ServiceID();
+	serId.setId(request.getParameter("serviceId"));
+	
+	LocationService ls = controller.getServiceById(serId);
+	List<ServiceItemGroup> groupList=ls.getGroups();
+	ServiceItemID serviceItemId = new ServiceItemID(request.getParameter("objectId"));
+	ServiceItem si= ls.getItemById(serviceItemId);
+	
+	ServiceItemAttribute attr=null;
+	List<ServiceItemAttribute> attrList = new ArrayList<ServiceItemAttribute>();
+	for(ServiceItemAttribute att : attrList){
+		if(att.getId().equals(attribute))
+			attr=att;
+	}
 
 	String title = "Edit Attribute: " + attribute;
 %>
@@ -49,23 +67,23 @@
 			}
 		%>
 		
-		<form>
+		<form action="../transaction/edit_attribute.jsp" method="get">
 			<div class="form">
-				<h1>Edit Attribute '<%=attribute %>'</h1>
+				<h1>Edit Attribute '<%=attr.getName() %>'</h1>
 				<label>
 					<span>Name:</span>
-					<input type="text" value="<%=attribute %>" class="input_text" name="Group_name" id="Group_name"/>
+					<input type="text" value="<%=attr.getName() %>" class="input_text" name="attribute_name" id="Group_name"/>
 				</label>
 				<label>
 					<span>Type</span>
-					<select class="input_text" name="type" id="type" >
+					<select class="input_text" value = "<%=attr.getType() %> " name="type" id="type" >
 						<option>number</option>
 						<option>string</option>
 					</select>
 				</label>
 				<label>
 					<span>Validation</span>
-					<select class="input_text" name="validation" id="validation" value="Validation 1" >
+					<select class="input_text" value = "<%=attr.getValidation() %>" name="validation" id="validation"  >
 						<option>None</option>
 						<option>Negative</option>
 						<option>Non-negative</option>
@@ -75,14 +93,17 @@
 				</label>
 				<label>
 					<span>Context</span>
-					<select class="input_text" name="context" id="context" value="Irrelevant" >
+					<select class="input_text" name="context" id="context" value = "<%=attr.getContext() %>">
 						<option>Irrelevant</option>
 						<option>Greater the Better</option>
 						<option>Least Important</option>
 					</select>
 				</label>
+					<input type="hidden" name="serviceId" value="<%=serviceId %>" />
+					<input type="hidden" name="objectId" value="<%=objectId %>" />
+					<input type="hidden" name="attributeId" value="<%=attribute %>" />
 				<label class="submit">
-					<input type="button" class="button" value="Save" />
+					<input type="submit" class="button" value="Save" />
 				</label>
 				
 			</div>

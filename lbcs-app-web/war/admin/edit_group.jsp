@@ -50,19 +50,21 @@
 			}
 		%>
 		
-		<form>
+		<form action="../transaction/edit_group.jsp" method="get">
 			<div class="form">
 				<h1>Edit Group '<%=sig.getName() %>'</h1>
 				<label>
 					<span>Name:</span>
-					<input type="text" value="<%=sig.getName() %>" class="input_text" name="Group_name" id="Group_name"/>
+					<input type="text" value="<%=sig.getName() %>" class="input_text" name="group_name" id="Group_name"/>
 				</label>
 				<label>
 					<span>Description</span>
-					<textarea class="message" name="discription" id="discription" ><%=sig.getDescription() %></textarea>
+					<textarea class="message" name="description" id="description" ><%=sig.getDescription() %></textarea>
 				</label>
+				<input type="hidden" name="groupId" value="<%=serviceItemGroupId.getId() %>" />
+				<input type="hidden" name=serviceId value="<%=request.getParameter("serviceId") %>">
 				<label class="submit">
-					<input type="button" class="button" value="Save" />
+					<input type="submit" class="button" value="Save" />
 				</label>
 				
 			</div>
