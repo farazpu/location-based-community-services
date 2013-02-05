@@ -36,10 +36,10 @@ public abstract class AdminController {
 	public abstract List<ServiceItemGroup> listItemGroups();
 	public abstract ServiceItemGroup createItemGroup(ServiceID serviceId, String name, String description) throws ServiceItemCreationException;
 	public abstract void deleteItemGroup(ServiceItemGroupID itemGroupId) throws ServiceItemDeleteException;
-	public abstract ServiceItem editGroup(ServiceItemGroupID itemGroupId, ServiceID serviceId, String name, String description) throws ServiceEditException;
+	public abstract ServiceItemGroup editGroup(ServiceItemGroupID itemGroupId, ServiceID serviceId, String name, String description) throws ServiceEditException;
 
 	public abstract ServiceItemAttribute createItemAttribute(String name, String type, String validation, String context, ServiceID serviceId, ServiceItemID itemId);
 	public abstract void deleteItemAttribute(String AttributeId);
-	public abstract ServiceItem editAttribute(String AttributeId, String name, String type, String validation, String context, ServiceID serviceId, ServiceItemID itemId);
+	public abstract ServiceItemAttribute editAttribute(String AttributeId, String name, String type, String validation, String context, ServiceID serviceId, ServiceItemID itemId);
 
 }

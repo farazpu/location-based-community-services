@@ -54,16 +54,16 @@
 		%>
 	 	
 	 	
-		<form>
+		<form action="../transaction/edit_object.jsp" method="get">
 			<div class="form">
 				<h1>Edit Object '<%=si.getName() %>'</h1>
 				<label>
 					<span>Name:</span>
-					<input type="text" value="<%=si.getName() %>" class="input_text" name="Service_name" id="Service_name"/>
+					<input type="text" value="<%=si.getName() %>" class="input_text" name="object_name" id="Service_name"/>
 				</label>
 				<label>
 					<span>Description</span>
-					<textarea class="message" name="discription" id="discription"><%=si.getDescription() %></textarea>
+					<textarea class="message" name="description" id="description"><%=si.getDescription() %></textarea>
 				</label>
 				<label>
 					<span>Group:</span>
@@ -71,14 +71,16 @@
 						  <%
 						  for(ServiceItemGroup sig : groupList){			  
 						  %>
-						  <option <%=si.getGroup().getName().equals(sig.getName()) ? "selected='selected'" : "" %> > <%=sig.getName() %> </option>
+						  <option value="<%=sig.getId().getId() %>" <%=si.getGroup().getName().equals(sig.getName()) ? "selected='selected'" : "" %> > <%=sig.getName() %> </option>
 						  <%
 						  }
 						  %>
 				 	 </select>
 				</label>
+				<input type="hidden" name="objectId" value="<%=serviceItemId.getId() %>" />
+				<input name = "serviceId" type="hidden" value = "<%=serviceId.getId() %>">
 				<label class="submit">
-					<input type="button" class="button" value="Save" />
+					<input type="submit" class="button" value="Save" />
 				</label>
 				
 			</div>

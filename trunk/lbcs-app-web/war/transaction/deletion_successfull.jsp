@@ -14,20 +14,10 @@
 
 <script type="text/javascript">
 
-	function goToEditService()
-	{
-		var name=document.getElementById("name").value;
-		var description=document.getElementById("description").value;
-		window.location = "edit_service.jsp?serviceId=New_Service1&name=" + name + "&description=" + description;
-	}
-
 </script>
 
 
 <body>
-		<jsp:include page="title_include.jsp">
-	 		<jsp:param value="Deletion Successfull" name="title"/>
-	 	</jsp:include>
 	 	
 	 	Deletion Successfull!!!
 		

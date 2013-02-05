@@ -1,6 +1,7 @@
 package net.fast.lbcs.data;
 
-import com.google.appengine.api.datastore.*;
+
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +17,6 @@ import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
-import com.google.appengine.labs.repackaged.com.google.common.collect.Table;
 
 import net.fast.lbcs.data.entities.admin.Administrator;
 import net.fast.lbcs.data.entities.admin.group.ServiceItemGroup;
@@ -25,7 +25,6 @@ import net.fast.lbcs.data.entities.admin.item.ServiceItem;
 import net.fast.lbcs.data.entities.admin.item.ServiceItemAttribute;
 import net.fast.lbcs.data.entities.admin.item.ServiceItemAttributes;
 import net.fast.lbcs.data.entities.admin.item.ServiceItemID;
-import net.fast.lbcs.data.entities.admin.item.Validation;
 import net.fast.lbcs.data.entities.admin.service.LocationService;
 import net.fast.lbcs.data.entities.admin.service.ServiceID;
 import net.fast.lbcs.data.entities.user.Location;
@@ -35,6 +34,7 @@ import net.fast.lbcs.data.entities.user.ProductID;
 import net.fast.lbcs.data.entities.user.ProductReview;
 import net.fast.lbcs.data.entities.user.User;
 import net.fast.lbcs.data.entities.user.UserSettings;
+import net.fast.lbcs.memcache.Memcache;
 
 class InMemoryDataSource implements DataSource {
 	
@@ -94,7 +94,6 @@ class InMemoryDataSource implements DataSource {
 		createTestData();
 	}
 	
-	
 
 	public static List<Administrator> getAdmins() {
 		return admins;
@@ -125,7 +124,28 @@ class InMemoryDataSource implements DataSource {
 		return new Administrator(id, password);
 	}
 
+
+    public static boolean test() {
+        String query = "select * from location_service";
+        ResultSet rs = DataAccessHelper.executeQuery(query);
+
+        try{
+        	while(rs.next()){
+        		System.out.println(rs.getString(1));
+        	}
+        }
+        catch(Exception ex){
+            System.out.println("+++++"+ex.getMessage());
+
+        }
+
+        DataAccessHelper.closeConnection();
+        return false;
+    }
+
+
 	private static void createTestData() {
+		test();
 		createAdmins();
 //		createLocationServices();
 		
@@ -180,35 +200,28 @@ class InMemoryDataSource implements DataSource {
 		}
 	}
 
-	private static void createLocationServices() {
-/*		locationServices.add(createLocationService("Lahore"));	
-		locationServices.add(createLocationService("Karachi"));	
-		locationServices.add(createLocationService("Islamabad"));	
-		locationServices.add(createLocationService("Pishawar"));	
-		locationServices.add(createLocationService("Sahiwal"));	
-		locationServices.add(createLocationService("Multan"));	
-*/	}
 
 	@Override
 	public LocationService createLocationService(String name, String description) {
 
-		String id = name + "-ID";
+		Date currentDate = new Date();
+		String id = name + "-ID" + currentDate;
+		ServiceID serviceId = new ServiceID(id);
+		
 		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
 		Key key = KeyFactory.createKey(KIND_SERVICE, id);
 		
 		// check for duplicates
-		
-		Filter duplicateFilter = new FilterPredicate(TableService.ID, FilterOperator.EQUAL, id);
+		Filter duplicateFilter = new FilterPredicate(TableService.NAME, FilterOperator.EQUAL, name);
 		Query query = new Query(KIND_SERVICE).setFilter(duplicateFilter);
 		Entity entity = datastoreService.prepare(query).asSingleEntity();
-		if(entity != null){
+		if(entity != null || Memcache.isServiceInMemCache(serviceId,name)){
 			return null;
 		}
 		
 		////
 		
 		Entity serviceEntity = new Entity(key);
-		Date currentDate = new Date();
 		serviceEntity.setProperty(TableService.ID, id);
 		serviceEntity.setProperty(TableService.NAME, name);
 		serviceEntity.setProperty(TableService.DESCRIPTION, description);
@@ -216,8 +229,10 @@ class InMemoryDataSource implements DataSource {
 		serviceEntity.setProperty(TableService.MODIFIED_DATE, currentDate);
 		datastoreService.put(serviceEntity);
 		
+		Memcache.cacheService(serviceEntity);
+		
 		LocationService service = new LocationService(
-				new ServiceID(id), 
+				serviceId, 
 				name, description,
 				currentDate, currentDate, 
 				null, null);
@@ -229,21 +244,24 @@ class InMemoryDataSource implements DataSource {
 	@Override
 	public ServiceItemGroup createGroup(ServiceID serviceID, String name, String description) {
 
-		String id = name + "-ID (" + serviceID.getId() + ")";
+		Date currentDate = new Date();
+		String id = name + "-ID (" + serviceID.getId() + ")" + currentDate;
+		ServiceItemGroupID groupId=new ServiceItemGroupID(id);
 		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
 		Key key = KeyFactory.createKey(KIND_GROUP, id);
 		// check for duplicates
 		
-		Filter duplicateFilter = new FilterPredicate(TableGroup.ID, FilterOperator.EQUAL, id);
+		Filter duplicateFilterName = new FilterPredicate(TableGroup.NAME, FilterOperator.EQUAL, name);
+		Filter duplicateFilterService = new FilterPredicate(TableGroup.SERVICE_ID, FilterOperator.EQUAL, serviceID.getId());
+		Filter duplicateFilter = CompositeFilterOperator.and(duplicateFilterName,duplicateFilterService);
 		Query query = new Query(KIND_GROUP).setFilter(duplicateFilter);
 		Entity entity = datastoreService.prepare(query).asSingleEntity();
-		if(entity != null){
+		if(entity != null || Memcache.isGroupInMemCache(groupId, name, serviceID)){
 			return null;
 		}
 		
 		////
 		Entity groupEntity = new Entity(key);
-		Date currentDate = new Date();
 		groupEntity.setProperty(TableGroup.SERVICE_ID, serviceID.getId());
 		groupEntity.setProperty(TableGroup.ID, id);
 		groupEntity.setProperty(TableGroup.NAME, name);
@@ -252,7 +270,9 @@ class InMemoryDataSource implements DataSource {
 		groupEntity.setProperty(TableGroup.MODIFIED_DATE, currentDate);
 		datastoreService.put(groupEntity);
 		
-		ServiceItemGroup group = new ServiceItemGroup(new ServiceItemGroupID(id), name, description, currentDate, currentDate);
+		Memcache.cacheGroup(groupEntity);
+		
+		ServiceItemGroup group = new ServiceItemGroup(groupId, name, description, currentDate, currentDate);
 		return group;
 	}
 
@@ -273,21 +293,25 @@ class InMemoryDataSource implements DataSource {
 	@Override
 	public ServiceItem createItem(ServiceID serviceId, String name, 
 			String description, ServiceItemGroupID serviceItemGroupId) {
-		String id = name + "-ID(" + serviceId.getId() + ")";
+
+		Date currentDate = new Date();
+		String id = name + "-ID(" + serviceId.getId() + ")" + currentDate;
+		ServiceItemID itemId=new ServiceItemID(id);
 		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
 		Key key = KeyFactory.createKey(KIND_ITEM, id);
 		// check for duplicates
 		
-		Filter duplicateFilter = new FilterPredicate(TableItem.ID, FilterOperator.EQUAL, id);
+		Filter duplicateFilterName = new FilterPredicate(TableItem.NAME, FilterOperator.EQUAL, name);
+		Filter duplicateFilterService = new FilterPredicate(TableItem.SERVICE_ID, FilterOperator.EQUAL, serviceId.getId());
+		Filter duplicateFilter = CompositeFilterOperator.and(duplicateFilterName,duplicateFilterService);
 		Query query = new Query(KIND_ITEM).setFilter(duplicateFilter);
 		Entity entity = datastoreService.prepare(query).asSingleEntity();
-		if(entity != null){
+		if(entity != null || Memcache.isItemInMemCache(itemId, name, serviceId)){
 			return null;
 		}
 		
 		////
 		Entity itemEntity = new Entity(key);
-		Date currentDate = new Date();
 		itemEntity.setProperty(TableItem.SERVICE_ID, serviceId.getId());
 		itemEntity.setProperty(TableItem.GROUP_ID, serviceItemGroupId.getId());
 		itemEntity.setProperty(TableItem.ID, id);
@@ -295,7 +319,10 @@ class InMemoryDataSource implements DataSource {
 		itemEntity.setProperty(TableItem.DESCRIPTION, description);
 		itemEntity.setProperty(TableItem.MODIFIED_DATE, currentDate);
 		datastoreService.put(itemEntity);
-		return new ServiceItem(new ServiceItemID(id), name, null, null, currentDate, description);
+		
+		Memcache.cacheItem(itemEntity);
+		
+		return new ServiceItem(itemId, name, null, null, currentDate, description);
 			
 	}
 
@@ -333,15 +360,20 @@ class InMemoryDataSource implements DataSource {
 	@Override
 	public ServiceItemAttribute createItemAttribute(String name, String type, 
 			String validation, String context, ServiceID serviceId, ServiceItemID itemId) {
-		String id = name + "-ID(" + itemId.getId() + "-" + serviceId.getId() + ")";
+		
+		Date currentDate = new Date();
+		String id = name + "-ID(" + itemId.getId() + "-" + serviceId.getId() + ")" + currentDate;
 		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
 		Key key = KeyFactory.createKey(KIND_ATTRIBUTE, id);
 		// check for duplicates
 		
-		Filter duplicateFilter = new FilterPredicate(TableAttribute.ID, FilterOperator.EQUAL, id);
+		Filter duplicateFilterName = new FilterPredicate(TableAttribute.NAME, FilterOperator.EQUAL, name);
+		Filter duplicateFilterItem = new FilterPredicate(TableAttribute.ITEM_ID, FilterOperator.EQUAL, itemId.getId());
+		Filter duplicateFilterService = new FilterPredicate(TableAttribute.SERVICE_ID, FilterOperator.EQUAL, serviceId.getId());
+		Filter duplicateFilter = CompositeFilterOperator.and(duplicateFilterName,duplicateFilterService,duplicateFilterItem);
 		Query query = new Query(KIND_ATTRIBUTE).setFilter(duplicateFilter);
 		Entity entity = datastoreService.prepare(query).asSingleEntity();
-		if(entity != null){
+		if(entity != null || Memcache.isAttributeInMemCache(id, name, serviceId, itemId)){
 			return null;
 		}
 		
@@ -355,6 +387,8 @@ class InMemoryDataSource implements DataSource {
 		attributeEntity.setProperty(TableAttribute.CONTEXT, context);
 		attributeEntity.setProperty(TableAttribute.TYPE, type);
 		datastoreService.put(attributeEntity);
+		
+		Memcache.cacheAttr(attributeEntity);
 		
 		return new ServiceItemAttribute(id, name, validation, type, context); 
 	}
@@ -579,7 +613,7 @@ class InMemoryDataSource implements DataSource {
 		for(ServiceItem item : itemList){
 			deleteServiceItem(item.getId());
 		}
-		Key key = KeyFactory.createKey(KIND_GROUP, groupId.getId());
+		Key key = KeyFactory.createKey(KIND_GROUP, groupId.getId());		
 		datastoreService.delete(key);
 		return true;
 	}
@@ -604,6 +638,153 @@ class InMemoryDataSource implements DataSource {
 		Key key = KeyFactory.createKey(KIND_ATTRIBUTE, attributeId);
 		datastoreService.delete(key);
 		return true;
+	}
+
+	@Override
+	public LocationService editService(ServiceID serviceId, String name,
+			String description) {
+		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+		
+		
+		Filter selectionFilter = new FilterPredicate(TableService.ID, FilterOperator.EQUAL, serviceId.getId());
+		Query query = new Query(KIND_SERVICE).setFilter(selectionFilter);
+		Entity serviceEntity = datastoreService.prepare(query).asSingleEntity();
+		String oldname = (String) serviceEntity.getProperty(TableService.NAME);
+		if(!(name.equals(oldname))){
+			// check for duplicates
+			Filter duplicateFilter1 = new FilterPredicate(TableService.NAME, FilterOperator.EQUAL, name);
+			Filter duplicateFilter2 = new FilterPredicate(TableService.ID, FilterOperator.NOT_EQUAL, serviceId.getId());
+			Filter duplicateFilter = CompositeFilterOperator.and(duplicateFilter1,duplicateFilter2);
+			Query duplicatequery = new Query(KIND_SERVICE).setFilter(duplicateFilter);
+			Entity entity = datastoreService.prepare(duplicatequery).asSingleEntity();
+			if(entity != null || Memcache.isServiceInMemCache(serviceId, name)){
+				return null;
+			}
+			
+		}
+		
+		Date currentDate = new Date();
+		serviceEntity.setProperty(TableService.NAME, name);
+		serviceEntity.setProperty(TableService.DESCRIPTION, description);
+		serviceEntity.setProperty(TableService.MODIFIED_DATE, currentDate);
+		datastoreService.put(serviceEntity);
+		
+		LocationService service = new LocationService(
+				serviceId,
+				name, description,
+				currentDate, currentDate, 
+				null, null);
+		
+		Memcache.cacheService(serviceEntity);
+		
+		return service;
+	}
+
+	@Override
+	public ServiceItemGroup editGroup(ServiceItemGroupID itemGroupId,
+			ServiceID serviceID, String name, String description) {
+
+		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+		Filter selectionFilter= new FilterPredicate(TableGroup.ID, FilterOperator.EQUAL, itemGroupId.getId());
+		Query query = new Query(KIND_GROUP).setFilter(selectionFilter);
+		Entity groupEntity = datastoreService.prepare(query).asSingleEntity();
+		String oldname = (String) groupEntity.getProperty(TableGroup.NAME);
+
+		if(!(name.equals(oldname))){
+			// check for duplicates
+			Filter duplicateFilterName = new FilterPredicate(TableGroup.NAME, FilterOperator.EQUAL, name);
+			Filter duplicateFilterService = new FilterPredicate(TableGroup.SERVICE_ID, FilterOperator.EQUAL, serviceID.getId());
+			Filter duplicateFilter = CompositeFilterOperator.and(duplicateFilterName, duplicateFilterService);
+			Query duplicatequery = new Query(KIND_SERVICE).setFilter(duplicateFilter);
+			Entity entity = datastoreService.prepare(duplicatequery).asSingleEntity();
+			if(entity != null || Memcache.isGroupInMemCache(itemGroupId, name, serviceID)){
+				return null;
+			}
+			
+		}
+		Date currentDate = new Date();
+		groupEntity.setProperty(TableGroup.NAME, name);
+		groupEntity.setProperty(TableGroup.DESCRIPTION, description);
+		groupEntity.setProperty(TableGroup.MODIFIED_DATE, currentDate);
+		datastoreService.put(groupEntity);
+		
+		Memcache.cacheGroup(groupEntity);
+		
+		ServiceItemGroup group = new ServiceItemGroup(itemGroupId, name, description, currentDate, currentDate);
+		return group;
+		
+		
+	}
+
+	@Override
+	public ServiceItem editItem(ServiceItemID itemId, ServiceID serviceId,
+			String name, String description, ServiceItemGroupID groupId) {
+		Date currentDate = new Date();
+		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+		Filter selectionFilter= new FilterPredicate(TableItem.ID, FilterOperator.EQUAL, itemId.getId());
+		Query query = new Query(KIND_ITEM).setFilter(selectionFilter);
+		Entity itemEntity = datastoreService.prepare(query).asSingleEntity();
+		String oldname = (String) itemEntity.getProperty(TableItem.NAME);
+
+		if(!(name.equals(oldname))){
+		// check for duplicates
+			Filter duplicateFilterName = new FilterPredicate(TableItem.NAME, FilterOperator.EQUAL, name);
+			Filter duplicateFilterService = new FilterPredicate(TableItem.SERVICE_ID, FilterOperator.EQUAL, serviceId.getId());
+			Filter duplicateFilter = CompositeFilterOperator.and(duplicateFilterName,duplicateFilterService);
+			Query duplicatequery = new Query(KIND_ITEM).setFilter(duplicateFilter);
+			Entity entity = datastoreService.prepare(duplicatequery).asSingleEntity();
+			if(entity != null || Memcache.isItemInMemCache(itemId, name, serviceId)){
+				return null;
+			}
+		}		
+		////
+		itemEntity.setProperty(TableItem.GROUP_ID, groupId.getId());
+		itemEntity.setProperty(TableItem.NAME, name);
+		itemEntity.setProperty(TableItem.DESCRIPTION, description);
+		itemEntity.setProperty(TableItem.MODIFIED_DATE, currentDate);
+		datastoreService.put(itemEntity);
+		
+		Memcache.cacheItem(itemEntity);
+		
+		return new ServiceItem(itemId, name, null, null, currentDate, description);
+
+	}
+
+
+	@Override
+	public ServiceItemAttribute editAttribute(String AttributeId, String name,
+			String type, String validation, String context,
+			ServiceID serviceId, ServiceItemID itemId) {
+		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+		// check for duplicates
+		Filter selectionFilter= new FilterPredicate(TableAttribute.ID, FilterOperator.EQUAL, AttributeId);
+		Query query = new Query(KIND_ATTRIBUTE).setFilter(selectionFilter);
+		Entity attributeEntity = datastoreService.prepare(query).asSingleEntity();
+		String oldname = (String) attributeEntity.getProperty(TableAttribute.NAME);
+
+		if(!(name.equals(oldname))){
+		// check for duplicates
+		
+			Filter duplicateFilterName = new FilterPredicate(TableAttribute.NAME, FilterOperator.EQUAL, name);
+			Filter duplicateFilterItem = new FilterPredicate(TableAttribute.ITEM_ID, FilterOperator.EQUAL, itemId.getId());
+			Filter duplicateFilterService = new FilterPredicate(TableAttribute.SERVICE_ID, FilterOperator.EQUAL, serviceId.getId());
+			Filter duplicateFilter = CompositeFilterOperator.and(duplicateFilterName,duplicateFilterService,duplicateFilterItem);
+			Query duplicatequery = new Query(KIND_ATTRIBUTE).setFilter(duplicateFilter);
+			Entity entity = datastoreService.prepare(duplicatequery).asSingleEntity();
+			if(entity != null || Memcache.isAttributeInMemCache(AttributeId, name, serviceId, itemId)){
+				return null;
+			}
+		}	
+		
+		attributeEntity.setProperty(TableAttribute.NAME, name);
+		attributeEntity.setProperty(TableAttribute.VALIDATION, validation);
+		attributeEntity.setProperty(TableAttribute.CONTEXT, context);
+		attributeEntity.setProperty(TableAttribute.TYPE, type);
+		datastoreService.put(attributeEntity);
+		
+		Memcache.cacheAttr(attributeEntity);
+		
+		return new ServiceItemAttribute(AttributeId, name, validation, type, context); 
 	}
 	
 }

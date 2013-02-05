@@ -53,19 +53,20 @@
 		%>
 		
 	<div class="popup-wrapper">
- 	<form>
+ 	<form action="../transaction/edit_service.jsp" method="get">
 		<div class="form">
 			<h1>Edit Service '<%=ls.getName() %>'</h1>
 			<label>
 				<span>Name:</span>
-				<input type="text" value="<%=ls.getName() %>" class="input_text" name="Service_name" id="Service_name"/>
+				<input type="text" value="<%=ls.getName() %>" class="input_text" name="service_name" id="Service_name"/>
 			</label>
 			<label>
 				<span>Description</span>
-				<textarea class="message" name="discription" id="discription"><%=ls.getDesciption() %></textarea>
+				<textarea class="message" name="description" id="description"><%=ls.getDesciption() %></textarea>
 			</label>
+			<input type="hidden" name="serviceId" value="<%=serviceId.getId() %>" />
 			<label class="submit">
-				<input type="button" class="button" value="Save" />
+				<input type="submit" class="button" value="Save" />
 			</label>
 			
 		</div>

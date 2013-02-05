@@ -11,22 +11,23 @@
 
 	ServiceID serviceId = new ServiceID(request.getParameter("serviceId"));
 	ServiceItemID itemId = new ServiceItemID(request.getParameter("objectId"));
+	String attrId = request.getParameter("attributeId");
 	String name = request.getParameter("attribute_name");
 	String type = request.getParameter("type");
 	String validation = request.getParameter("validation");
 	String context = request.getParameter("context");
 
 	AdminController controller = new HttpControllerFactory(request).getAdminController();
-	ServiceItemAttribute attr = controller.createItemAttribute(name, type, validation, context, serviceId, itemId);
+	ServiceItemAttribute attr = controller.editAttribute(attrId, name, type, validation, context, serviceId, itemId);
 	
 	String msg;
 	if(attr==null){
 		msg = "ERROR!! Attribute name '" + name + "' already exists.";
 	}else{
-		msg = "Attribute Created Succesfully!!!";
+		msg = "Attribute Updated Succesfully!!!";
 	}
 
 	
-	response.sendRedirect("../admin/new_attribute.jsp?objectId=" + itemId.getId() + "&serviceId=" + serviceId.getId() + "&msg=" + msg);
+	response.sendRedirect("../admin/edit_attribute.jsp?objectId=" + itemId.getId() + "&serviceId=" + serviceId.getId() + "&attribute=" + attrId + "&msg=" + msg);
 
 %>
