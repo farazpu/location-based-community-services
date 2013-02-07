@@ -37,52 +37,116 @@ import net.fast.lbcs.data.entities.user.UserSettings;
 import net.fast.lbcs.memcache.Memcache;
 
 class InMemoryDataSource implements DataSource {
-	
-	private final static String KIND_SERVICE = "LBCS Location Service";
-	private final static String KIND_ITEM = "LBCS Service Object";
-	private final static String KIND_GROUP = "LBCS Group";
-	private final static String KIND_ATTRIBUTE = "LBCS Object Attribute";
-	
+		
 	private interface TableService{
-		final static String ID = "id";
-		final static String NAME = "name";
-		final static String DESCRIPTION = "description";
-		final static String CREATION_DATE = "creation date";
-		final static String MODIFIED_DATE = "modified date";
+		final static String TABLE_NAME = "location_service";
+		final static String COLUMN_ID = "service_id";
+		final static String COLUMN_NAME = "service_name";
+		final static String COLUMN_DESCRIPTION = "service_description";
+		final static String COLUMN_CREATION_DATE = "service_date_created";
+		final static String COLUMN_MODIFIED_DATE = "service_date_modified";
 
 	}
 	
 	private interface TableGroup{
-		final static String ID = "id";
-		final static String SERVICE_ID = "service id";
-		final static String NAME = "name";
-		final static String DESCRIPTION = "description";
-		final static String CREATION_DATE = "creation date";
-		final static String MODIFIED_DATE = "modified date";
+		
+		final static String TABLE_NAME = "group";
+		final static String COLUMN_ID = "group_id";
+		final static String COLUMN_SERVICE_ID = "group_service_id";
+		final static String COLUMN_NAME = "group_name";
+		final static String COLUMN_DESCRIPTION = "group_description";
+		final static String COLUMN_CREATION_DATE = "group_date_created";
+		final static String COLUMN_MODIFIED_DATE = "group_date_modified";
 		
 	}
 
 	private interface TableItem{
-		final static String ID = "id";
-		final static String SERVICE_ID = "service id";
-		final static String GROUP_ID = "group id";
-		final static String NAME = "name";
-		final static String DESCRIPTION = "description";
-		final static String MODIFIED_DATE = "modified date";
+		final static String TABLE_NAME = "service_item";
+		final static String COLUMN_ID = "item_id";
+		final static String COLUMN_SERVICE_ID = "item_service_id";
+		final static String COLUMN_GROUP_ID = "item_group_id";
+		final static String COLUMN_NAME = "item_name";
+		final static String COLUMN_DESCRIPTION = "item_description";
+		final static String COLUMN_CREATED_DATE = "item_date_created";
 		
 	}
 	
 	private interface TableAttribute{
-		final static String ID = "id";
-		final static String SERVICE_ID = "service id";
-		final static String ITEM_ID = "item id";
-		final static String NAME = "name";
-		final static String VALIDATION = "validation";
-		final static String CONTEXT = "context";
-		final static String TYPE = "type";
-		
-				
+		final static String TABLE_NAME = "attribute";
+		final static String COLUMN_ID = "attribute_id";
+		final static String COLUMN_SERVICE_ID = "attribute_service_id";
+		final static String COLUMN_ITEM_ID = "attribute_item_id";
+		final static String COLUMN_NAME = "attribute_name";
+		final static String COLUMN_VALIDATION_ID = "attribute_validation_id";
+		final static String COLUMN_CONTEXT_ID = "attribute_context_id";
+		final static String COLUMN_TYPE = "attribute_type";
+		final static String COLUMN_FLAG = "attribute_display_flag";
 	}
+
+	private interface TableProduct{
+		final static String TABLE_NAME = "product";
+		final static String COLUMN_ID = "product_id";
+		final static String COLUMN_SERVICE_ID = "product_service_id";
+		final static String COLUMN_ITEM_ID = "product_item_id";
+		final static String COLUMN_NAME = "product_name";
+		final static String COLUMN_X_POSITION = "product_x_position";
+		final static String COLUMN_Y_POSITION = "product_y_position";
+		final static String COLUMN_RATING = "product_rating";
+		final static String COLUMN_COUNT_RATING = "product_count_ratings";
+	}
+
+	private interface TableValidityRule{
+		final static String TABLE_NAME = "validity_rule";
+		final static String COLUMN_ID = "val_rule_id";
+		final static String COLUMN_NAME = "val_rule_name";
+		final static String COLUMN_DESCRIPTION = "val_rule_description";
+		final static String COLUMN_TYPE = "val_rule_type";
+		final static String COLUMN_PARAMS_REQUIRED = "val_rule_param_req";
+	}
+
+	private interface TableValidation{
+		final static String TABLE_NAME = "attribute_validation";
+		final static String COLUMN_ATTRIBUTE_ID = "validation_attribute_id";
+		final static String COLUMN_ITEM_ID = "validation_item_id";
+		final static String COLUMN_SERVICE_ID = "validation_service_id";
+		final static String COLUMN_RULE_ID = "validation_rule_id";
+		final static String COLUMN_PARAM2 = "validation_param1";
+		final static String COLUMN_PARAM1 = "validation_param2";
+	}
+
+	private interface TableValues{
+		final static String TABLE_NAME = "values";
+		final static String COLUMN_ATTRIBUTE_ID = "value_attribute_id";
+		final static String COLUMN_ITEM_ID = "value_item_id";
+		final static String COLUMN_SERVICE_ID = "value_service_id";
+		final static String COLUMN_PRODUCT_ID = "value_product_id";
+		final static String COLUMN_VALUE = "value";
+	}
+	
+
+	
+	private interface TableReviews{
+		final static String TABLE_NAME = "reviews";
+		final static String COLUMN_ID = "review_id";
+		final static String COLUMN_ITEM_ID = "review_item_id";
+		final static String COLUMN_SERVICE_ID = "review_service_id";
+		final static String COLUMN_PRODUCT_ID = "review_product_id";
+		final static String COLUMN_USERNAME = "review_username";
+		final static String COLUMN_RATING = "review_rating";
+		final static String COLUMN_DATE = "review_date";
+		final static String COLUMN_COMMENT = "review_comment";
+	}
+	
+	private interface TableReviewValues{
+		final static String TABLE_NAME = "review_values";
+		final static String COLUMN_ITEM_ID = "review_item_id";
+		final static String COLUMN_SERVICE_ID = "review_value_service_id";
+		final static String COLUMN_PRODUCT_ID = "review_value_product_id";
+		final static String COLUMN_ATTRIBUTE_ID = "review_value_attribute_id";
+		final static String COLUMN_REVIEW_ID = "review_value_review_id";
+		final static String COLUMN_VALUE = "review_value_value";
+	}
+	
 	
 	private static List<Administrator> admins = new ArrayList<Administrator>();
 	private static List<LocationService> locationServices = new ArrayList<LocationService>();
@@ -100,13 +164,17 @@ class InMemoryDataSource implements DataSource {
 	}
 
 	public static List<LocationService> getLocationServices() {
-//		return locationServices;
+		String sql = "select * from location_service";
+		ResultSet rs = DataAccessHelper.executeQuery(sql);
 		List<LocationService> locationServices = new ArrayList<LocationService>();
-		DatastoreService service = DatastoreServiceFactory.getDatastoreService();
-		Query query = new Query(KIND_SERVICE);
-		List<Entity> list = service.prepare(query).asList(FetchOptions.Builder.withDefaults());
-		for(Entity serviceEntity : list){
-			LocationService ls = entityToLocationService(serviceEntity);
+		while(rs.next()){
+			LocationService ls = new LocationService();
+			ls.setId( new ServiceID( rs.getString(TableService.COLUMN_ID)));
+			ls.setName( rs.getString(TableService.COLUMN_NAME));
+			ls.setDesciption( rs.getString(TableService.COLUMN_DESCRIPTION));
+			
+			String id = rs.getString(TableService.COLUMN_ID);
+			String id = rs.getString(TableService.COLUMN_ID);
 			locationServices.add(ls);
 		}
 		return locationServices;
@@ -125,29 +193,7 @@ class InMemoryDataSource implements DataSource {
 	}
 
 
-    public static boolean test() {
-        String query = "select * from location_service";
-        ResultSet rs = DataAccessHelper.executeQuery(query);
-
-        try{
-        	while(rs.next()){
-        		System.out.println(rs.getString(1));
-        	}
-        }
-        catch(Exception ex){
-            System.out.println("+++++"+ex.getMessage());
-
-        }
-
-        DataAccessHelper.closeConnection();
-        return false;
-    }
-
-
 	private static void createTestData() {
-		test();
-		createAdmins();
-//		createLocationServices();
 		
 		createUsers();
 		
