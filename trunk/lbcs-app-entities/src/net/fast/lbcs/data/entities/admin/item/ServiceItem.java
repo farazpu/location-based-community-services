@@ -11,11 +11,11 @@ import net.fast.lbcs.data.entities.admin.group.ServiceItemGroup;
 public class ServiceItem {
 	
 	private ServiceItemID id;
-	private String name;
+	private String name = " ";
 	private ServiceItemAttributes attrs = new ServiceItemAttributes();
-	private ServiceItemGroup group;
-	private MyDate dateModified;
-	private String description;
+	private ServiceItemGroup group = new ServiceItemGroup();
+	private MyDate dateModified = new MyDate(new Date());
+	private String description = " ";
 	
 	public ServiceItem() {}
 	

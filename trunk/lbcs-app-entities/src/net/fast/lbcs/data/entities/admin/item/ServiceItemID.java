@@ -4,7 +4,7 @@ import org.simpleframework.xml.Default;
 
 @Default
 public class ServiceItemID {
-	private String id;
+	private String id = " ";
 	
 	public ServiceItemID() {}
 

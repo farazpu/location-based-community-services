@@ -4,8 +4,8 @@ import org.simpleframework.xml.Default;
 
 @Default
 public class ProductAttribute {
-	private String key;
-	private String value;
+	private String key = " ";
+	private String value = " ";
 		
 	public ProductAttribute() {
 	}

@@ -6,8 +6,8 @@ import org.simpleframework.xml.Default;
 
 @Default
 public class ServiceInfo {
-	private LocationService locationService;
-	private ProductResultSet productResultSet;
+	private LocationService locationService = new LocationService();
+	private ProductResultSet productResultSet = new ProductResultSet();
 	public LocationService getLocationService() {
 		return locationService;
 	}

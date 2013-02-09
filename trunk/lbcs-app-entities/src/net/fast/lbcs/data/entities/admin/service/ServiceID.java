@@ -6,7 +6,7 @@ import org.simpleframework.xml.Default;
 @Default
 public class ServiceID {
 
-	private String id;
+	private String id = " ";
 
 	public ServiceID() {
 		this.id = "";

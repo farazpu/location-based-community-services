@@ -15,7 +15,7 @@ public class Product {
 	private ProductID id;
 	
 	private ServiceItem serviceItem;
-	private String name;
+	private String name = " ";
 	private int price;
 	private int priceDeci;
 	

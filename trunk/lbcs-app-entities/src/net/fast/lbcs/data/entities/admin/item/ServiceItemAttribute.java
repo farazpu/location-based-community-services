@@ -4,12 +4,12 @@ import org.simpleframework.xml.Default;
 
 @Default
 public class ServiceItemAttribute {
-	private String id;
-	private String name;
-	private String validation;
-	private String type;
-	private String context;
-	private String flag;
+	private String id = " ";
+	private String name = " ";
+	private String validation = " ";
+	private String type = " ";
+	private String context = " ";
+	private String flag = " ";
 	
 	public ServiceItemAttribute() {}
 	
