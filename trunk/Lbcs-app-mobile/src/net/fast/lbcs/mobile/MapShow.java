@@ -43,7 +43,7 @@ public class MapShow extends MapActivity {
         setContentView(R.layout.activity_map_show);
         mapView = (MapView) findViewById(R.id.map);
         clickedText = getIntent().getExtras().getString("clickedText");
-        Product product = CurrentServiceInfo.getItem(clickedText).get(0);
+        Product product = CurrentServiceInfo.getProduct(clickedText).get(0);
 //        GeoPoint point = new GeoPoint( (int)(product.getLocation().getLat() * 1000000 ) , (int)(product.getLocation().getLon() *1000000));
         GeoPoint point = new GeoPoint(46066940, 23570000);
               mapView.setBuiltInZoomControls(true);
