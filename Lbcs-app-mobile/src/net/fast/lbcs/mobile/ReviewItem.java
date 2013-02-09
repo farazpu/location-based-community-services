@@ -33,7 +33,7 @@ public class ReviewItem extends Activity {
         if(spinner!=null)
         spinner.setAdapter(adapter);
         
-        Product product = CurrentServiceInfo.getItem(getIntent().getExtras().getString("Item")).get(0);
+        Product product = CurrentServiceInfo.getProduct(getIntent().getExtras().getString("Item")).get(0);
         
         setTitle(product.getName() + " (" + product.getId().getId() + ")");
         

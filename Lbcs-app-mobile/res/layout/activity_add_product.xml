@@ -1,0 +1,43 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+     >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:orientation="horizontal"
+        android:id="@+id/itemSelection"
+        >
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Select Object"
+		/>
+
+	    <Spinner 
+	        android:layout_height="wrap_content"
+	        android:layout_width="fill_parent"
+	        android:id="@+id/selectItemSpinner"
+	        />
+	    </LinearLayout>
+	    
+    <ListView 
+        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/attributeListView"
+        android:layout_below="@id/itemSelection"
+        >
+    </ListView>
+    
+    <Button 
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="Add Product"
+        android:id="@+id/addProductSubmit"
+        android:layout_alignParentBottom="true"
+        />
+</RelativeLayout>

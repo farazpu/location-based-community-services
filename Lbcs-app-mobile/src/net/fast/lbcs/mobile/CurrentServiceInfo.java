@@ -19,10 +19,10 @@ public class CurrentServiceInfo {
 		return currentServiceInfo.getLocationService();	
 	}
 	
-	public static List<Product> getGroupItems(String groupName) {
+	public static List<Product> getGroupProducts(String groupName) {
 		
 		List<Product> result = new ArrayList<Product>();
-		List<Product> itemList = getItemList();
+		List<Product> itemList = getProductList();
 
 		for(Product p : itemList) {
 			if(p.getServiceItem().getGroup().getName().equals(groupName)) {
@@ -33,10 +33,10 @@ public class CurrentServiceInfo {
 		return result;
 	}
 
-	public static List<Product> getObjectItems(String objectName) {
+	public static List<Product> getObjectProducts(String objectName) {
 		
 		List<Product> result = new ArrayList<Product>();
-		List<Product> itemList = getItemList();
+		List<Product> itemList = getProductList();
 
 		for(Product p : itemList) {
 			if(p.getServiceItem().getName().equals(objectName)) {
@@ -47,10 +47,10 @@ public class CurrentServiceInfo {
 		return result;
 	}
 	
-	public static List<Product> getItem(String productName) {
+	public static List<Product> getProduct(String productName) {
 		
 		List<Product> result = new ArrayList<Product>();
-		List<Product> itemList = getItemList();
+		List<Product> itemList = getProductList();
 
 		for(Product p : itemList) {
 			if(p.getName().equals(productName)) {
@@ -62,11 +62,12 @@ public class CurrentServiceInfo {
 	}
 
 	
-	public static List<Product> getItemList() {
+	public static List<Product> getProductList() {
 		return currentServiceInfo.getProductResultSet().getProducts();
 	}
 	
 	public static List<ServiceItem> getObjectList() {
+
 		return currentServiceInfo.getLocationService().getItems();
 	}
 

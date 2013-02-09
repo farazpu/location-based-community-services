@@ -9,5 +9,6 @@
     <string name="title_activity_map_show">MapShow</string>
     <string name="title_activity_welcome_user">WelcomeUser</string>
     <string name="title_activity_review_item">ReviewItem</string>
+    <string name="title_activity_add_product">AddProductActivity</string>
 
 </resources>

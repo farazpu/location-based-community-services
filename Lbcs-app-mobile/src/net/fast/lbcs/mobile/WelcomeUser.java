@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -34,7 +35,7 @@ public class WelcomeUser extends Activity {
 	Context context=this;
 	LocationService locationService;
 	List<ServiceItem> objectList = CurrentServiceInfo.getObjectList();
-	List<Product> itemList = CurrentServiceInfo.getItemList();
+	List<Product> itemList = CurrentServiceInfo.getProductList();
 	List<ServiceItemGroup> groupList = CurrentServiceInfo.getGroupList();
 	String dataType;
 	String XMLServiceInfo;
@@ -44,6 +45,8 @@ public class WelcomeUser extends Activity {
         setContentView(R.layout.activity_welcome_user);
 
         Spinner spinner = (Spinner) findViewById(R.id.SpinnerValue);
+        
+        Button addProduct = (Button) findViewById(R.id.addproduct);
         
 		List<String> ids=new ArrayList<String>();
        	ids.add("Item");
@@ -90,6 +93,17 @@ public class WelcomeUser extends Activity {
         		}
         	}
 		});
+        
+        
+        addProduct.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(context, AddProductActivity.class);
+				startActivity(intent);
+				
+			}
+		});
 		
 
     
@@ -99,10 +113,10 @@ public class WelcomeUser extends Activity {
     	List<Product> items = new ArrayList<Product>();
     	List<String> ids = new ArrayList<String>();
     	if(dataType.equals("Group")) {
-    		items = CurrentServiceInfo.getGroupItems(name);
+    		items = CurrentServiceInfo.getGroupProducts(name);
     	}
     	else if(dataType.equals("Object")) {
-    		items = CurrentServiceInfo.getObjectItems(name);
+    		items = CurrentServiceInfo.getObjectProducts(name);
     	}
     	
     	Spinner spinner = (Spinner) findViewById(R.id.SpinnerValue);

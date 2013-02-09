@@ -9,10 +9,10 @@
     
     
     <Button 
-        android:id="@+id/favourite"
+        android:id="@+id/addproduct"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Favourite"
+        android:text="Add Product"
         android:layout_margin="7dp"
         android:textSize="10pt"
         android:padding="3dp"
