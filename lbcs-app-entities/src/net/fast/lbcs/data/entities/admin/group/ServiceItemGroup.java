@@ -9,10 +9,10 @@ import org.simpleframework.xml.Default;
 @Default
 public class ServiceItemGroup {
 	private ServiceItemGroupID id;
-	private String name;
-	private String description;
-	private MyDate dateCreated;
-	private MyDate dateModified;
+	private String name = " ";
+	private String description = " ";
+	private MyDate dateCreated = new MyDate(new Date());
+	private MyDate dateModified = new MyDate(new Date());
 	
 	public ServiceItemGroup() {}
 	

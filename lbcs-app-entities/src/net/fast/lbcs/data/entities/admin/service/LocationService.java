@@ -16,10 +16,10 @@ import net.fast.lbcs.data.entities.admin.item.ServiceItemID;
 @Default
 public class LocationService {
 	private ServiceID id;
-	private String name;
-	private String desciption;
-	private MyDate lastModified;
-	private MyDate created;
+	private String name = " ";
+	private String desciption = " ";
+	private MyDate lastModified = new MyDate(new Date());
+	private MyDate created = new MyDate(new Date());
 	
 	
 	private List<ServiceItem> items = new ArrayList<ServiceItem>() ;

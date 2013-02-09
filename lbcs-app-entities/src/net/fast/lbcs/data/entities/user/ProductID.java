@@ -4,7 +4,7 @@ import org.simpleframework.xml.Default;
 
 @Default
 public class ProductID {
-	private String id;
+	private String id = " ";
 	public ProductID() {}
 	public ProductID(String id) {
 		super();

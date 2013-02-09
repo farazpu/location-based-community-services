@@ -1,6 +1,7 @@
 package net.fast.lbcs.data.entities.user;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import net.fast.lbcs.data.entities.MyDate;
@@ -9,12 +10,12 @@ import org.simpleframework.xml.Default;
 
 @Default
 public class ProductReview {
-	private Product product;
+	private Product product = new Product();
 	private List<ProductAttribute> reviewValues = new ArrayList<ProductAttribute>();
 	private int reviewRating;
-	private String reviewText;
-	private MyDate date;
-	private String username;
+	private String reviewText = " ";
+	private MyDate date = new MyDate(new Date());
+	private String username = " ";
 	
 	
 	public ProductReview() {

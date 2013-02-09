@@ -8,7 +8,7 @@ import org.simpleframework.xml.Default;
 @Default
 public class ProductResultSet {
 	private List<Product> products = new ArrayList<Product>() ;
-	private Location location;
+	private Location location = new Location(0,0);
 	
 	public ProductResultSet() {}
 
