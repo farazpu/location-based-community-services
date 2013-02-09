@@ -19,8 +19,8 @@ public class MyDate {
 	public MyDate() {
 		Date d=new Date();
 		year=d.getYear() + 1900;
-		month=d.getMonth() + 1;
-		day=d.getDay() + 30;
+		month=d.getMonth();
+		day=d.getDate();
 		hour=d.getHours();
 		minute=d.getMinutes();
 		second=d.getSeconds();
@@ -29,12 +29,16 @@ public class MyDate {
 	
 	public MyDate(Date d) {
 		year=d.getYear() + 1900;
-		month=d.getMonth() + 1;
-		day=d.getDay() + 30;
+		month=d.getMonth();
+		day=d.getDate();
 		hour=d.getHours();
 		minute=d.getMinutes();
 		second=d.getSeconds();
 		
+	}
+
+	public MyDate(String date) {
+		this.setDate(date);		
 	}
 	
 
@@ -82,10 +86,55 @@ public class MyDate {
 	public void setSecond(int second) {
 		this.second = second;
 	}
+	
+	public void setDate(String date){
+		String temp="";
+		int i;
+		for(i=0;date.charAt(i)!='-' ; i++){
+			temp+=date.charAt(i);
+		}
+		year = Integer.parseInt(temp);
+		temp="";
+		i++;
+
+		for(;date.charAt(i)!='-' ; i++){
+			temp+=date.charAt(i);
+		}
+		month = Integer.parseInt(temp);
+		temp="";
+		i++;
+
+		for(;date.charAt(i)!='-' ; i++){
+			temp+=date.charAt(i);
+		}
+		day = Integer.parseInt(temp);
+		temp="";
+		i++;
+
+		for(;date.charAt(i)!=':' ; i++){
+			temp+=date.charAt(i);
+		}
+		hour = Integer.parseInt(temp);
+		temp="";
+		i++;
+
+		for(;date.charAt(i)!=':' ; i++){
+			temp+=date.charAt(i);
+		}
+		minute = Integer.parseInt(temp);
+		temp="";
+		i++;
+
+		for(;i<date.length() ; i++){
+			temp+=date.charAt(i);
+		}
+		second = Integer.parseInt(temp);
+	}
+	
 	@Override
 	public String toString() {
 		return "" + year + "-" + month + "-" + day
-				+ " " + hour + ":" + minute + ":"
+				+ "-" + hour + ":" + minute + ":"
 				+ second;
 	}
 	

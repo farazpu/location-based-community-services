@@ -1,5 +1,6 @@
 package net.fast.lbcs.data.entities.admin.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,8 +22,8 @@ public class LocationService {
 	private MyDate created;
 	
 	
-	private List<ServiceItem> items;
-	private List<ServiceItemGroup> groups;
+	private List<ServiceItem> items = new ArrayList<ServiceItem>() ;
+	private List<ServiceItemGroup> groups = new ArrayList<ServiceItemGroup>();
 
 	public LocationService() {}
 	
