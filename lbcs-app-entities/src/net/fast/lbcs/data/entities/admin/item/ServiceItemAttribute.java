@@ -9,17 +9,19 @@ public class ServiceItemAttribute {
 	private String validation;
 	private String type;
 	private String context;
+	private String flag;
 	
 	public ServiceItemAttribute() {}
 	
 	
 	public ServiceItemAttribute(String id, String name, String validation, 
-			String type, String context) {
+			String type, String context, String flag) {
 		this.name = name;
 		this.validation = validation;
 		this.id = id;
 		this.type = type;
 		this.context = context;
+		this.flag = flag;
 	}
 
 
@@ -66,12 +68,22 @@ public class ServiceItemAttribute {
 		this.context = context;
 	}
 
-	@Override
-	public String toString() {
-		return "ServiceItemAttribute [name=" + name + ", validation="
-				+ validation + ", id=" + id + ", type=" + type + ", context="
-				+ context + "]";
+	public String getFlag() {
+		return flag;
 	}
 
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
+
+
+	@Override
+	public String toString() {
+		return "ServiceItemAttribute [id=" + id + ", name=" + name
+				+ ", validation=" + validation + ", type=" + type
+				+ ", context=" + context + ", flag=" + flag + "]";
+	}
+
+	
 	
 }

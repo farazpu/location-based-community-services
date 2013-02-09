@@ -1,12 +1,13 @@
 package net.fast.lbcs.data.entities.admin.item;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.simpleframework.xml.Default;
 
 @Default
 public class ServiceItemAttributes {
-	private List<ServiceItemAttribute> attrs;
+	private List<ServiceItemAttribute> attrs = new ArrayList<ServiceItemAttribute>();
 	
 	public ServiceItemAttributes() {}
 

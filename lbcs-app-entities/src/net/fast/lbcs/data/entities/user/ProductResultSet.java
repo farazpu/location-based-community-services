@@ -1,12 +1,13 @@
 package net.fast.lbcs.data.entities.user;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.simpleframework.xml.Default;
 
 @Default
 public class ProductResultSet {
-	private List<Product> products;
+	private List<Product> products = new ArrayList<Product>() ;
 	private Location location;
 	
 	public ProductResultSet() {}

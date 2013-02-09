@@ -23,11 +23,11 @@ public class Product {
 	
 	private Location location;
 	
-	private List<ProductAttribute> attrs;
+	private List<ProductAttribute> attrs = new ArrayList<ProductAttribute>();
 	
 	private int averageRatting;
 	
-	private List<ProductReview> reviews;
+	private List<ProductReview> reviews = new ArrayList<ProductReview>();
 	
 	public Product() {
 	}

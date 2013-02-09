@@ -1,12 +1,13 @@
 package net.fast.lbcs.data.entities.admin.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.simpleframework.xml.Default;
 
 @Default
 public class LocationServices {
-	private List<LocationService> locationServices;
+	private List<LocationService> locationServices = new ArrayList<LocationService>();
 	private boolean validation;
 	
 

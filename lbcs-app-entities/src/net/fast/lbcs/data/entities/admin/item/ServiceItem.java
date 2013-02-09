@@ -12,7 +12,7 @@ public class ServiceItem {
 	
 	private ServiceItemID id;
 	private String name;
-	private ServiceItemAttributes attrs;
+	private ServiceItemAttributes attrs = new ServiceItemAttributes();
 	private ServiceItemGroup group;
 	private MyDate dateModified;
 	private String description;
