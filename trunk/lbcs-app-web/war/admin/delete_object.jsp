@@ -52,6 +52,7 @@
 				<span>Are you sure you want to delete object '<%=object %>' from service '<%=service %>'?</span>
 			</label>
 				<input type="hidden" name="objectId" value="<%=serviceItemId.getId() %>" />
+				<input type="hidden" name="serviceId" value="<%=serviceId.getId() %>" />
 			<label class="submit">
 				<input type="Submit" class="button" value="Yes" />
 			</label>

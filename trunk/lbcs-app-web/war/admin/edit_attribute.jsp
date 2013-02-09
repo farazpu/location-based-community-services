@@ -37,20 +37,18 @@
 
 	AdminController controller = new HttpControllerFactory(request).getAdminController();
 	ServiceID serId = new ServiceID();
-	serId.setId(request.getParameter("serviceId"));
+	serId.setId(serviceId);
 	
 	LocationService ls = controller.getServiceById(serId);
-	List<ServiceItemGroup> groupList=ls.getGroups();
-	ServiceItemID serviceItemId = new ServiceItemID(request.getParameter("objectId"));
+	ServiceItemID serviceItemId = new ServiceItemID(objectId);
 	ServiceItem si= ls.getItemById(serviceItemId);
 	
 	ServiceItemAttribute attr=null;
-	List<ServiceItemAttribute> attrList = new ArrayList<ServiceItemAttribute>();
+	List<ServiceItemAttribute> attrList = si.getAttrs().getAttrs();
 	for(ServiceItemAttribute att : attrList){
 		if(att.getId().equals(attribute))
 			attr=att;
 	}
-
 	String title = "Edit Attribute: " + attribute;
 %>
 		<jsp:include page="title_include.jsp">
@@ -76,14 +74,14 @@
 				</label>
 				<label>
 					<span>Type</span>
-					<select class="input_text" value = "<%=attr.getType() %> " name="type" id="type" >
-						<option>number</option>
-						<option>string</option>
+					<select class="input_text" name="type" id="type" >
+						<option <%= attr.getType().equals("number")? "selected='selected'":"" %>>number</option>
+						<option <%= attr.getType().equals("string")? "selected='selected'":"" %>>string</option>
 					</select>
 				</label>
-				<label>
+<!-- 				<label>
 					<span>Validation</span>
-					<select class="input_text" value = "<%=attr.getValidation() %>" name="validation" id="validation"  >
+					<select class="input_text" value = "(-inJSP=-attr.getValidation() %>" name="validation" id="validation"  >
 						<option>None</option>
 						<option>Negative</option>
 						<option>Non-negative</option>
@@ -93,13 +91,21 @@
 				</label>
 				<label>
 					<span>Context</span>
-					<select class="input_text" name="context" id="context" value = "<%=attr.getContext() %>">
+					<select class="input_text" name="context" id="context" value = "(-inJSP=-attr.getContext() %>">
 						<option>Irrelevant</option>
 						<option>Greater the Better</option>
 						<option>Least Important</option>
 					</select>
 				</label>
-					<input type="hidden" name="serviceId" value="<%=serviceId %>" />
+ -->					
+				<label>
+					<span>Include in Review</span>
+					<select class="input_text" name="flag" id="flag">
+						<option <%= attr.getFlag().equals("Yes")? "selected='selected'":"" %>>Yes</option>
+						<option <%= attr.getFlag().equals("No")? "selected='selected'":"" %>>No</option>
+					</select>
+				</label>
+ 					<input type="hidden" name="serviceId" value="<%=serviceId %>" />
 					<input type="hidden" name="objectId" value="<%=objectId %>" />
 					<input type="hidden" name="attributeId" value="<%=attribute %>" />
 				<label class="submit">

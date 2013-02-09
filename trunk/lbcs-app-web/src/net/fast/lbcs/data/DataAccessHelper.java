@@ -22,7 +22,9 @@ public class DataAccessHelper {
 		try {
 			Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
 			con = DriverManager.getConnection("jdbc:odbc:MYSQL64");
-		} catch (Exception ex) {
+		}catch (SQLException e){			
+			System.out.println(e.getMessage());
+		}catch (Exception ex) {
 			System.out.println(ex.getMessage());
 		}
 		System.out.println("Connected!");
@@ -44,13 +46,9 @@ public class DataAccessHelper {
 		try {
 			Statement stmt = con.createStatement();
 			rs = stmt.executeQuery(sql);
-			while (rs.next()) {
-				System.out.println(rs.getString(1));
-			}
 		} catch (SQLException ex) {
 			Logger.getLogger(DataAccessHelper.class.getName()).log(Level.SEVERE, null, ex);
 		}
-		closeConnection();
 		return rs;
 	}
     

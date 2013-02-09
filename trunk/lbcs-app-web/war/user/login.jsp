@@ -20,9 +20,8 @@
 	LocationServices locationServices = new LocationServices();
 	UserController userController = new HttpControllerFactory((HttpServletRequest) request).getUserController();
 	if(userController.login(request.getParameter("username"), request.getParameter("password"), null)) {
-		InMemoryDebugFacade.getLocationServices();
 		serviceList= new ArrayList<LocationService>(InMemoryDebugFacade.getLocationServices());
-		locationServices.setValidation(true);
+ 		locationServices.setValidation(true);
 	}
 	else {
 		serviceList=new ArrayList<LocationService>();

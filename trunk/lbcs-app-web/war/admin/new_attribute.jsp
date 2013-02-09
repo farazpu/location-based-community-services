@@ -56,7 +56,7 @@
 						<option>string</option>
 					</select>
 				</label>
-				<label>
+<!-- 				<label>
 					<span>Validation</span>
 					<select class="input_text" name="validation" id="validation"  >
 						<option>None</option>
@@ -72,6 +72,14 @@
 						<option>Irrelevant</option>
 						<option>Greater the Better</option>
 						<option>Least Important</option>
+					</select>
+				</label>
+ -->
+				<label>
+					<span>Include in Review</span>
+					<select class="input_text" name="flag" id="flag" >
+						<option>Yes</option>
+						<option>No</option>
 					</select>
 				</label>
 					<input type="hidden" name="serviceId" value="<%=serviceId %>" />

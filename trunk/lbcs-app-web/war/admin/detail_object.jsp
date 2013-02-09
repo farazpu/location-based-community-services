@@ -63,6 +63,7 @@
 		lst.getColumns().add("Type");
 		lst.getColumns().add("Validation");
 		lst.getColumns().add("Context");
+		lst.getColumns().add("Include in Review");
 
 		lst.getFocusColumns().add("Attribute Name");
 		
@@ -79,7 +80,7 @@
 						Listing.popupValue("<img src='../images/delete.png'/>", "delete_attribute.jsp?objectId=" + si.getId().getId() + "&serviceId=" + ls.getId().getId() + "&attribute=" + sia.getId(), "140px", "330px"),
 						Listing.popupValue("<img src='../images/edit.png'/>", "edit_attribute.jsp?objectId=" + si.getId().getId() + "&serviceId=" + ls.getId().getId() + "&attribute=" + sia.getId()  + "&msg=a", "420px", "525px"),
 //						Listing.popupValue(sia.getName(), "edit_attribute.jsp", "90%", "90%"),
-						sia.getName(), sia.getType(), sia.getValidation(), sia.getContext());
+						sia.getName(), sia.getType(), sia.getValidation(), sia.getContext(), sia.getFlag());
 			}
 		}
 		lst.setCreateClickURL("new_attribute.jsp?objectId=" + si.getId().getId() + "&serviceId=" + ls.getId().getId() + "&msg=a");
