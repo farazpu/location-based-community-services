@@ -390,7 +390,7 @@ class InMemoryDataSource implements DataSource {
 
 		DataAccessHelper.UpdateQuery(insertSql);
 		
-		return new ServiceItemAttribute(id, name, "", type, "", flag); 
+		return new ServiceItemAttribute(id, name, " ", type, " ", flag); 
 	}
 	
 	
@@ -820,7 +820,7 @@ class InMemoryDataSource implements DataSource {
 
 		DataAccessHelper.UpdateQuery(query);
 		
-		return new ServiceItemAttribute(attributeId, name, "", type, "", flag); 
+		return new ServiceItemAttribute(attributeId, name, " ", type, " ", flag); 
 	}
 	
 }
