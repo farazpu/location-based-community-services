@@ -53,6 +53,7 @@
 				WARNING: All Service Objects of this group will be deleted</span>
 			</label>
 				<input type="hidden" name="groupId" value="<%=serviceItemGroupId.getId() %>" />
+				<input type="hidden" name="serviceId" value="<%=serviceId.getId() %>" />
 			<label class="submit">
 				<input type="submit" class="button" value="Yes" />
 			</label>

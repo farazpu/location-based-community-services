@@ -26,21 +26,20 @@ public interface DataSource {
 	LocationService editService(ServiceID serviceId, String name, String description);
 	
 	ServiceItemGroup createGroup(ServiceID serviceID, String name, String description);
-	boolean deleteServiceGroup(ServiceItemGroupID groupId);
+	boolean deleteServiceGroup(ServiceID serviceId, ServiceItemGroupID groupId);
 	ServiceItemGroup editGroup(ServiceItemGroupID itemGroupId, ServiceID serviceId, String name, String description);
 	
 	
 	ServiceItem createItem(ServiceID serviceId, String name, String description, 
 			ServiceItemGroupID groupId);
-	ServiceItem getItemById( ServiceItemID serviceItemId);
-	boolean deleteServiceItem(ServiceItemID ItemId);
+	boolean deleteServiceItem(ServiceID serviceId, ServiceItemID ItemId);
 	ServiceItem editItem(ServiceItemID itemId, ServiceID serviceId, String name, String description, ServiceItemGroupID groupId);
 	
 	
 	ServiceItemAttribute createItemAttribute(String name, String Type, 
-			String validation, String context, ServiceID serviceId, ServiceItemID itemId);
-	boolean deleteItemAttribute(String attributeId);
-	ServiceItemAttribute editAttribute(String AttributeId, String name, String type, String validation, String context, ServiceID serviceId, ServiceItemID itemId);
+			String flag, ServiceID serviceId, ServiceItemID itemId);
+	boolean deleteItemAttribute(ServiceID serviceId, ServiceItemID itemId, String attributeId);
+	ServiceItemAttribute editAttribute(String AttributeId, String name, String type, String flag, ServiceID serviceId, ServiceItemID itemId);
 
 	
 	User queryUserByUserIdAndPassword(String user, String password);

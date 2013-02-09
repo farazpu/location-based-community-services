@@ -53,6 +53,8 @@
 				<span>Are you sure you want to delete attribute '<%=attribute %>' from object <%=object %> in service '<%=service %>'?</span>
 			</label>
 				<input type="hidden" name="attributeId" value="<%=attribute %>" />
+				<input type="hidden" name="serviceId" value="<%=serviceId.getId() %>" />
+				<input type="hidden" name="itemId" value="<%=serviceItemId.getId() %>" />
 			<label class="submit">
 				<input type="submit" class="button" value="Yes" />
 			</label>

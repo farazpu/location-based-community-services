@@ -107,10 +107,10 @@ public class HttpAdminController extends AdminController{
 	}
 
 	@Override
-	public void deleteItem(ServiceItemID itemId)
+	public void deleteItem(ServiceID serviceId, ServiceItemID itemId)
 			throws ServiceItemDeleteException {
 		DataSource source = DataSourceFactory.getDataSource();
-		source.deleteServiceItem(itemId);		
+		source.deleteServiceItem(serviceId, itemId);		
 	}
 
 	@Override
@@ -134,10 +134,11 @@ public class HttpAdminController extends AdminController{
 		// TODO Auto-generated method stub
 	}
 
-	public void deleteItemGroup(ServiceItemGroupID itemGroupId)
+	@Override
+	public void deleteItemGroup(ServiceID serviceId, ServiceItemGroupID itemGroupId)
 			throws ServiceItemDeleteException {
 		DataSource source = DataSourceFactory.getDataSource();
-		source.deleteServiceGroup(itemGroupId);		
+		source.deleteServiceGroup(serviceId, itemGroupId);		
 	}
 
 	@Override
@@ -158,25 +159,25 @@ public class HttpAdminController extends AdminController{
 
 	@Override
 	public ServiceItemAttribute createItemAttribute(String name, String type,
-			String validation, String context, ServiceID serviceId,
+			String flag, ServiceID serviceId,
 			ServiceItemID itemId) {
 
 		DataSource source = DataSourceFactory.getDataSource();
-		return source.createItemAttribute(name, type, validation, context, serviceId, itemId);
+		return source.createItemAttribute(name, type, flag, serviceId, itemId);
 	}
 
 	@Override
-	public void deleteItemAttribute(String attributeId) {
+	public void deleteItemAttribute(ServiceID serviceId, ServiceItemID itemId, String attributeId) {
 		DataSource source = DataSourceFactory.getDataSource();
-		source.deleteItemAttribute(attributeId);
+		source.deleteItemAttribute(serviceId, itemId, attributeId);
 	}
 
 	@Override
 	public ServiceItemAttribute editAttribute(String AttributeId, String name,
-			String type, String validation, String context,
+			String type, String flag,
 			ServiceID serviceId, ServiceItemID itemId) {
 		DataSource source = DataSourceFactory.getDataSource();
-		return source.editAttribute(AttributeId, name, type, validation, context, serviceId, itemId);
+		return source.editAttribute(AttributeId, name, type, flag, serviceId, itemId);
 	}
 	
 	

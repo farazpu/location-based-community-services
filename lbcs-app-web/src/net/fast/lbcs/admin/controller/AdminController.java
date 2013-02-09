@@ -30,16 +30,16 @@ public abstract class AdminController {
 	
 	public abstract List<ServiceItem> listItems();
 	public abstract ServiceItem createItem(ServiceID serviceId, String name, String description, ServiceItemGroupID groupId) throws ServiceItemCreationException;
-	public abstract void deleteItem(ServiceItemID itemId) throws ServiceItemDeleteException;
+	public abstract void deleteItem(ServiceID serviceId, ServiceItemID itemId) throws ServiceItemDeleteException;
 	public abstract ServiceItem editItem(ServiceItemID itemId, ServiceID serviceId, String name, String description, ServiceItemGroupID groupId) throws ServiceEditException;
 	
 	public abstract List<ServiceItemGroup> listItemGroups();
 	public abstract ServiceItemGroup createItemGroup(ServiceID serviceId, String name, String description) throws ServiceItemCreationException;
-	public abstract void deleteItemGroup(ServiceItemGroupID itemGroupId) throws ServiceItemDeleteException;
+	public abstract void deleteItemGroup(ServiceID serviceId, ServiceItemGroupID itemGroupId) throws ServiceItemDeleteException;
 	public abstract ServiceItemGroup editGroup(ServiceItemGroupID itemGroupId, ServiceID serviceId, String name, String description) throws ServiceEditException;
 
-	public abstract ServiceItemAttribute createItemAttribute(String name, String type, String validation, String context, ServiceID serviceId, ServiceItemID itemId);
-	public abstract void deleteItemAttribute(String AttributeId);
-	public abstract ServiceItemAttribute editAttribute(String AttributeId, String name, String type, String validation, String context, ServiceID serviceId, ServiceItemID itemId);
+	public abstract ServiceItemAttribute createItemAttribute(String name, String type, String flag, ServiceID serviceId, ServiceItemID itemId);
+	public abstract void deleteItemAttribute(ServiceID serviceId, ServiceItemID itemId, String AttributeId);
+	public abstract ServiceItemAttribute editAttribute(String AttributeId, String name, String type, String flag, ServiceID serviceId, ServiceItemID itemId);
 
 }
