@@ -196,7 +196,7 @@ body {
 
 
 /***************** Form ***********************/
-div.form {
+div.form{
 	width: 500px;
 	background: #222222;
 	position: relative;
@@ -214,7 +214,7 @@ div.form h1 {
 	border-top: 1px solid #161712;
 }
 
-div.form label {
+div.form label{
 	width: 100%;
 	display: block;
 	background: #1C1C1C;
@@ -223,7 +223,7 @@ div.form label {
 	padding: 10px 0 10px 0;
 }
 
-div.form label span {
+div.form label span{
 	display: block;
 	color: #bbbbbb;
 	font-size: 12px;

@@ -16,12 +16,15 @@ public class DataAccessHelper {
 
 	Statement stmt = null;
 	ResultSet rs = null;
-	private static Connection con;
+	private static Connection con = null;
 
 	private static void openConnection(){
 		try {
-			Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
-			con = DriverManager.getConnection("jdbc:odbc:MYSQL64");
+			if(con == null || (con!=null && con.isClosed()))
+			{
+				Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+				con = DriverManager.getConnection("jdbc:odbc:MYSQL64");
+			}
 		}catch (SQLException e){			
 			System.out.println(e.getMessage());
 		}catch (Exception ex) {
@@ -30,7 +33,7 @@ public class DataAccessHelper {
 		System.out.println("Connected!");
 	}
 
-	private static void closeConnection(){
+	public static void closeConnection(){
 		try{
 			if(con != null && !con.isClosed()){
 				con.close();

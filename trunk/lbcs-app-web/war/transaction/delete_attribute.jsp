@@ -14,5 +14,5 @@
 	ServiceID serviceId = new ServiceID(sId);
 	ServiceItemID itemId = new ServiceItemID(iId);
 	controller.deleteItemAttribute(serviceId, itemId, attributeId);
-	response.sendRedirect("deletion_successfull.jsp");
+	response.sendRedirect("deletion_successfull.jsp?status=true");
 %>

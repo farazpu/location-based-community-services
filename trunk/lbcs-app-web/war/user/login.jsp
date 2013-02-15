@@ -1,3 +1,5 @@
+<%@page import="net.fast.lbcs.admin.controller.HttpAdminController"%>
+<%@page import="net.fast.lbcs.data.entities.UserLoginData"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="net.fast.lbcs.data.InMemoryDebugFacade"%>
 <%@page import="net.fast.lbcs.*"%>
@@ -17,17 +19,23 @@
 <% 
 	Serializer serializer = new Persister();
 	List<LocationService> serviceList;
-	LocationServices locationServices = new LocationServices();
+	List<Validation> validations;
+	UserLoginData userLoginData = new UserLoginData();
+	
+	AdminController adminController = new HttpAdminController(request);
 	UserController userController = new HttpControllerFactory((HttpServletRequest) request).getUserController();
 	if(userController.login(request.getParameter("username"), request.getParameter("password"), null)) {
-		serviceList= new ArrayList<LocationService>(InMemoryDebugFacade.getLocationServices());
- 		locationServices.setValidation(true);
+		serviceList= InMemoryDebugFacade.getLocationServices();
+		validations = adminController.getAllValidations();
+ 		userLoginData.setError(false);
 	}
 	else {
 		serviceList=new ArrayList<LocationService>();
-		locationServices.setValidation(false);
+		validations = new ArrayList<Validation>();
+		userLoginData.setError(true);
 	}
-	locationServices.setLocationServices(serviceList);
-	serializer.write(locationServices, response.getWriter());
+	userLoginData.setLocationServices(serviceList);
+	userLoginData.setValiations(validations);
+	serializer.write(userLoginData, response.getWriter());
 	
 %>

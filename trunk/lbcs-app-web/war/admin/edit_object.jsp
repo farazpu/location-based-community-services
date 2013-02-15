@@ -62,7 +62,7 @@
 					<input type="text" value="<%=si.getName() %>" class="input_text" name="object_name" id="Service_name"/>
 				</label>
 				<label>
-					<span>Description</span>
+					<span>Description:</span>
 					<textarea class="message" name="description" id="description"><%=si.getDescription() %></textarea>
 				</label>
 				<label>

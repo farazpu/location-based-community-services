@@ -18,9 +18,20 @@
 
 
 <body>
+	 	<% if(request.getParameter("status").equals("true")) 
+	 	{
+	 	%>
+	 	 Deletion Successfull!!
+	 	<%
+	 	}
+	 	else
+	 	{
+	 	%>
+	 	 Deletion failed! validation is in use.
+	 	<%
+	 	}
+	 	%>
 	 	
-	 	Deletion Successfull!!!
-		
 		
 </body>
 </html>

@@ -7,20 +7,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.FetchOptions;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
-import com.google.appengine.api.datastore.Query.Filter;
-import com.google.appengine.api.datastore.Query.FilterOperator;
-import com.google.appengine.api.datastore.Query.FilterPredicate;
-import com.google.protos.cloud.sql.Client.SqlException;
 
 import net.fast.lbcs.data.entities.MyDate;
+import net.fast.lbcs.data.entities.ValidationTypeDetail;
 import net.fast.lbcs.data.entities.admin.Administrator;
 import net.fast.lbcs.data.entities.admin.group.ServiceItemGroup;
 import net.fast.lbcs.data.entities.admin.group.ServiceItemGroupID;
@@ -28,6 +17,7 @@ import net.fast.lbcs.data.entities.admin.item.ServiceItem;
 import net.fast.lbcs.data.entities.admin.item.ServiceItemAttribute;
 import net.fast.lbcs.data.entities.admin.item.ServiceItemAttributes;
 import net.fast.lbcs.data.entities.admin.item.ServiceItemID;
+import net.fast.lbcs.data.entities.admin.item.Validation;
 import net.fast.lbcs.data.entities.admin.service.LocationService;
 import net.fast.lbcs.data.entities.admin.service.ServiceID;
 import net.fast.lbcs.data.entities.user.Location;
@@ -37,7 +27,6 @@ import net.fast.lbcs.data.entities.user.ProductID;
 import net.fast.lbcs.data.entities.user.ProductReview;
 import net.fast.lbcs.data.entities.user.User;
 import net.fast.lbcs.data.entities.user.UserSettings;
-import net.fast.lbcs.memcache.Memcache;
 
 class InMemoryDataSource implements DataSource {
 		
@@ -82,6 +71,8 @@ class InMemoryDataSource implements DataSource {
 		final static String C_NAME = "attribute_name";
 		final static String C_TYPE = "attribute_type";
 		final static String C_FLAG = "attribute_display_flag";
+		final static String C_VALIDATION_ID = "attribute_validation_id";
+		final static String C_CONTEXT_ID = "attribute_context_id";
 	}
 
 	private interface TblProduct{
@@ -100,19 +91,9 @@ class InMemoryDataSource implements DataSource {
 		final static String TABLE_NAME = "validity_rule";
 		final static String C_ID = "val_rule_id";
 		final static String C_NAME = "val_rule_name";
-		final static String C_DESCRIPTION = "val_rule_description";
 		final static String C_TYPE = "val_rule_type";
-		final static String C_PARAMS_REQUIRED = "val_rule_param_req";
-	}
-
-	private interface TblValidation{
-		final static String TABLE_NAME = "attribute_validation";
-		final static String C_ATTRIBUTE_ID = "validation_attribute_id";
-		final static String C_ITEM_ID = "validation_item_id";
-		final static String C_SERVICE_ID = "validation_service_id";
-		final static String C_RULE_ID = "validation_rule_id";
-		final static String C_PARAM2 = "validation_param1";
-		final static String C_PARAM1 = "validation_param2";
+		final static String C_PARAM1 = "param1";
+		final static String C_PARAM2 = "param2";
 	}
 
 	private interface TblValues{
@@ -150,16 +131,19 @@ class InMemoryDataSource implements DataSource {
 	
 	
 	private static List<Administrator> admins = new ArrayList<Administrator>();
-	private static List<LocationService> locationServices = new ArrayList<LocationService>();
-
 	private static List<User> users = new ArrayList<User>();
-	private static List<Product> products = new ArrayList<Product>();
+	private static List<Validation> validations = new ArrayList<Validation>();
+	private static List<ValidationTypeDetail> validationTypeDetailList = new ArrayList<ValidationTypeDetail>();
+	
 	
 	static {
 		createTestData();
 	}
 	
-
+	public static List<User> getUsers() {
+		return users;
+	}
+	
 	public static List<Administrator> getAdmins() {
 		return admins;
 	}
@@ -185,13 +169,6 @@ class InMemoryDataSource implements DataSource {
 		return locationServices;
 	}
 
-	public static List<User> getUsers() {
-		return users;
-	}
-
-	public static List<Product> getProducts() {
-		return products;
-	}
 
 	private static Administrator createAdmin(String id, String password) {
 		return new Administrator(id, password);
@@ -202,48 +179,234 @@ class InMemoryDataSource implements DataSource {
 		
 		createUsers();
 		createAdmins();
-		
-		createProducts();
+		loadValidations();
+		fillValidationTypeDetailList();
 	}
 
-	private static void createProducts() {
+	private static void fillValidationTypeDetailList() {
+		String validationHTML;
+		ValidationTypeDetail vtd = new ValidationTypeDetail();
+		vtd.setType("Numeric Equal");
+		vtd.setParamsRequired(1);
+		validationHTML = "<lable><span>Parameter1:</span><input type='text' value='' class='input_text' name='param1' id='param1'/></lable>";
+		vtd.setParamInputHTML(validationHTML);
+		validationTypeDetailList.add(vtd);
+
+		vtd = new ValidationTypeDetail();
+		vtd.setType("Numeric Greater");
+		vtd.setParamsRequired(1);
+		validationHTML = "<lable><span>Parameter1:</span><input type='text' value='' class='input_text' name='param1' id='param1'/></lable>";
+		vtd.setParamInputHTML(validationHTML);
+		validationTypeDetailList.add(vtd);
+
+		vtd = new ValidationTypeDetail();
+		vtd.setType("Numeric Smaller");
+		vtd.setParamsRequired(1);
+		validationHTML = "<lable><span>Parameter1:</span><input type='text' value='' class='input_text' name='param1' id='param1'/></lable>";
+		vtd.setParamInputHTML(validationHTML);
+		validationTypeDetailList.add(vtd);
+
+		vtd = new ValidationTypeDetail();
+		vtd.setType("Numeric Between");
+		vtd.setParamsRequired(2);
+		validationHTML = "<lable><span>Parameter1:</span><input type='text' value='' class='input_text' name='param1' id='param1'/></lable>";
+		validationHTML += "<lable><span>Parameter2:</span><input type='text' value='' class='input_text' name='param2' id='param2'/></lable>";
+		vtd.setParamInputHTML(validationHTML);
+		validationTypeDetailList.add(vtd);
+
+		vtd = new ValidationTypeDetail();
+		vtd.setType("Numeric GreaterEqual");
+		vtd.setParamsRequired(1);
+		validationHTML = "<lable><span>Parameter1:</span><input type='text' value='' class='input_text' name='param1' id='param1'/></lable>";
+		vtd.setParamInputHTML(validationHTML);
+		validationTypeDetailList.add(vtd);
+
+		vtd = new ValidationTypeDetail();
+		vtd.setType("Numeric LesserEqual");
+		vtd.setParamsRequired(1);
+		validationHTML = "<lable><span>Parameter1:</span><input type='text' value='' class='input_text' name='param1' id='param1'/></lable>";
+		vtd.setParamInputHTML(validationHTML);
+		validationTypeDetailList.add(vtd);
+
+		vtd = new ValidationTypeDetail();
+		vtd.setType("Numeric NotEqual");
+		vtd.setParamsRequired(1);
+		validationHTML = "<lable><span>Parameter1:</span><input type='text' value='' class='input_text' name='param1' id='param1'/></lable>";
+		vtd.setParamInputHTML(validationHTML);
+		validationTypeDetailList.add(vtd);
+
+		vtd = new ValidationTypeDetail();
+		vtd.setType("Numeric BetweenInclusive");
+		vtd.setParamsRequired(2);
+		validationHTML = "<lable><span>Parameter1:</span><input type='text' value='' class='input_text' name='param1' id='param1'/></lable>";
+		validationHTML += "<lable><span>Parameter2:</span><input type='text' value='' class='input_text' name='param2' id='param2'/></lable>";
+		vtd.setParamInputHTML(validationHTML);
+		validationTypeDetailList.add(vtd);
+
+		vtd = new ValidationTypeDetail();
+		vtd.setType("Numeric Positive");
+		vtd.setParamsRequired(0);
+		vtd.setParamInputHTML(validationHTML);
+		validationTypeDetailList.add(vtd);
+
+		vtd = new ValidationTypeDetail();
+		vtd.setType("Numeric Negative");
+		vtd.setParamsRequired(0);
+		vtd.setParamInputHTML(validationHTML);
+		validationTypeDetailList.add(vtd);
+
+		vtd = new ValidationTypeDetail();
+		vtd.setType("Numeric NonNegative");
+		vtd.setParamsRequired(0);
+		vtd.setParamInputHTML(validationHTML);
+		validationTypeDetailList.add(vtd);
+
+		vtd = new ValidationTypeDetail();
+		vtd.setType("String StartsWith");
+		vtd.setParamsRequired(1);
+		validationHTML = "<lable><span>Parameter1:</span><input type='text' value='' class='input_text' name='param1' id='param1'/></lable>";
+		vtd.setParamInputHTML(validationHTML);
+		validationTypeDetailList.add(vtd);
+
+		vtd = new ValidationTypeDetail();
+		vtd.setType("String EndsWith");
+		vtd.setParamsRequired(1);
+		validationHTML = "<lable><span>Parameter1:</span><input type='text' value='' class='input_text' name='param1' id='param1'/></lable>";
+		vtd.setParamInputHTML(validationHTML);
+		validationTypeDetailList.add(vtd);
+
+		vtd = new ValidationTypeDetail();
+		vtd.setType("String Equals");
+		vtd.setParamsRequired(1);
+		validationHTML = "<lable><span>Parameter1:</span><input type='text' value='' class='input_text' name='param1' id='param1'/></lable>";
+		vtd.setParamInputHTML(validationHTML);
+		validationTypeDetailList.add(vtd);
+
+		vtd = new ValidationTypeDetail();
+		vtd.setType("String Contains");
+		vtd.setParamsRequired(1);
+		validationHTML = "<lable><span>Parameter1:</span><input type='text' value='' class='input_text' name='param1' id='param1'/></lable>";
+		vtd.setParamInputHTML(validationHTML);
+		validationTypeDetailList.add(vtd);
+
+		vtd = new ValidationTypeDetail();
+		vtd.setType("String LengthEquals");
+		vtd.setParamsRequired(1);
+		validationHTML = "<lable><span>Parameter1:</span><input type='text' value='' class='input_text' name='param1' id='param1'/></lable>";
+		vtd.setParamInputHTML(validationHTML);
+		validationTypeDetailList.add(vtd);
+
+		vtd = new ValidationTypeDetail();
+		vtd.setType("String LengthGreater");
+		vtd.setParamsRequired(1);
+		validationHTML = "<lable><span>Parameter1:</span><input type='text' value='' class='input_text' name='param1' id='param1'/></lable>";
+		vtd.setParamInputHTML(validationHTML);
+		validationTypeDetailList.add(vtd);
+
+		vtd = new ValidationTypeDetail();
+		vtd.setType("String LengthLess");
+		vtd.setParamsRequired(1);
+		validationHTML = "<lable><span>Parameter1:</span><input type='text' value='' class='input_text' name='param1' id='param1'/></lable>";
+		vtd.setParamInputHTML(validationHTML);
+		validationTypeDetailList.add(vtd);
+
+		vtd = new ValidationTypeDetail();
+		vtd.setType("String LengthBetween");
+		vtd.setParamsRequired(2);
+		validationHTML = "<lable><span>Parameter1:</span><input type='text' value='' class='input_text' name='param1' id='param1'/></lable>";
+		validationHTML += "<lable><span>Parameter2:</span><input type='text' value='' class='input_text' name='param2' id='param2'/></lable>";
+		vtd.setParamInputHTML(validationHTML);
+		validationTypeDetailList.add(vtd);
+
+		vtd = new ValidationTypeDetail();
+		vtd.setType("String RegEx");
+		vtd.setParamsRequired(1);
+		validationHTML = "<lable><span>Parameter1:</span><input type='text' value='' class='input_text' name='param1' id='param1'/></lable>";
+		vtd.setParamInputHTML(validationHTML);
+		validationTypeDetailList.add(vtd);
 		
-		
-		int x=2;
-		for (LocationService locationService : locationServices) {
-			List<ServiceItem> items = locationService.getItems();
-			for (ServiceItem serviceItem : items) {
-				for (int i = 0; i < x; i++) {
-					Location location = null;
-					if("Lahore".equals(locationService.getName())) {
-						location = new Location(31.575-0.1*i, 74.3269+0.1*i);
-					} else if("Karachi".equals(locationService.getName())) {
-						location = new Location(24.8508-0.1*i, 67.0181+0.1*i);
-					} else if("Pishawar".equals(locationService.getName())) {
-						location = new Location(33.9959-0.1*i, 71.5526+0.1*i);
-					} else if("Islamabad".equals(locationService.getName())) {
-						location = new Location(33.6720-0.1*i, 73.0439+0.1*i);
-					} else if("Sahiwal".equals(locationService.getName())) {
-						location = new Location(30.6586-0.1*i, 73.0898+0.1*i);
-					} else if("Multan".equals(locationService.getName())) {
-						location = new Location(30.1832-0.1*i, 71.4805+0.1*i);
-						
-					}
-					products.add(createProduct(serviceItem.getName() + " " + locationService.getName()  + " " + i, serviceItem, (i * 3) + 5, (i * 3) + 3, location));
-					
-				}
-			}
-			x++;
+		vtd = new ValidationTypeDetail();
+		vtd.setType("Logical And");
+		vtd.setParamsRequired(2);
+		validationHTML = "<lable><span>Parameter1:</span><select name='param1'>";
+		for(Validation v : validations){
+			validationHTML += "<option value='" + v.getId() + "'>" + v.getName() + "</option>";
 		}
+		validationHTML+="</select></lable>";
+		validationHTML = "<lable><span>Parameter2:</span><select name='param2'>";
+		for(Validation v : validations){
+			validationHTML += "<option value='" + v.getId() + "'>" + v.getName() + "</option>";
+		}
+		validationHTML+="</select></lable>";
+		vtd.setParamInputHTML(validationHTML);
+		validationTypeDetailList.add(vtd);
+		
+		vtd = new ValidationTypeDetail();
+		vtd.setType("Logical Or");
+		vtd.setParamsRequired(2);
+		validationHTML = "<lable><span>Parameter1:</span><select name='param1'>";
+		for(Validation v : validations){
+			validationHTML += "<option value='" + v.getId() + "'>" + v.getName() + "</option>";
+		}
+		validationHTML += "</select></lable>";
+		validationHTML += "<lable><span>Parameter2:</span><select name='param2'>";
+		for(Validation v : validations){
+			validationHTML += "<option value='" + v.getId() + "'>" + v.getName() + "</option>";
+		}
+		validationHTML+="</select></lable>";
+		vtd.setParamInputHTML(validationHTML);
+		validationTypeDetailList.add(vtd);
+		
+		vtd = new ValidationTypeDetail();
+		vtd.setType("Logical Not");
+		vtd.setParamsRequired(1);
+		validationHTML = "<lable><span>Parameter1:</span><select name='param1'>";
+		for(Validation v : validations){
+			validationHTML += "<option value='" + v.getId() + "'>" + v.getName() + "</option>";
+		}
+		validationHTML+="</select></lable>";
+		vtd.setParamInputHTML(validationHTML);
+		validationTypeDetailList.add(vtd);
+		
+
+
+
 	}
 
-	private static Product createProduct(String name, ServiceItem serviceItem, int price, int distance, Location location) {
-		List<ProductAttribute> attrs = new ArrayList<ProductAttribute>();
-		List<ProductReview> rvs = new ArrayList<ProductReview>();
-		Product p = new Product(new ProductID(name + "-id"), name, serviceItem, price, 0, distance, location, attrs, 0, rvs);
-		p.initAttributesWithDefaultValues();
-		return p;
+	private static void loadValidations() {
+		
+		String query = "select * from " + TblValidityRule.TABLE_NAME;
+		
+		try{
+			ResultSet rs = DataAccessHelper.executeQuery(query);
+			while(rs!=null && rs.next()){
+				List <String> params = new ArrayList<String>();
+				Validation v = new Validation();
+				v.setId(rs.getString(TblValidityRule.C_ID));
+				v.setName(rs.getString(TblValidityRule.C_NAME));
+				v.setType(rs.getString(TblValidityRule.C_TYPE));
+				params.add(rs.getString(TblValidityRule.C_PARAM1));
+				params.add(rs.getString(TblValidityRule.C_PARAM2));
+				v.setParams(params);
+				String description = v.getName() + " " + v.getType();
+				for(int i=0;i<2;i++){
+					String param = params.get(i);
+					if(param==null || "".equals(param))
+						break;
+					else
+						description = description + ", " + param;
+				}
+				
+				v.setDescription(description);
+				validations.add(v);
+			}
+		}catch(SQLException e){
+			System.out.println(e.getMessage());
+		}
+		
 	}
+
+
 
 	private static void createUsers() {
 		
@@ -318,20 +481,6 @@ class InMemoryDataSource implements DataSource {
 		return group;
 	}
 
-/*	private static List<ServiceItem> createItems(List<ServiceItemGroup> groups) {
-		
-		List<ServiceItem> items = new ArrayList<ServiceItem>();
-		
-		items.add(createItem("Burger", groups.get(0)));
-		items.add(createItem("Pizza", groups.get(0)));
-		items.add(createItem("Chaat", groups.get(0)));
-		
-		items.add(createItem("Shirt", groups.get(1)));
-		items.add(createItem("Pants", groups.get(1)));
-		
-		return items;
-	}
-*/
 	@Override
 	public ServiceItem createItem(ServiceID serviceId, String name, 
 			String description, ServiceItemGroupID serviceItemGroupId) {
@@ -364,7 +513,7 @@ class InMemoryDataSource implements DataSource {
 	}
 
 	@Override
-	public ServiceItemAttribute createItemAttribute(String name, String type, 
+	public ServiceItemAttribute createItemAttribute(String name, String type, String ruleId, 
 			String flag, ServiceID serviceId, ServiceItemID itemId) {
 		
 		MyDate cDate = new MyDate(new Date());
@@ -384,13 +533,13 @@ class InMemoryDataSource implements DataSource {
 		
 		String insertSql = "insert into " + TblAttribute.TABLE_NAME + " (" + TblAttribute.C_ID + ","
 				+ TblAttribute.C_NAME + "," + TblAttribute.C_TYPE + "," + TblAttribute.C_FLAG 
-				+ "," + TblAttribute.C_ITEM_ID + "," + TblAttribute.C_SERVICE_ID + ") values ('"
-				+ id + "','" + name + "','" + type + "','" + flag + "','" 
-				+ itemId.getId() + "','" + serviceId.getId() + "')";
+				+ "," + TblAttribute.C_ITEM_ID + "," + TblAttribute.C_SERVICE_ID + ","
+				+ TblAttribute.C_VALIDATION_ID + ") values ('" + id + "','" + name + "','" 
+				+type + "','" + flag + "','" + itemId.getId() + "','" + serviceId.getId() + "','" + ruleId +"')";
 
 		DataAccessHelper.UpdateQuery(insertSql);
 		
-		return new ServiceItemAttribute(id, name, " ", type, " ", flag); 
+		return new ServiceItemAttribute(id, name, ruleId, type, " ", flag); 
 	}
 	
 	
@@ -406,11 +555,9 @@ class InMemoryDataSource implements DataSource {
 		System.out.println("========== Admins ==========");
 		System.out.println(admins);
 		System.out.println("========== Location Services ==========");
-		System.out.println(locationServices);
 		System.out.println("========== Users ==========");
 		System.out.println(users);
 		System.out.println("========== Products ==========");
-		System.out.println(products);
 		
 	}
 
@@ -470,7 +617,6 @@ class InMemoryDataSource implements DataSource {
 				ls.setLastModified(new MyDate(rs.getString(TblService.C_MODIFIED_DATE)));
 				ls.setGroups(getAllServiceGroupsByServiceID(serviceId));
 				ls.setItems(getAllServiceItemsByServiceID(serviceId, ls.getGroups()));
-				
 			}
 		}catch(SQLException ex){
 			System.out.println(ex.getMessage());
@@ -550,6 +696,10 @@ class InMemoryDataSource implements DataSource {
 				attr.setName(rs.getString(TblAttribute.C_NAME));
 				attr.setType(rs.getString(TblAttribute.C_TYPE));
 				attr.setFlag(rs.getString(TblAttribute.C_FLAG));
+				attr.setValidation(rs.getString(TblAttribute.C_VALIDATION_ID));
+				if(attr.getValidation()==null || "".equals(attr.getValidation())){
+					attr.setValidation("None");
+				}
 
 				attrs.add(attr);
 				
@@ -588,9 +738,6 @@ class InMemoryDataSource implements DataSource {
 		query = "delete from " + TblReviewValues.TABLE_NAME + " where " +TblReviewValues.C_SERVICE_ID +"='"+id +"'";
 		DataAccessHelper.UpdateQuery(query);
 		
-		query = "delete from " + TblValidation.TABLE_NAME + " where " +TblValidation.C_SERVICE_ID +"='"+id +"'";
-		DataAccessHelper.UpdateQuery(query);
-				
 		query = "delete from " + TblValues.TABLE_NAME + " where " +TblValues.C_SERVICE_ID +"='"+id +"'";
 		DataAccessHelper.UpdateQuery(query);
 		
@@ -652,11 +799,7 @@ class InMemoryDataSource implements DataSource {
 		query = "delete from " + TblReviewValues.TABLE_NAME + " where " + TblReviewValues.C_ITEM_ID + "='" + id
 				+ "' and " + TblReviewValues.C_SERVICE_ID + "='" + serviceId.getId() + "'";
 		DataAccessHelper.UpdateQuery(query);
-		
-		query = "delete from " + TblValidation.TABLE_NAME + " where " + TblValidation.C_ITEM_ID + "='" + id
-				+ "' and " + TblValidation.C_SERVICE_ID + "='" + serviceId.getId() + "'";
-		DataAccessHelper.UpdateQuery(query);
-		
+				
 		query = "delete from " + TblValues.TABLE_NAME + " where " + TblValues.C_ITEM_ID + "='" + id
 				+ "' and " + TblValues.C_SERVICE_ID + "='" + serviceId.getId() + "'";
 		DataAccessHelper.UpdateQuery(query);
@@ -672,11 +815,6 @@ class InMemoryDataSource implements DataSource {
 		String query = "delete from " + TblAttribute.TABLE_NAME + " where " + TblAttribute.C_ID + "='" + id 
 				+"' and " + TblAttribute.C_ITEM_ID + "='" + itemId.getId() + "' and " + TblAttribute.C_SERVICE_ID
 				+ "='" + serviceId.getId() + "'";
-		DataAccessHelper.UpdateQuery(query);
-		
-		query = "delete from " + TblValidation.TABLE_NAME + " where " +TblValidation.C_ATTRIBUTE_ID + "='"
-				+ id + "' and " + TblValidation.C_ITEM_ID + "='" + itemId.getId() + "' and " +
-				TblValidation.C_SERVICE_ID + "='" + serviceId.getId() + "'";
 		DataAccessHelper.UpdateQuery(query);
 		
 		query = "delete from " + TblReviewValues.TABLE_NAME + " where " +TblReviewValues.C_ATTRIBUTE_ID + "='"
@@ -795,7 +933,7 @@ class InMemoryDataSource implements DataSource {
 
 	@Override
 	public ServiceItemAttribute editAttribute(String attributeId, String name,
-			String type, String flag, ServiceID serviceId, ServiceItemID itemId) {
+			String type, String flag, ServiceID serviceId, ServiceItemID itemId, String ruleId) {
 
 		String duplicateQuery = "select * from " + TblAttribute.TABLE_NAME + " where " + TblAttribute.C_NAME 
 				+ " = '" + name +"' and " + TblAttribute.C_SERVICE_ID + "='"+serviceId.getId() 
@@ -813,14 +951,250 @@ class InMemoryDataSource implements DataSource {
 		}
 		
 		String query = "update " + TblAttribute.TABLE_NAME + " set " + TblAttribute.C_NAME + " = '" + name
-				+ "', " + TblAttribute.C_TYPE + "='" + type + "',  " + TblAttribute.C_FLAG + "='" + flag
-				+ "' where " + TblAttribute.C_ITEM_ID +"='" + itemId.getId() + "' and "
+				+ "', " + TblAttribute.C_TYPE + "='" + type + "',  " + TblAttribute.C_FLAG + "='" + flag + "', "
+				+ TblAttribute.C_VALIDATION_ID+"='"+ruleId + "' where " + TblAttribute.C_ITEM_ID +"='" + itemId.getId() + "' and "
 				+ TblAttribute.C_SERVICE_ID + "='" + serviceId.getId() + "' and " + TblAttribute.C_ID 
 				+ "='" + attributeId + "'";
 
 		DataAccessHelper.UpdateQuery(query);
 		
-		return new ServiceItemAttribute(attributeId, name, " ", type, " ", flag); 
+		return new ServiceItemAttribute(attributeId, name, ruleId, type, " ", flag); 
+	}
+
+	@Override
+	public Product createProduct(ServiceID serviceId,
+			ServiceItemID serviceItemId, ProductID productId,
+			Location location, List<ProductAttribute> attrList, String productName) {
+		
+		String query = "insert into " + TblProduct.TABLE_NAME + " (" + TblProduct.C_ID + ", "
+				+ TblProduct.C_ITEM_ID + ", " + TblProduct.C_SERVICE_ID + ", " + TblProduct.C_NAME
+				+ ", " + TblProduct.C_X_POSITION + ", " + TblProduct.C_Y_POSITION + ", "
+				+ TblProduct.C_RATING + ", " + TblProduct.C_COUNT_RATING + ") values ('" + productId.getId()
+				+ "','" + serviceItemId.getId() + "','" + serviceId.getId() + "','" + productName
+				+ "','" + location.getLon() + "','" + location.getLat() + "','0','0')";
+		DataAccessHelper.UpdateQuery(query);
+		
+		
+		for(ProductAttribute pa : attrList) {
+			String valQuery = "insert into "+ TblValues.TABLE_NAME + " (" + TblValues.C_SERVICE_ID
+				+ ", " + TblValues.C_ITEM_ID + ", " +TblValues.C_ATTRIBUTE_ID + ", "
+				+ TblValues.C_PRODUCT_ID + ", " + TblValues.C_VALUE + ") values ('" +serviceId.getId()
+				+ "','" + serviceItemId.getId() + "','" + pa.getKey() + "','" + productId.getId()
+				+ "','" + pa.getValue() + "')";
+			DataAccessHelper.UpdateQuery(valQuery);
+		}
+		
+		return null;
+	}
+	
+	
+	
+	public static ServiceItem getItemById(String serviceId, String itemId){
+		try{
+			String itemQuery = "select * from " + TblItem.TABLE_NAME + " where " + TblItem.C_SERVICE_ID 
+					+ "= '" + serviceId + "' and " + TblItem.C_ID + "='" + itemId + "'";
+			ResultSet rs = DataAccessHelper.executeQuery(itemQuery);
+			while(rs!=null && rs.next()){
+				ServiceItem si = new ServiceItem();
+				si.setId(new ServiceItemID(rs.getString(TblItem.C_ID)));
+				si.setDescription(rs.getString(TblItem.C_DESCRIPTION));
+				si.setDateModified(new MyDate(rs.getString(TblItem.C_MODIFIED_DATE)));
+				si.setName(rs.getString(TblItem.C_NAME));
+				String gid = rs.getString(TblItem.C_GROUP_ID);
+				si.setAttrs(getItemAttributes(new ServiceID(serviceId),new ServiceItemID(itemId)));
+
+				
+				String query = "select * from " + TblGroup.TABLE_NAME + " where " + TblGroup.C_SERVICE_ID 
+						+ " = '" + serviceId + "' and " + TblGroup.C_ID + "='" + gid + "'";
+				ResultSet rs1 = DataAccessHelper.executeQuery(query);
+				ServiceItemGroup group = new ServiceItemGroup();
+				if(rs!=null && rs.next()){
+					group.setId(new ServiceItemGroupID(rs1.getString(TblGroup.C_ID)));
+					group.setName(rs1.getString(TblGroup.C_NAME));
+					group.setDescription(rs1.getString(TblGroup.C_DESCRIPTION));
+					group.setDateCreated(new MyDate(rs1.getString(TblGroup.C_CREATION_DATE)));
+					group.setDateModified(new MyDate(rs1.getString(TblGroup.C_MODIFIED_DATE)));
+				}
+				
+				si.setGroup(group);
+				
+				return si;
+			}
+		}catch(SQLException ex){
+			System.out.println(ex.getMessage());
+		}
+		return null;
+	}
+	
+	public static List<Product> getProducts(){
+		List<Product> products = new ArrayList<Product>();
+		
+		String query = "select * from " + TblProduct.TABLE_NAME;
+		try{
+			ResultSet rs = DataAccessHelper.executeQuery(query);
+			while(rs!=null && rs.next()){
+				Product p = new Product();
+				p.setId(new ProductID(rs.getString(TblProduct.C_ID)));
+				p.setName(TblProduct.C_NAME);
+				p.setAverageRatting(Integer.parseInt(rs.getString(TblProduct.C_RATING)));
+				p.setLocation(new Location(Integer.parseInt(rs.getString(TblProduct.C_X_POSITION)),
+						Integer.parseInt(rs.getString(TblProduct.C_Y_POSITION))));
+				String serviceId = rs.getString(TblProduct.C_SERVICE_ID);
+				String itemId = rs.getString(TblProduct.C_ITEM_ID);
+				p.setServiceItem(getItemById(serviceId, itemId));
+				
+				
+				List<ProductAttribute> productAttrList = new ArrayList<ProductAttribute>();
+				String attrquery = "select * from " + TblValues.TABLE_NAME + " where "
+					+ TblValues.C_SERVICE_ID + "='" + serviceId + "' and " + TblValues.C_ITEM_ID 
+					+ "='" + itemId + "' and " + TblValues.C_PRODUCT_ID + "='" +p.getId().getId() + "'";
+				ResultSet valResult = DataAccessHelper.executeQuery(attrquery);
+				while(valResult!=null && valResult.next()){
+					ProductAttribute attr = new ProductAttribute(valResult.getString(TblValues.C_ATTRIBUTE_ID), valResult.getString(TblValues.C_VALUE));
+					productAttrList.add(attr);
+				}
+				p.setAttrs(productAttrList);
+				products.add(p);
+			}
+		}catch(SQLException e){
+			System.out.println(e.getMessage());
+		}
+		
+		return products;
+	}
+
+	@Override
+	public Validation createValidation(String name, String type, List<String> params) {
+		
+		String duplicateQuery = "select * from " + TblValidityRule.TABLE_NAME + " where "
+				+ TblValidityRule.C_NAME + " = '" + name + "'";
+		
+		try{
+			ResultSet rs = DataAccessHelper.executeQuery(duplicateQuery);
+			if(rs!=null){
+				if(rs.next()){
+					return null;
+				}
+			}
+		}catch (SQLException e){
+			System.out.println(e.getMessage());
+		}
+		
+		for(int i=params.size(); i<2;i++)
+			params.add("");
+		
+		String id = name+ "-ID" + (new MyDate(new Date()));
+		String sql = "insert into "+ TblValidityRule.TABLE_NAME + "(" + TblValidityRule.C_ID + "," 
+				+ TblValidityRule.C_NAME + "," + TblValidityRule.C_TYPE + "," + TblValidityRule.C_PARAM1
+				+ "," + TblValidityRule.C_PARAM2+ ") values ('" + id + "','" + name + "','" 
+				+ type + "','" + params.get(0) + "','" + params.get(1) + "')";
+		
+		DataAccessHelper.UpdateQuery(sql);
+		
+		String description = name + "=" + type+"(";
+		for(int i=0;i<2;i++){
+			String param = params.get(i);
+			if(param==null || "".equals(param))
+				break;
+			else
+				description = description + "," + param;
+		}
+		Validation v = new Validation(id, name, type, description, params);
+		validations.add(v);
+		return v;
+	}
+
+	@Override
+	public boolean deleteValidation(String validationId) {
+		
+		String checkQuery = "select * from " + TblAttribute.TABLE_NAME + " where " 
+		+ TblAttribute.C_VALIDATION_ID + "='" + validationId + "'";
+		try{
+			ResultSet rs = DataAccessHelper.executeQuery(checkQuery);
+			if(rs!=null && rs.next())
+				return false;
+		}catch(SQLException ex) {
+			System.out.println(ex.getMessage());
+		}
+		
+		String query = "delete from " + TblValidityRule.TABLE_NAME + " where " 
+		+ TblValidityRule.C_ID + "='" + validationId +"'" ;
+		DataAccessHelper.UpdateQuery(query);
+		
+		for(int i=0;i<validations.size();i++){
+			if(validations.get(i).getId().equals(validationId)){
+				validations.remove(i);
+			}
+		}
+		return true;
+		
+	}
+
+	@Override
+	public Validation updateValidation(String validationId, String name,
+			String type, List<String> params) {
+		
+		String duplicateQuery = "select * from " + TblValidityRule.TABLE_NAME + " where " +
+		TblValidityRule.C_NAME + " = '" + name +"'";
+		ResultSet rs = DataAccessHelper.executeQuery(duplicateQuery);
+		try{
+			if(rs!=null){				
+				while(rs!=null && rs.next()){
+					if(!(validationId.equals( rs.getString(TblValidityRule.C_ID))))
+						return null;
+				}
+			}
+		}catch (SQLException e){
+			System.out.println(e.getMessage());
+		}
+
+		String sql = "update "+ TblValidityRule.TABLE_NAME+ " set " + TblValidityRule.C_NAME + "='" 
+				+ name + "'," +TblValidityRule.C_TYPE  + "='" + type 
+				+ "'," + TblValidityRule.C_PARAM1 + "='" + params.get(0) 
+				+ "'," + TblValidityRule.C_PARAM2 + "='" + params.get(1) 
+				+ "' where " + TblValidityRule.C_ID + "='" + validationId + "'";
+		
+		DataAccessHelper.UpdateQuery(sql);
+		
+		String description = name + " " + type;
+		for(int i=0;i<2;i++){
+			String param = params.get(i);
+			if(param==null || "".equals(param))
+				break;
+			else
+				description = description + ", " + param;
+		}
+		
+		for(int i=0 ; i<validations.size();i++){
+			if(validations.get(i).getId().equals(validationId)){
+				validations.remove(i);
+				break;
+			}
+		}
+
+		Validation v = new Validation(validationId, name, type, description, params);
+		validations.add(v);
+		
+		return v;
+	}
+
+	@Override
+	public List<Validation> getAllValidations() {
+		return validations;
+	}
+
+	@Override
+	public Validation getValidationById(String validationId) {
+		for(Validation v : validations){
+			if(v.getId().equals(validationId))
+				return v;
+		}
+		return null;
+	}
+
+	@Override
+	public List<ValidationTypeDetail> getValidationTypeDetails() {
+		return validationTypeDetailList;
 	}
 	
 }

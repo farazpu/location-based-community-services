@@ -79,17 +79,17 @@
 						<option <%= attr.getType().equals("string")? "selected='selected'":"" %>>string</option>
 					</select>
 				</label>
-<!-- 				<label>
+ 				<label>
 					<span>Validation</span>
-					<select class="input_text" value = "(-inJSP=-attr.getValidation() %>" name="validation" id="validation"  >
-						<option>None</option>
-						<option>Negative</option>
-						<option>Non-negative</option>
-						<option>Validation 1</option>
-						<option>My Validation</option>
+					<select class="input_text" value = "<%=attr.getValidation() %>" name="validation" id="validation">
+						<option <%=attr.getValidation().equals("None")?" selected='selected'":"" %>>None</option>
+						<option <%=attr.getValidation().equals("Negative")?" selected='selected'":"" %>>Negative</option>
+						<option <%=attr.getValidation().equals("Non-Negative")?" selected='selected'":"" %>>Non-negative</option>
+						<option <%=attr.getValidation().equals("Validation 1")?" selected='selected'":"" %>>Validation 1</option>
+						<option <%=attr.getValidation().equals("My Validation")?" selected='selected'":"" %>>My Validation</option>
 					</select>
 				</label>
-				<label>
+<!--				<label>
 					<span>Context</span>
 					<select class="input_text" name="context" id="context" value = "(-inJSP=-attr.getContext() %>">
 						<option>Irrelevant</option>
