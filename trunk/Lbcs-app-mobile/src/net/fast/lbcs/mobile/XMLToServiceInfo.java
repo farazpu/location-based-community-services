@@ -17,6 +17,7 @@ import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 
 public abstract class XMLToServiceInfo  extends AsyncTask<String, Void, ServiceInfo> {
@@ -32,6 +33,7 @@ public abstract class XMLToServiceInfo  extends AsyncTask<String, Void, ServiceI
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Log.d("111exception", e.getMessage());
 		}
 		return serviceInfo;
 	}
