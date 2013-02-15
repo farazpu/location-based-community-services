@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.fast.lbcs.data.entities.admin.group.ServiceItemGroup;
 import net.fast.lbcs.data.entities.admin.item.ServiceItem;
+import net.fast.lbcs.data.entities.admin.item.Validation;
 import net.fast.lbcs.data.entities.admin.service.LocationService;
 import net.fast.lbcs.data.entities.admin.service.ServiceInfo;
 import net.fast.lbcs.data.entities.user.Product;
@@ -12,6 +13,7 @@ import net.fast.lbcs.data.entities.user.Product;
 public class CurrentServiceInfo {
 
 	public static ServiceInfo currentServiceInfo;
+	public static List<Validation> validations;
 	public static String XMLServiceInfo;
 	
 
@@ -73,6 +75,19 @@ public class CurrentServiceInfo {
 
 	public static List<ServiceItemGroup> getGroupList() {
 		return currentServiceInfo.getLocationService().getGroups();
+	}
+	
+	public static List<Validation> getValidations(){
+		return validations;
+	}
+	
+	public static Validation getValidationById(String validationId){
+		for(Validation v : validations){
+			if(v.getId().equals(validationId)){
+				return v;
+			}
+		}
+		return null;
 	}
 	
 

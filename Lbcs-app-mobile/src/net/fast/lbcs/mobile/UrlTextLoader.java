@@ -13,6 +13,7 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 public abstract class UrlTextLoader extends AsyncTask<String, Void, String> {
 
@@ -21,6 +22,7 @@ public abstract class UrlTextLoader extends AsyncTask<String, Void, String> {
 	protected String doInBackground(String... params) {
         HttpClient client = new DefaultHttpClient();
         String url = params[0];
+        Log.d("the url---", url);
 		HttpGet request = new HttpGet(url);
         ResponseHandler<String> responseHandler = new BasicResponseHandler();
         try {

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import net.fast.lbcs.data.entities.UserLoginData;
 import net.fast.lbcs.data.entities.admin.service.LocationService;
-import net.fast.lbcs.data.entities.admin.service.LocationServices;
 import net.fast.lbcs.data.entities.admin.service.ServiceInfo;
 
 import org.simpleframework.xml.Serializer;
@@ -38,7 +38,7 @@ public class ServiceListActivity extends Activity {
     	Serializer serializer = new Persister();
 
         try {
-			LocationServices locationServices = serializer.read(LocationServices.class,  getIntent().getExtras().getString("locationServices"));
+			UserLoginData locationServices = serializer.read(UserLoginData.class,  getIntent().getExtras().getString("locationServices"));
 			serviceList = locationServices.getLocationServices();
 			ArrayList<String> ids=new ArrayList<String>();
 	        for(int i=0;i<serviceList.size();i++)

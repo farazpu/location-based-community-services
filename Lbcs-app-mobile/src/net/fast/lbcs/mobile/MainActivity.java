@@ -7,7 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import net.fast.lbcs.data.entities.Pair;
-import net.fast.lbcs.data.entities.admin.service.LocationServices;
+import net.fast.lbcs.data.entities.UserLoginData;
 import net.fast.lbcs.data.entities.user.ProductResultSet;
 
 import org.apache.http.client.ClientProtocolException;
@@ -69,11 +69,12 @@ public class MainActivity extends Activity {
     	Serializer serializer = new Persister();
 
     	try {
-			LocationServices lss = serializer.read(LocationServices.class, result);
-			if(!lss.isValidation()) {
+			UserLoginData lss = serializer.read(UserLoginData.class, result);
+			if(lss.isError()) {
 				textView1.setText("Login Failed");
 			}
 			else {
+				CurrentServiceInfo.validations = lss.getValidatios();
 				Toast.makeText(this, "going", Toast.LENGTH_LONG).show();
 				Intent intent=new Intent(this,ServiceListActivity.class);
 				intent.putExtra("locationServices", result);
