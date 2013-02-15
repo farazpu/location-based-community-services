@@ -7,6 +7,7 @@ import net.fast.lbcs.data.entities.admin.item.ServiceItemID;
 import net.fast.lbcs.data.entities.admin.service.ServiceID;
 import net.fast.lbcs.data.entities.user.Location;
 import net.fast.lbcs.data.entities.user.Product;
+import net.fast.lbcs.data.entities.user.ProductAttribute;
 import net.fast.lbcs.data.entities.user.ProductID;
 import net.fast.lbcs.data.entities.user.ProductRawData;
 import net.fast.lbcs.data.entities.user.User;
@@ -20,7 +21,8 @@ public abstract class UserController {
 
 	public abstract List<Product> getProductsByServiceId(ServiceID serviceId);
 	public abstract List<Product> getProductsAtLocation(Location location);
-	public abstract Product createNewProductEntry(ServiceItemID serviceItemId, ProductRawData data);
+	public abstract Product createNewProductEntry(ServiceID serviceId, ServiceItemID serviceItemId,
+			ProductID productId, Location location, List<ProductAttribute> attrList, String productName);
 	public abstract Product editProduct(ProductID productId, ProductRawData data);
 	public abstract void deleteProduct(ProductID productId);
 	public abstract void postReview(ProductID productId, int rating, int reviewText);

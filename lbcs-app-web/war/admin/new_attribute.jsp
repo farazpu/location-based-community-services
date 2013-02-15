@@ -56,7 +56,7 @@
 						<option>string</option>
 					</select>
 				</label>
-<!-- 				<label>
+ 				<label>
 					<span>Validation</span>
 					<select class="input_text" name="validation" id="validation"  >
 						<option>None</option>
@@ -66,7 +66,7 @@
 						<option>My Validation</option>
 					</select>
 				</label>
-				<label>
+<!--				<label>
 					<span>Context</span>
 					<select class="input_text" name="context" id="context" >
 						<option>Irrelevant</option>

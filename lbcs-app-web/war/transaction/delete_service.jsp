@@ -10,6 +10,6 @@ AdminController controller = new HttpControllerFactory(request).getAdminControll
 String serviceId = request.getParameter("serviceId");
 ServiceID id = new ServiceID(serviceId);
 controller.deleteService(id);
-response.sendRedirect("deletion_successfull.jsp");
+response.sendRedirect("deletion_successfull.jsp?status=true");
 
 %>

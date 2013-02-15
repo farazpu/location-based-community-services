@@ -12,6 +12,7 @@ import net.fast.lbcs.admin.service.ServiceDeleteException;
 import net.fast.lbcs.admin.service.ServiceEditException;
 import net.fast.lbcs.data.DataSource;
 import net.fast.lbcs.data.DataSourceFactory;
+import net.fast.lbcs.data.entities.ValidationTypeDetail;
 import net.fast.lbcs.data.entities.admin.Administrator;
 import net.fast.lbcs.data.entities.admin.group.ServiceItemGroup;
 import net.fast.lbcs.data.entities.admin.group.ServiceItemGroupID;
@@ -19,6 +20,7 @@ import net.fast.lbcs.data.entities.admin.item.ServiceItem;
 import net.fast.lbcs.data.entities.admin.item.ServiceItemAttribute;
 import net.fast.lbcs.data.entities.admin.item.ServiceItemAttributes;
 import net.fast.lbcs.data.entities.admin.item.ServiceItemID;
+import net.fast.lbcs.data.entities.admin.item.Validation;
 import net.fast.lbcs.data.entities.admin.service.LocationService;
 import net.fast.lbcs.data.entities.admin.service.ServiceID;
 
@@ -159,11 +161,10 @@ public class HttpAdminController extends AdminController{
 
 	@Override
 	public ServiceItemAttribute createItemAttribute(String name, String type,
-			String flag, ServiceID serviceId,
-			ServiceItemID itemId) {
+			String flag, ServiceID serviceId, ServiceItemID itemId, String ruleId) {
 
 		DataSource source = DataSourceFactory.getDataSource();
-		return source.createItemAttribute(name, type, flag, serviceId, itemId);
+		return source.createItemAttribute(name, type, ruleId, flag, serviceId, itemId);
 	}
 
 	@Override
@@ -173,11 +174,43 @@ public class HttpAdminController extends AdminController{
 	}
 
 	@Override
-	public ServiceItemAttribute editAttribute(String AttributeId, String name,
-			String type, String flag,
-			ServiceID serviceId, ServiceItemID itemId) {
+	public ServiceItemAttribute editAttribute(String AttributeId, String name, String ruleId,
+			String type, String flag, ServiceID serviceId, ServiceItemID itemId) {
 		DataSource source = DataSourceFactory.getDataSource();
-		return source.editAttribute(AttributeId, name, type, flag, serviceId, itemId);
+		return source.editAttribute(AttributeId, name, type, flag, serviceId, itemId, ruleId);
+	}
+
+	@Override
+	public Validation createValidation(String name, String type, List<String> params) {
+		// TODO Auto-generated method stub
+		DataSource source = DataSourceFactory.getDataSource();
+		return source.createValidation(name, type, params);
+	}
+
+	@Override
+	public boolean deleteValidation(String validationId) {
+		// TODO Auto-generated method stub
+		DataSource source = DataSourceFactory.getDataSource();
+		return source.deleteValidation(validationId);
+	}
+
+	@Override
+	public Validation updateValidation(String validationId, String name,
+			String type, List<String> params) {
+		DataSource source = DataSourceFactory.getDataSource();
+		return source.updateValidation(validationId, name, type, params);
+	}
+
+	@Override
+	public List<Validation> getAllValidations() {
+		DataSource source = DataSourceFactory.getDataSource();
+		return source.getAllValidations();
+	}
+
+	@Override
+	public List<ValidationTypeDetail> getValidationTypeDetails() {
+		DataSource source = DataSourceFactory.getDataSource();
+		return source.getValidationTypeDetails();
 	}
 	
 	

@@ -14,6 +14,6 @@
 	ServiceID serviceId = new ServiceID(sId);
 	ServiceItemGroupID id = new ServiceItemGroupID(groupId);
 	controller.deleteItemGroup(serviceId, id);
-	response.sendRedirect("deletion_successfull.jsp");
+	response.sendRedirect("deletion_successfull.jsp?status=true");
 
 %>

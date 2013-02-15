@@ -13,12 +13,12 @@
 	ServiceItemID itemId = new ServiceItemID(request.getParameter("objectId"));
 	String name = request.getParameter("attribute_name");
 	String type = request.getParameter("type");
-//	String validation = request.getParameter("validation");
+	String validation = request.getParameter("validation");
 //	String context = request.getParameter("context");
 	String flag = request.getParameter("flag");
 
 	AdminController controller = new HttpControllerFactory(request).getAdminController();
-	ServiceItemAttribute attr = controller.createItemAttribute(name, type, flag, serviceId, itemId);
+	ServiceItemAttribute attr = controller.createItemAttribute(name, type, flag, serviceId, itemId, validation);
 	
 	String msg;
 	if(attr==null){

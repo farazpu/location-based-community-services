@@ -15,6 +15,7 @@ import net.fast.lbcs.data.entities.admin.service.LocationService;
 import net.fast.lbcs.data.entities.admin.service.ServiceID;
 import net.fast.lbcs.data.entities.user.Location;
 import net.fast.lbcs.data.entities.user.Product;
+import net.fast.lbcs.data.entities.user.ProductAttribute;
 import net.fast.lbcs.data.entities.user.ProductID;
 import net.fast.lbcs.data.entities.user.ProductRawData;
 import net.fast.lbcs.data.entities.user.User;
@@ -60,10 +61,11 @@ public class HttpUserController extends UserController{
 	}
 
 	@Override
-	public Product createNewProductEntry(ServiceItemID serviceItemId,
-			ProductRawData data) {
-		// TODO Auto-generated method stub
-		return null;
+	public Product createNewProductEntry(ServiceID serviceId, ServiceItemID serviceItemId,
+			ProductID productId, Location location, List<ProductAttribute> attrList, String productName) {
+		
+		DataSource source = DataSourceFactory.getDataSource();
+		return source.createProduct(serviceId, serviceItemId, productId, location, attrList, productName);
 	}
 
 	@Override
