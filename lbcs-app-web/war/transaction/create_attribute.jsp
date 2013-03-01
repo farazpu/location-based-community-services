@@ -16,17 +16,23 @@
 	String validation = request.getParameter("validation");
 //	String context = request.getParameter("context");
 	String flag = request.getParameter("flag");
-
-	AdminController controller = new HttpControllerFactory(request).getAdminController();
-	ServiceItemAttribute attr = controller.createItemAttribute(name, type, flag, serviceId, itemId, validation);
 	
 	String msg;
-	if(attr==null){
-		msg = "ERROR!! Attribute name '" + name + "' already exists.";
-	}else{
-		msg = "Attribute Created Succesfully!!!";
+	if(name.length()==0){
+		msg = "ERROR!! Attribute name must not be empty";
 	}
+	else{
+		AdminController controller = new HttpControllerFactory(request).getAdminController();
+		ServiceItemAttribute attr = controller.createItemAttribute(name, type, flag, serviceId, itemId, validation);
+		
+		if(attr==null){
+			msg = "ERROR!! Attribute name '" + name + "' already exists.";
+		}else{
+			msg = "Attribute Created Succesfully!!!";
+		}
 
+		
+	}
 	
 	response.sendRedirect("../admin/new_attribute.jsp?objectId=" + itemId.getId() + "&serviceId=" + serviceId.getId() + "&msg=" + msg);
 

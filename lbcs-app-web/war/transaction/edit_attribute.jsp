@@ -18,16 +18,20 @@
 //	String context = request.getParameter("context");
 	String flag = request.getParameter("flag");
 
-	AdminController controller = new HttpControllerFactory(request).getAdminController();
-	ServiceItemAttribute attr = controller.editAttribute(attrId, name, validation, type, flag, serviceId, itemId);
-	
-	String msg;
-	if(attr==null){
-		msg = "ERROR!! Attribute name '" + name + "' already exists.";
-	}else{
-		msg = "Attribute Updated Succesfully!!!";
-	}
 
+	String msg;
+	if(name.length()==0){
+		msg = "ERROR!! Attribute name must not b empty";
+	}
+	else{	
+		AdminController controller = new HttpControllerFactory(request).getAdminController();
+		ServiceItemAttribute attr = controller.editAttribute(attrId, name, validation, type, flag, serviceId, itemId);
+		if(attr==null){
+			msg = "ERROR!! Attribute name '" + name + "' already exists.";
+		}else{
+			msg = "Attribute Updated Succesfully!!!";
+		}
+	}
 	
 	response.sendRedirect("../admin/edit_attribute.jsp?objectId=" + itemId.getId() + "&serviceId=" + serviceId.getId() + "&attribute=" + attrId + "&msg=" + msg);
 

@@ -25,6 +25,8 @@
 <%	
 	String serviceId = request.getParameter("serviceId");
 	String objectId = request.getParameter("objectId");
+	AdminController controller = new HttpControllerFactory(request).getAdminController();
+	List<Validation> validations = controller.getAllValidations();	
 	String title = "New Attribute";
 %>
 		<jsp:include page="title_include.jsp">
@@ -60,10 +62,9 @@
 					<span>Validation</span>
 					<select class="input_text" name="validation" id="validation"  >
 						<option>None</option>
-						<option>Negative</option>
-						<option>Non-negative</option>
-						<option>Validation 1</option>
-						<option>My Validation</option>
+						<% for(Validation v : validations){ %>
+						<option value="<%=v.getId() %>"><%=v.getName() %> </option>
+						<% } %>
 					</select>
 				</label>
 <!--				<label>

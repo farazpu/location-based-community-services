@@ -9,15 +9,19 @@
 
 	String name = request.getParameter("service_name");
 	String description = request.getParameter("description");
-	
-	AdminController controller = new HttpControllerFactory(request).getAdminController();
-	LocationService ls = controller.createService(name, description);
+
 	String msg;
-	if(ls==null){
-		msg = "ERROR!! Service name '" + name + "' already exists.";
-	}else{
-		msg = "Service Created Succesfully!!!";
+	if(name.length()==0){
+		msg = "ERROR!! Service name must not b empty";
 	}
-		
+	else{
+		AdminController controller = new HttpControllerFactory(request).getAdminController();
+		LocationService ls = controller.createService(name, description);
+		if(ls==null){
+			msg = "ERROR!! Service name '" + name + "' already exists.";
+		}else{
+			msg = "Service Created Succesfully!!!";
+		}
+	}		
 	response.sendRedirect("../admin/new_service.jsp?msg=" + msg);
 %>

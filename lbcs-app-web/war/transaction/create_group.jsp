@@ -12,14 +12,20 @@
 	String name = request.getParameter("group_name");
 	String description = request.getParameter("description");
 	
-	AdminController controller = new HttpControllerFactory(request).getAdminController();
-	ServiceItemGroup sig = controller.createItemGroup(serviceId, name, description);
-	
 	String msg;
-	if(sig==null){
-		msg = "ERROR!! Group name '" + name + "' already exists.";
-	}else{
-		msg = "Group Created Succesfully!!!";
+	if(name.length()==0){
+		msg = "ERROR!! Group name must not be empty";		
+	}
+	else{
+		AdminController controller = new HttpControllerFactory(request).getAdminController();
+		ServiceItemGroup sig = controller.createItemGroup(serviceId, name, description);
+		
+		if(sig==null){
+			msg = "ERROR!! Group name '" + name + "' already exists.";
+		}else{
+			msg = "Group Created Succesfully!!!";
+		}
+		
 	}
 	
 	response.sendRedirect("../admin/new_group.jsp?serviceId="+serviceId.getId() + "&msg="+msg);

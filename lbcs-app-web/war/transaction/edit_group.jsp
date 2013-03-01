@@ -13,16 +13,21 @@ ServiceItemGroupID groupId = new ServiceItemGroupID(request.getParameter("groupI
 	String name = request.getParameter("group_name");
 	String description = request.getParameter("description");
 	
-	AdminController controller = new HttpControllerFactory(request).getAdminController();
-	ServiceItemGroup sig = controller.editGroup(groupId, serviceId, name, description);
-	
+
 	String msg;
-	if(sig==null){
-		msg = "ERROR!! Group name '" + name + "' already exists.";
-	}else{
-		msg = "Group Created Succesfully!!!";
+	if(name.length()==0){
+		msg = "ERROR!! Group name must not b empty";
 	}
+	else{
 	
+		AdminController controller = new HttpControllerFactory(request).getAdminController();
+		ServiceItemGroup sig = controller.editGroup(groupId, serviceId, name, description);
+		if(sig==null){
+			msg = "ERROR!! Group name '" + name + "' already exists.";
+		}else{
+			msg = "Group Created Succesfully!!!";
+		}
+	}	
 	response.sendRedirect("../admin/edit_group.jsp?groupId=" + groupId.getId() + "&serviceId=" + serviceId.getId() + "&msg="+msg);
 %>
     

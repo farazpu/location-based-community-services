@@ -30,9 +30,9 @@ for(ServiceItemAttribute sia : attrList){
 UserController userController = new HttpControllerFactory(request).getUserController();
 Product p = userController.createNewProductEntry(serviceId, itemId, productId, l, paList, productName);
 
-if(p==null)
-	response.getWriter().write("Failure!");
-else
-	response.getWriter().write("Product Added Successfully.");
+if(p==null){
+	response.getWriter().write("Failure!"); }
+else{
+	response.getWriter().write("Product Added Successfully."); }
 
 %>
