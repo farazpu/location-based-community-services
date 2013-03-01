@@ -107,28 +107,41 @@ public class AddProductActivity extends Activity {
     	        product.setServiceItem(selectedItem);
     	        
     	        product.setId(new ProductID( product.getName() + new MyDate(new Date())));
-    	        
-    	        String url = "http://"  + TempIP.ip + ":8888/user/add_product.jsp?serviceId=" + CurrentServiceInfo.getLocationService().getId().getId()
-    	        		+ "&itemId=" + selectedItem.getId().getId() + "&name=" + product.getName()
-    	        		+ "&productId" + product.getId().getId();
-    	        for(ProductAttribute pa : attrList ) {
-    	        	url = url + "&" + pa.getKey() + "=" + pa.getValue();
-    	        }
-    	           	UrlTextLoader urlTextLoader = new UrlTextLoader() {
-    				@Override
-    				public void responseComplete(String result) {
-   						Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-    				}
-    			};
-    			urlTextLoader.execute(url);
-    	        
-    	        // send req with productXML and service id
-    	        
+    	        if(doAttrValidation(product)){
+	    	        String url = "http://"  + TempIP.ip + ":8888/user/add_product.jsp?serviceId=" + CurrentServiceInfo.getLocationService().getId().getId()
+	    	        		+ "&itemId=" + selectedItem.getId().getId() + "&name=" + product.getName()
+	    	        		+ "&productId=" + product.getId().getId();
+	    	        for(ProductAttribute pa : attrList ) {
+	    	        	url = url + "&" + pa.getKey() + "=" + pa.getValue();
+	    	        }
+	    	           	UrlTextLoader urlTextLoader = new UrlTextLoader() {
+	    				@Override
+	    				public void responseComplete(String result) {
+	   						Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+	    				}
+	    			};
+	    			urlTextLoader.execute(url);
+	    	        
+	    	        // send req with productXML and service id
+    	        }    	        
 			}
 		});
     }
 
-    @Override
+    public boolean doAttrValidation(Product product) {
+    	List<ServiceItemAttribute> siaList = selectedItem.getAttrs().getAttrs();
+    	boolean retValue = true;
+    	for(ServiceItemAttribute sia : siaList){
+    		String result = Validator.validate(sia.getValidation(), product.getAttributeValue(sia.getName()), sia.getName());
+    		if(!(result.equals("true"))){
+    			Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+    			retValue=false;
+    		}
+    	}
+		return retValue;
+	}
+
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_add_product, menu);
         return true;
