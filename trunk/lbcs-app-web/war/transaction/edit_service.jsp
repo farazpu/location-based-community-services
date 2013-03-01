@@ -10,15 +10,19 @@
 	ServiceID serviceId = new ServiceID(request.getParameter("serviceId"));
 	String name = request.getParameter("service_name");
 	String description = request.getParameter("description");
-	
-	AdminController controller = new HttpControllerFactory(request).getAdminController();
-	LocationService ls = controller.editService(serviceId, name, description);
+
 	String msg;
-	if(ls==null){
-		msg = "ERROR!! Service name '" + name + "' already exists.";
-	}else{
-		msg = "Service Updated Succesfully!!!";
+	if(name.length()==0){
+		msg = "ERROR!! Service name must not b empty";
 	}
-		
+	else{
+		AdminController controller = new HttpControllerFactory(request).getAdminController();
+		LocationService ls = controller.editService(serviceId, name, description);
+		if(ls==null){
+			msg = "ERROR!! Service name '" + name + "' already exists.";
+		}else{
+			msg = "Service Updated Succesfully!!!";
+		}
+	}		
 	response.sendRedirect("../admin/edit_service.jsp?serviceId=" + serviceId.getId() + "&msg=" + msg);
 %>

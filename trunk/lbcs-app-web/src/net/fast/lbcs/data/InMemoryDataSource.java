@@ -97,12 +97,12 @@ class InMemoryDataSource implements DataSource {
 	}
 
 	private interface TblValues{
-		final static String TABLE_NAME = "values";
+		final static String TABLE_NAME = "attr_values";
 		final static String C_ATTRIBUTE_ID = "value_attribute_id";
 		final static String C_ITEM_ID = "value_item_id";
 		final static String C_SERVICE_ID = "value_service_id";
 		final static String C_PRODUCT_ID = "value_product_id";
-		final static String C_VALUE = "value";
+		final static String C_VALUE = "value_value";
 	}
 	
 
@@ -984,7 +984,7 @@ class InMemoryDataSource implements DataSource {
 			DataAccessHelper.UpdateQuery(valQuery);
 		}
 		
-		return null;
+		return new Product();
 	}
 	
 	

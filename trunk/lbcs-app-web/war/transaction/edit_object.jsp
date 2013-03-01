@@ -15,16 +15,21 @@
 	String name = request.getParameter("object_name");
 	ServiceItemID itemId = new ServiceItemID(request.getParameter("objectId"));
 
-	AdminController controller = new HttpControllerFactory(request).getAdminController();
-	ServiceItem si = controller.editItem(itemId, serviceId, name, description, groupId);
-
 	String msg;
-	if(si==null){
-		msg = "ERROR!! Object name '" + name + "' already exists.";
-	}else{
-		msg = "Object Created Succesfully!!!";
+	if(name.length()==0){
+		msg = "ERROR!! Object name must not b empty";
 	}
-
+	else{
+	
+		AdminController controller = new HttpControllerFactory(request).getAdminController();
+		ServiceItem si = controller.editItem(itemId, serviceId, name, description, groupId);
+	
+		if(si==null){
+			msg = "ERROR!! Object name '" + name + "' already exists.";
+		}else{
+			msg = "Object Created Succesfully!!!";
+		}
+	}
 	
 	response.sendRedirect("../admin/edit_object.jsp?objectId=" + itemId.getId() + "&serviceId=" + serviceId.getId() + "&msg=" + msg);
 

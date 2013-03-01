@@ -14,14 +14,20 @@
 	String description = request.getParameter("description");
 	String name = request.getParameter("object_name");
 
-	AdminController controller = new HttpControllerFactory(request).getAdminController();
-	ServiceItem si = controller.createItem(serviceId, name, description, groupid);
 
 	String msg;
-	if(si==null){
-		msg = "ERROR!! Object name '" + name + "' already exists.";
-	}else{
-		msg = "Object Created Succesfully!!!";
+	if(name.length()==0){
+		msg = "ERROR!! Object name must not b empty";
+	}
+	else{
+		AdminController controller = new HttpControllerFactory(request).getAdminController();
+		ServiceItem si = controller.createItem(serviceId, name, description, groupid);
+		if(si==null){
+			msg = "ERROR!! Object name '" + name + "' already exists.";
+		}else{
+			msg = "Object Created Succesfully!!!";
+		}
+		
 	}
 
 	

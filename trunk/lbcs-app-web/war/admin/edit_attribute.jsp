@@ -42,7 +42,7 @@
 	LocationService ls = controller.getServiceById(serId);
 	ServiceItemID serviceItemId = new ServiceItemID(objectId);
 	ServiceItem si= ls.getItemById(serviceItemId);
-	
+	List<Validation> validations = controller.getAllValidations();
 	ServiceItemAttribute attr=null;
 	List<ServiceItemAttribute> attrList = si.getAttrs().getAttrs();
 	for(ServiceItemAttribute att : attrList){
@@ -81,12 +81,22 @@
 				</label>
  				<label>
 					<span>Validation</span>
-					<select class="input_text" value = "<%=attr.getValidation() %>" name="validation" id="validation">
-						<option <%=attr.getValidation().equals("None")?" selected='selected'":"" %>>None</option>
-						<option <%=attr.getValidation().equals("Negative")?" selected='selected'":"" %>>Negative</option>
-						<option <%=attr.getValidation().equals("Non-Negative")?" selected='selected'":"" %>>Non-negative</option>
-						<option <%=attr.getValidation().equals("Validation 1")?" selected='selected'":"" %>>Validation 1</option>
-						<option <%=attr.getValidation().equals("My Validation")?" selected='selected'":"" %>>My Validation</option>
+					<select class="input_text" name="validation" id="validation">
+						<option <%=attr.getValidation().equals("None")?" selected='selected'":"" %> value="None">None</option>
+					<%
+					for(Validation v : validations){ 
+						if(v.getId().equals(attr.getValidation())) 
+						{
+						%>
+							<option selected='selected' value="<%=v.getId() %>"><%=v.getName() %></option>
+						<%
+						} else {
+						%>
+							<option value="<%=v.getId() %>"><%=v.getName() %></option>
+				<%
+						}
+					}
+				%>
 					</select>
 				</label>
 <!--				<label>
