@@ -10,58 +10,37 @@ import org.simpleframework.xml.Default;
 
 @Default
 public class ProductReview {
-	private Product product = new Product();
-	private List<ProductAttribute> reviewValues = new ArrayList<ProductAttribute>();
-	private int reviewRating;
-	private String reviewText = " ";
+	private String productId = " ";
+	private String reviewRating = " ";
 	private MyDate date = new MyDate(new Date());
 	private String username = " ";
-	
 	
 	public ProductReview() {
 	}
 
-	public ProductReview(Product product, List<ProductAttribute> reviewValues,
-			int reviewRating, String reviewText, MyDate date, String username) {
-		this.product = product;
-		this.reviewValues = reviewValues;
+	public ProductReview(String product, String reviewRating, MyDate date, String username) {
+		this.productId = product;
 		this.reviewRating = reviewRating;
-		this.reviewText = reviewText;
 		this.date = date;
 		this.username = username;
 	}
 
-	public Product getProduct() {
-		return product;
+	public String getProduct() {
+		return productId;
 	}
 
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setProduct(String product) {
+		this.productId = product;
 	}
 
-	public List<ProductAttribute> getReviewValues() {
-		return reviewValues;
-	}
-
-	public void setReviewValues(List<ProductAttribute> reviewValues) {
-		this.reviewValues = reviewValues;
-	}
-
-	public int getReviewRating() {
+	public String getReviewRating() {
 		return reviewRating;
 	}
 
-	public void setReviewRating(int reviewRating) {
+	public void setReviewRating(String reviewRating) {
 		this.reviewRating = reviewRating;
 	}
 
-	public String getReviewText() {
-		return reviewText;
-	}
-
-	public void setReviewText(String reviewText) {
-		this.reviewText = reviewText;
-	}
 
 	public MyDate getDate() {
 		return date;
@@ -79,12 +58,11 @@ public class ProductReview {
 		this.username = username;
 	}
 
+
 	@Override
 	public String toString() {
-		return "ProductReview [product=" + product + ", reviewValues="
-				+ reviewValues + ", reviewRating=" + reviewRating
-				+ ", reviewText=" + reviewText + ", date=" + date
-				+ ", username=" + username + "]";
+		return "ProductReview [product=" + productId + ", reviewRating=" + reviewRating
+				+ ", date=" + date + ", username=" + username + "]";
 	}
 	
 	
