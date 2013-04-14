@@ -15,38 +15,39 @@ public class Product {
 	private ProductID id;
 	
 	private ServiceItem serviceItem;
+
 	private String name = " ";
-	private int price;
-	private int priceDeci;
 	
 	private int distance;
 	
-	private Location location;
+	private Location location=new Location(1,1);
 	
 	private List<ProductAttribute> attrs = new ArrayList<ProductAttribute>();
 	
-	private int averageRatting;
+	private int Rating;
 	
 	private List<ProductReview> reviews = new ArrayList<ProductReview>();
+	
+	private List<ProductComment> comments = new ArrayList<ProductComment>();
+	
+	private List<ProductValueReview> valueReviews = new ArrayList<ProductValueReview>();
 	
 	public Product() {
 	}
 	
-	public Product(ProductID id, String name, ServiceItem serviceItem, int price,
-			int priceDeci, int distance, Location location,
-			List<ProductAttribute> attrs, int averageRatting,
-			List<ProductReview> reviews) {
-		super();
+	public Product(ProductID id, String name, ServiceItem serviceItem, int distance, Location location,
+			List<ProductAttribute> attrs, int Rating, List<ProductReview> reviews,
+			List<ProductComment> comments, List<ProductValueReview> valueReviews) {
 		this.id = id;
 		this.name = name;
 		this.serviceItem = serviceItem;
-		this.price = price;
-		this.priceDeci = priceDeci;
 		this.distance = distance;
 		this.location = location;
 		this.attrs = attrs;
-		this.averageRatting = averageRatting;
+		this.Rating = Rating;
 		this.reviews = reviews;
+		this.comments = comments;
+		this.valueReviews = valueReviews;
 		initAttributes();
 	}
 	
@@ -54,7 +55,7 @@ public class Product {
 		attrs = new ArrayList<ProductAttribute>();
 		List<ServiceItemAttribute> attributes = serviceItem.getAttrs().getAttrs();
 		for(ServiceItemAttribute attribute : attributes) {
-			ProductAttribute pa = new ProductAttribute(attribute.getName(),"");
+			ProductAttribute pa = new ProductAttribute(attribute.getName()," ");
 			attrs.add(pa);
 		}
 	}
@@ -90,21 +91,6 @@ public class Product {
 		this.serviceItem = serviceItem;
 	}
 
-	public int getPrice() {
-		return price;
-	}
-
-	public void setPrice(int price) {
-		this.price = price;
-	}
-
-	public int getPriceDeci() {
-		return priceDeci;
-	}
-
-	public void setPriceDeci(int priceDeci) {
-		this.priceDeci = priceDeci;
-	}
 
 	public int getDistance() {
 		return distance;
@@ -130,12 +116,12 @@ public class Product {
 		this.attrs = attrs;
 	}
 
-	public int getAverageRatting() {
-		return averageRatting;
+	public int getRating() {
+		return Rating;
 	}
 
-	public void setAverageRatting(int averageRatting) {
-		this.averageRatting = averageRatting;
+	public void setRating(int averageRatting) {
+		this.Rating = averageRatting;
 	}
 
 	public List<ProductReview> getReviews() {
@@ -154,6 +140,24 @@ public class Product {
 		this.name = name;
 	}
 	
+	
+	
+	public List<ProductComment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<ProductComment> comments) {
+		this.comments = comments;
+	}
+
+	public List<ProductValueReview> getValueReviews() {
+		return valueReviews;
+	}
+
+	public void setValueReviews(List<ProductValueReview> valueReviews) {
+		this.valueReviews = valueReviews;
+	}
+
 	public boolean setAttributeValue(String key, String value)
 	{
 		for(int i = 0 ; i < attrs.size() ; i++){
