@@ -16,6 +16,26 @@
 <script type="text/javascript" src="../scripts/jquery.js"></script>
 <script type="text/javascript" src="../scripts/jquery.simplemodal.js"></script>
 <script type="text/javascript" src="../scripts/listing.js"></script>
+<script>
+
+$(document).ready(function(){
+		$("#itemList").hide();
+		$("#switcher1").hide();
+		$("#switcherButton").click(function(){
+			$("#groupList").hide();
+			$("#switcher").hide();
+			$("#itemList").show();
+			$("#switcher1").show();			
+		});
+		$("#switcherButton1").click(function(){
+			$("#groupList").show();
+			$("#switcher").show();
+			$("#itemList").hide();
+			$("#switcher1").hide();			
+		});
+	});
+
+</script>
 
 <link rel="stylesheet" href="../css/style.css" type="text/css" />
   </head>
@@ -44,7 +64,14 @@
 		
 	<div class="popup-wrapper">
  	
-		
+	<div id="switcher">
+		<button id="switcherButton" >View Items</button> 	
+	</div> 	
+	<div id="switcher1">
+		<button id="switcherButton1" >View Groups</button> 	
+	</div> 	
+
+	<div id="itemList">	
 	<%
 		Listing lst = new Listing();
 		
@@ -59,7 +86,8 @@
 
 		lst.getFocusColumns().add("Object Name");
 		
- 		lst.setCreateSelectionColumn(false);
+ 		lst.setFooterNote("List of available Objects.");
+		lst.setCreateSelectionColumn(false);
  		lst.setDeleteButton(false);
  		lst.setEditButton(false);
  		
@@ -80,8 +108,9 @@
  		request.setAttribute("listing", lst);
  	%>
  	<jsp:include page="../common/listing.jsp"></jsp:include>
+	</div>
 
-
+		<div id="groupList">
 	<%
 		lst = new Listing();
 		
@@ -97,6 +126,7 @@
 
 		lst.getFocusColumns().add("Group Name");
 		
+ 		lst.setFooterNote("List of available groups.");
  		lst.setCreateSelectionColumn(false);
  		lst.setDeleteButton(false);
  		lst.setEditButton(false);
@@ -118,7 +148,7 @@
  		request.setAttribute("listing", lst);
  	%>
  	<jsp:include page="../common/listing.jsp"></jsp:include>
-
+	</div>
 	<div id="footer">
 		Location Based Community Service - Administration
 	</div>

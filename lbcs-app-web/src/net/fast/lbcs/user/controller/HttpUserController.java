@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.fast.lbcs.data.DataSource;
 import net.fast.lbcs.data.DataSourceFactory;
 import net.fast.lbcs.data.InMemoryDebugFacade;
+import net.fast.lbcs.data.entities.MyDate;
 import net.fast.lbcs.data.entities.admin.Administrator;
 import net.fast.lbcs.data.entities.admin.item.ServiceItem;
 import net.fast.lbcs.data.entities.admin.item.ServiceItemID;
@@ -18,6 +19,8 @@ import net.fast.lbcs.data.entities.user.Product;
 import net.fast.lbcs.data.entities.user.ProductAttribute;
 import net.fast.lbcs.data.entities.user.ProductID;
 import net.fast.lbcs.data.entities.user.ProductRawData;
+import net.fast.lbcs.data.entities.user.ProductReview;
+import net.fast.lbcs.data.entities.user.ProductValueReview;
 import net.fast.lbcs.data.entities.user.User;
 import net.fast.lbcs.data.entities.user.UserSettings;
 
@@ -94,23 +97,42 @@ public class HttpUserController extends UserController{
 
 	@Override
 	public List<Product> getProductsByServiceId(ServiceID serviceId) {
-		List<String> productIds = new ArrayList<String>();
+		return InMemoryDebugFacade.getProducts(serviceId);
+	}
+
+	@Override
+	public ProductReview addProductReview(ProductID productId,
+			ServiceID serviceId, ServiceItemID itemId, String username,
+			MyDate date, String rating) {
+
 		DataSource source = DataSourceFactory.getDataSource();
-		List<Product> resultProducts = new ArrayList<Product>();
-		List<Product> allProducts = InMemoryDebugFacade.getProducts();
-		LocationService ls = source.getServiceById(serviceId);
-		List<ServiceItem> serviceItemList = ls.getItems(); 
-		for( Product product : allProducts ) {
-			for(ServiceItem si : serviceItemList) {
-				if((product.getId().getId().contains(si.getName() + " " + ls.getName())) 
-						&& !productIds.contains(product.getId().getId())){
-					resultProducts.add(product);
-					productIds.add(product.getId().getId());
-				}
-			}
-		}
+		return source.addProductReview(productId, serviceId, itemId, username, date, rating);
+	}
+
+	@Override
+	public void addNotification(String notification, String username,
+			ServiceID serviceId) {
+		DataSource source = DataSourceFactory.getDataSource();
+		source.addNotification(notification, username, serviceId);
 		
-		return resultProducts;
+	}
+
+	
+	@Override
+	public void addProductComment(ProductID productId, ServiceID serviceId,
+			ServiceItemID itemId, String username, MyDate date, String text){
+		DataSource source = DataSourceFactory.getDataSource();
+		source.addProductComment(productId, serviceId, itemId, username, date, text);
+	}
+
+	@Override
+	public ProductValueReview addProductValueReview(ProductID productId,
+			ServiceID serviceId, ServiceItemID itemId, String attributeId,
+			String username, MyDate date, String value){
+		DataSource source = DataSourceFactory.getDataSource();
+		source.addProductValueReview(productId, serviceId, itemId, attributeId, username, date, value);
+		
+		return null;
 	}
 
 

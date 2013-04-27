@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.fast.lbcs.data.entities.admin.Administrator;
 import net.fast.lbcs.data.entities.admin.service.LocationService;
+import net.fast.lbcs.data.entities.admin.service.ServiceID;
 import net.fast.lbcs.data.entities.user.Product;
 import net.fast.lbcs.data.entities.user.User;
 
@@ -21,7 +22,7 @@ public class InMemoryDebugFacade {
 		return InMemoryDataSource.getUsers();
 	}
 
-	public static List<Product> getProducts() {
-		return InMemoryDataSource.getProducts();
+	public static List<Product> getProducts(ServiceID serviceId) {
+		return InMemoryDataSource.getProducts(serviceId);
 	}
 }

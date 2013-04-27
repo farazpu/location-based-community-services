@@ -9,6 +9,8 @@
 	%>
 	<span class="menu-title"><%=request.getParameter("title") %></span>
 	<span class="menu-item"> <img src="../images/user.png"><%=controller.getCurrentUser().getId() %></span> 
-	<a class="menu-item" href="welcome.jsp?pageNum=0">Home</a>
-	<a class="menu-item" href="logout.jsp">logout</a>
+	<a class="menu-item" href="../admin/welcome.jsp?pageNum=0">Home</a>
+	<a class="menu-item" href="../adminuserhandling/notifications.jsp?pageNum=0">Notifications</a>
+	<a class="menu-item" href="../adminuserhandling/reviews.jsp?pageNum=0">Reviews</a>
+	<a class="menu-item" href="../admin/logout.jsp">logout</a>
 </div>

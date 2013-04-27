@@ -139,6 +139,18 @@ public class Listing {
 	public static String anchorValue(String caption, String url ) {
 		return "<a href='" + url + "'>" +  caption + "</a>";		
 	}
+
+	public static String selectTag(List<String> options, String selected, String valueChange ) {
+		String res = "<select onchange='" + valueChange + "'>";		
+		for(String option : options){
+			if(option.equals(selected))				
+				res+="<option selected='selected'>"+option+"</option>";
+			else
+			res+="<option>"+option+"</option>";
+		}
+		res+="</select>";
+		return res;
+	}
 	
 	public static String onClickCreateButton(String url, String height, String width) {
 		if("".equals(url))
