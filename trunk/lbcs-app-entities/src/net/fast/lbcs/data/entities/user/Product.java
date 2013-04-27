@@ -24,7 +24,7 @@ public class Product {
 	
 	private List<ProductAttribute> attrs = new ArrayList<ProductAttribute>();
 	
-	private int Rating;
+	private String Rating;
 	
 	private List<ProductReview> reviews = new ArrayList<ProductReview>();
 	
@@ -36,7 +36,7 @@ public class Product {
 	}
 	
 	public Product(ProductID id, String name, ServiceItem serviceItem, int distance, Location location,
-			List<ProductAttribute> attrs, int Rating, List<ProductReview> reviews,
+			List<ProductAttribute> attrs, String Rating, List<ProductReview> reviews,
 			List<ProductComment> comments, List<ProductValueReview> valueReviews) {
 		this.id = id;
 		this.name = name;
@@ -116,11 +116,26 @@ public class Product {
 		this.attrs = attrs;
 	}
 
-	public int getRating() {
+	public String getRating() {
 		return Rating;
 	}
 
-	public void setRating(int averageRatting) {
+	public String getPublicRating() {
+		float pRating=0;
+		if(reviews.size()!=0){
+			for(ProductReview review : reviews){
+				pRating+=Integer.parseInt(review.getReviewRating());
+			}
+			pRating /=reviews.size();
+		}
+		else{
+			return "NA";
+		}
+
+		return ""+pRating;
+	}
+
+	public void setRating(String averageRatting) {
 		this.Rating = averageRatting;
 	}
 
@@ -180,6 +195,49 @@ public class Product {
 			}
 		}
 		return "";
+	}
+
+	public String getAttributePublicValue(String key)
+	{
+		ServiceItemAttribute attr = new ServiceItemAttribute();
+		List<ServiceItemAttribute> attrs = getServiceItem().getAttrs().getAttrs();
+		System.out.println("-------------------");
+		for(ServiceItemAttribute a : attrs)
+			if(a.getId().equals(key))
+				attr=a;
+		if(attr.getType().equals("number")){
+				float pRating=0;
+				int i=0;
+				for(ProductValueReview review : valueReviews){
+					if(review.getAttributeId().equals(key)){
+	 					pRating+=Integer.parseInt(review.getValue());
+					}
+					i++;
+ 				}
+				if(i>0)
+					return ""+(pRating /i);
+				return "NA";
+		}
+		else{
+			String result="NA";
+			int maxcount=0;
+			for(ProductValueReview review : valueReviews){
+				if(review.getAttributeId().equals(key)){
+					String thisValue = review.getValue();
+					int thisCount=0;
+					for(ProductValueReview check : valueReviews){
+						if(check.getValue().equals(thisValue) && check.getAttributeId().equals(key)){
+							thisCount++;
+						}
+					}
+					if(thisCount>maxcount){
+						maxcount=thisCount;
+						result=thisValue;
+					}	
+				}
+			}
+			return result;
+		}
 	}
 
 }
