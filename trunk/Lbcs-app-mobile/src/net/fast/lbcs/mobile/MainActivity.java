@@ -74,7 +74,9 @@ public class MainActivity extends Activity {
 				textView1.setText("Login Failed");
 			}
 			else {
+		    	EditText usernameEditText = (EditText) findViewById(R.id.username);
 				CurrentServiceInfo.validations = lss.getValidatios();
+				CurrentServiceInfo.currentUser=usernameEditText.getText().toString();
 				Toast.makeText(this, "going", Toast.LENGTH_LONG).show();
 				Intent intent=new Intent(this,ServiceListActivity.class);
 				intent.putExtra("locationServices", result);

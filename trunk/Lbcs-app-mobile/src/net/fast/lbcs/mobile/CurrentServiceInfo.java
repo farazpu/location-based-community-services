@@ -9,9 +9,11 @@ import net.fast.lbcs.data.entities.admin.item.Validation;
 import net.fast.lbcs.data.entities.admin.service.LocationService;
 import net.fast.lbcs.data.entities.admin.service.ServiceInfo;
 import net.fast.lbcs.data.entities.user.Product;
+import net.fast.lbcs.data.entities.user.ProductResultSet;
 
 public class CurrentServiceInfo {
 
+	public static String currentUser;
 	public static ServiceInfo currentServiceInfo;
 	public static List<Validation> validations;
 	public static String XMLServiceInfo;
@@ -49,20 +51,25 @@ public class CurrentServiceInfo {
 		return result;
 	}
 	
-	public static List<Product> getProduct(String productName) {
+	public static Product getProduct(String id) {
 		
-		List<Product> result = new ArrayList<Product>();
 		List<Product> itemList = getProductList();
 
-		for(Product p : itemList) {
-			if(p.getName().equals(productName)) {
-				result.add(p);
-			}
-		}
-		
-		return result;
+		for(Product p : itemList) 
+			if(p.getId().getId().equals(id)) 
+				return p;
+		return null;
 	}
 
+	public static Product getProductById(String productId){
+		List<Product> itemList = getProductList();		
+		for(Product p : itemList) {
+			if(p.getName().equals(productId)) {
+				return p;
+			}
+		}	
+		return null;
+	}
 	
 	public static List<Product> getProductList() {
 		return currentServiceInfo.getProductResultSet().getProducts();
@@ -89,6 +96,22 @@ public class CurrentServiceInfo {
 		}
 		return null;
 	}
+	
+	public static void addProduct(Product product){
+		List<Product> plist = currentServiceInfo.getProductResultSet().getProducts();
+		for(int i=0;i<plist.size();i++){
+			if(plist.get(i).getId().getId().equals(product.getId().getId()) && plist.get(i).getServiceItem().getId().getId().equals(product.getServiceItem().getId().getId())){
+				plist.remove(i);
+				break;
+			}	
+		}
+				
+		plist.add(product);
+		ProductResultSet prs = new ProductResultSet(plist, currentServiceInfo.getProductResultSet().getLocation());
+		currentServiceInfo.setProductResultSet(prs);
+	}
+	
+	
 	
 
 }

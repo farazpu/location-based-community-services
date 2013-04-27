@@ -62,8 +62,26 @@
         </activity>
         <activity
             android:name=".AddProductActivity"
-            android:label="@string/title_activity_add_product" 
-            android:windowSoftInputMode="adjustPan">
+            android:label="@string/title_activity_add_product"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name=".SendNotificationActivity"
+            android:label="@string/title_activity_send_notification" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ProductDetail"
+            android:label="@string/title_activity_product_detail" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

@@ -10,5 +10,7 @@
     <string name="title_activity_welcome_user">WelcomeUser</string>
     <string name="title_activity_review_item">ReviewItem</string>
     <string name="title_activity_add_product">AddProductActivity</string>
+    <string name="title_activity_send_notification">SendNotificationActivity</string>
+    <string name="title_activity_product_detail">ProductDetail</string>
 
 </resources>
