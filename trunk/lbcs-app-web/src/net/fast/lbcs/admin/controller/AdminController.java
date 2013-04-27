@@ -7,6 +7,8 @@ import net.fast.lbcs.admin.item.ServiceItemDeleteException;
 import net.fast.lbcs.admin.service.ServiceCreationException;
 import net.fast.lbcs.admin.service.ServiceDeleteException;
 import net.fast.lbcs.admin.service.ServiceEditException;
+import net.fast.lbcs.data.DataSource;
+import net.fast.lbcs.data.DataSourceFactory;
 import net.fast.lbcs.data.entities.ValidationTypeDetail;
 import net.fast.lbcs.data.entities.admin.Administrator;
 import net.fast.lbcs.data.entities.admin.group.ServiceItemGroup;
@@ -18,6 +20,8 @@ import net.fast.lbcs.data.entities.admin.item.ServiceItemID;
 import net.fast.lbcs.data.entities.admin.item.Validation;
 import net.fast.lbcs.data.entities.admin.service.LocationService;
 import net.fast.lbcs.data.entities.admin.service.ServiceID;
+import net.fast.lbcs.data.entities.user.NotificationToAdmin;
+import net.fast.lbcs.data.entities.user.ProductID;
 
 public abstract class AdminController {
 	public abstract boolean login(String user, String password);
@@ -49,4 +53,24 @@ public abstract class AdminController {
 	public abstract Validation updateValidation(String validationId, String name, String type, List<String> params);
 	public abstract List<Validation> getAllValidations();
 	public abstract List<ValidationTypeDetail> getValidationTypeDetails();
+
+
+	public abstract void updateProductReviewStatus(ProductID productId, ServiceID serviceId,
+			ServiceItemID itemId, String username, String status);
+	public abstract void updateProductValueReviewStatus(ProductID productId, ServiceID serviceId,
+			ServiceItemID itemId, String attributeId, String username, String status);
+	public abstract void updateNotificationStatus(String id, String status);
+	public abstract void deleteNotification(String id);
+	public abstract List<NotificationToAdmin> getNotifications();
+	
+	
+	public abstract void updateProductRating(ProductID productId, ServiceID serviceId,
+			ServiceItemID itemId, String rating);
+	public abstract void adjustProductValueReview(ProductID productId, ServiceID serviceId,
+			ServiceItemID itemId, String attributeId, String username, String value);
+	public abstract void updateProductAttributeValue(ProductID productId, ServiceID serviceId,
+			ServiceItemID itemId, String attributeId, String value);
+
+
+
 }

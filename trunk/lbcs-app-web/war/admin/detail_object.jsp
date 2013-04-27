@@ -67,7 +67,8 @@
 
 		lst.getFocusColumns().add("Attribute Name");
 		
- 		lst.setCreateSelectionColumn(false);
+ 		lst.setFooterNote("List of available attributes.");
+		lst.setCreateSelectionColumn(false);
  		lst.setDeleteButton(false);
  		lst.setEditButton(false);
  		

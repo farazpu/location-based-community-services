@@ -16,14 +16,46 @@
 <script type="text/javascript" src="../scripts/jquery.js"></script>
 <script type="text/javascript" src="../scripts/jquery.simplemodal.js"></script>
 <script type="text/javascript" src="../scripts/listing.js"></script>
+<script>
+
+$(document).ready(function(){
+		$("#validationList").hide();
+		$("#switcher1").hide();
+		$("#switcherButton").click(function(){
+			$("#serviceList").hide();
+			$("#switcher").hide();
+			$("#validationList").show();
+			$("#switcher1").show();			
+		});
+		$("#switcherButton1").click(function(){
+			$("#serviceList").show();
+			$("#switcher").show();
+			$("#validationList").hide();
+			$("#switcher1").hide();			
+		});
+	});
+
+</script>
 
 <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
 </head>
+
+
  <body>
  	<jsp:include page="menu_include.jsp">
  		<jsp:param value="Welcome to LBCS administration!" name="title"/>
  	</jsp:include>
+ 	
+
+	<div id="switcher">
+		<button id="switcherButton" >View Validation</button> 	
+	</div> 	
+	<div id="switcher1">
+		<button id="switcherButton1" >View Sevices</button> 	
+	</div> 	
+ 	
+ 	<div id="serviceList">
  	<%
  		Listing lst = new Listing();
  		
@@ -72,10 +104,9 @@
  		request.setAttribute("listing", lst);
  	%>
  	<jsp:include page="../common/listing.jsp"></jsp:include>
+	</div>
 
-
-
-
+	<div id="validationList">
  	<%
  		lst = new Listing();
  		
@@ -93,6 +124,7 @@
  		lst.setCreateSelectionColumn(false);
  		lst.setDeleteButton(false);
  		lst.setEditButton(false);
+ 		lst.setCanGoNext(false);
  
 
 		try {
@@ -103,7 +135,6 @@
 		controller = new HttpControllerFactory(request).getAdminController();
 		List<Validation> validationList = controller.getAllValidations();
 		
- 		lst.setCanGoNext(list.size() > 0);
  		for(Validation val : validationList) {
  			String params = val.getParams().get(0);
  			for(int i=1;i<val.getParams().size(); i++){
@@ -125,8 +156,7 @@
  		request.setAttribute("listing", lst);
  	%>
  	<jsp:include page="../common/listing.jsp"></jsp:include>
-
-
+	</div>
  	
 	<div id="footer">
 		Location Based Community Service - Administration

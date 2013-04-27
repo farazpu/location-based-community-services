@@ -30,7 +30,7 @@ public class DataAccessHelper {
 		}catch (Exception ex) {
 			System.out.println(ex.getMessage());
 		}
-		System.out.println("Connected!");
+//		System.out.println("Connected!");
 	}
 
 	public static void closeConnection(){

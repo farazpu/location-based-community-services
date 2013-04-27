@@ -12,6 +12,7 @@ import net.fast.lbcs.admin.service.ServiceDeleteException;
 import net.fast.lbcs.admin.service.ServiceEditException;
 import net.fast.lbcs.data.DataSource;
 import net.fast.lbcs.data.DataSourceFactory;
+import net.fast.lbcs.data.entities.MyDate;
 import net.fast.lbcs.data.entities.ValidationTypeDetail;
 import net.fast.lbcs.data.entities.admin.Administrator;
 import net.fast.lbcs.data.entities.admin.group.ServiceItemGroup;
@@ -23,6 +24,10 @@ import net.fast.lbcs.data.entities.admin.item.ServiceItemID;
 import net.fast.lbcs.data.entities.admin.item.Validation;
 import net.fast.lbcs.data.entities.admin.service.LocationService;
 import net.fast.lbcs.data.entities.admin.service.ServiceID;
+import net.fast.lbcs.data.entities.user.NotificationToAdmin;
+import net.fast.lbcs.data.entities.user.Product;
+import net.fast.lbcs.data.entities.user.ProductID;
+import net.fast.lbcs.data.entities.user.ProductValueReview;
 
 public class HttpAdminController extends AdminController{
 
@@ -74,7 +79,6 @@ public class HttpAdminController extends AdminController{
 			throws ServiceCreationException {
 		DataSource source = DataSourceFactory.getDataSource();
 		return source.createLocationService(name, description);
-		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -94,7 +98,6 @@ public class HttpAdminController extends AdminController{
 
 	@Override
 	public List<ServiceItem> listItems() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -117,14 +120,12 @@ public class HttpAdminController extends AdminController{
 
 	@Override
 	public ServiceItem editItem(ServiceItemID itemId, ServiceID serviceId, String name, String description, ServiceItemGroupID groupId) throws ServiceEditException {
-		// TODO Auto-generated method stub
 		DataSource source = DataSourceFactory.getDataSource();
 		return source.editItem(itemId, serviceId, name, description, groupId);
 	}
 
 	@Override
 	public List<ServiceItemGroup> listItemGroups() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -133,7 +134,6 @@ public class HttpAdminController extends AdminController{
 			String description) throws ServiceItemCreationException {
 		DataSource source = DataSourceFactory.getDataSource();
 		return source.createGroup(serviceId, name, description);
-		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -151,7 +151,6 @@ public class HttpAdminController extends AdminController{
 
 	@Override
 	public LocationService getServiceById(ServiceID serviceId) {
-		// TODO Auto-generated method stub
 		DataSource source = DataSourceFactory.getDataSource();
 		if(serviceId==null)
 			return null;
@@ -182,14 +181,12 @@ public class HttpAdminController extends AdminController{
 
 	@Override
 	public Validation createValidation(String name, String type, List<String> params) {
-		// TODO Auto-generated method stub
 		DataSource source = DataSourceFactory.getDataSource();
 		return source.createValidation(name, type, params);
 	}
 
 	@Override
 	public boolean deleteValidation(String validationId) {
-		// TODO Auto-generated method stub
 		DataSource source = DataSourceFactory.getDataSource();
 		return source.deleteValidation(validationId);
 	}
@@ -214,6 +211,72 @@ public class HttpAdminController extends AdminController{
 	}
 	
 	
+	/////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////
+	//////////                   PRODUCT RELATED                   //////////
+	/////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////
+
+	@Override
+	public void updateProductReviewStatus(ProductID productId, ServiceID serviceId,
+			ServiceItemID itemId, String username, String status){
+		DataSource source = DataSourceFactory.getDataSource();
+		source.updateProductReviewStatus(productId, serviceId, itemId, username, status);
+		
+	}
+
+
+	@Override
+	public void updateProductValueReviewStatus(ProductID productId, ServiceID serviceId,
+			ServiceItemID itemId, String attributeId, String username,
+			String status){
+		DataSource source = DataSourceFactory.getDataSource();
+		source.updateProductValueReviewStatus(productId, serviceId, itemId, attributeId, username, status);
+	}
+
+	
+
+	@Override
+	public void updateNotificationStatus(String id, String status){
+		DataSource source = DataSourceFactory.getDataSource();
+		source.updateNotificationStatus(id, status);
+	}
+
+	@Override
+	public void deleteNotification(String id){
+		DataSource source = DataSourceFactory.getDataSource();
+		source.deleteNotification(id);
+	}
+
+	
+	@Override
+	public List<NotificationToAdmin> getNotifications(){
+		DataSource source = DataSourceFactory.getDataSource();
+		return source.getNotifications();
+	}
+
+	@Override
+	public void updateProductRating(ProductID productId, ServiceID serviceId,
+			ServiceItemID itemId, String rating) {
+		DataSource source = DataSourceFactory.getDataSource();
+		source.updateProductRating(productId, serviceId, itemId, rating);
+		
+	}
+
+	@Override
+	public void adjustProductValueReview(ProductID productId,
+			ServiceID serviceId, ServiceItemID itemId, String attributeId,
+			String username, String value) {
+		DataSource source = DataSourceFactory.getDataSource();
+		source.adjustProductValueReview(productId, serviceId, itemId, attributeId, username, value);
+	}
+
+	@Override
+	public void updateProductAttributeValue(ProductID productId, ServiceID serviceId, 
+			ServiceItemID itemId, String attributeId, String value) {
+		DataSource source = DataSourceFactory.getDataSource();
+		source.updateProductAttributeValue(productId, serviceId, itemId, attributeId, value);
+	}
 
 	
 }
