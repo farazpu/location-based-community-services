@@ -43,7 +43,7 @@ public class MapShow extends MapActivity {
         setContentView(R.layout.activity_map_show);
         mapView = (MapView) findViewById(R.id.map);
         clickedText = getIntent().getExtras().getString("clickedText");
-        Product product = CurrentServiceInfo.getProduct(clickedText).get(0);
+        Product product = CurrentServiceInfo.getProduct(clickedText);
 //        GeoPoint point = new GeoPoint( (int)(product.getLocation().getLat() * 1000000 ) , (int)(product.getLocation().getLon() *1000000));
         GeoPoint point = new GeoPoint(46066940, 23570000);
               mapView.setBuiltInZoomControls(true);
@@ -60,7 +60,12 @@ public class MapShow extends MapActivity {
 //        List<ProductAttribute> = product.getAttrs();
         List<ProductAttribute> attributes = product.getAttrs();
         for(ProductAttribute pa : attributes) {
-        	detail += pa.getKey() + " = " + pa.getValue() + "\n";
+        	List<ServiceItemAttribute> itemAttrList = product.getServiceItem().getAttrs().getAttrs();
+        	for(ServiceItemAttribute sia : itemAttrList){
+        		if(sia.getId().equals(pa.getKey()) && !pa.getValue().equals("-")){
+        			detail += sia.getName()+ " = " + pa.getValue() + "\n";
+        		}
+        	}
         }
  
        //this will show you the map at the exact location you want (if you not set this you will see the map somewhere in America)
@@ -77,7 +82,7 @@ public class MapShow extends MapActivity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent i = new Intent(context, ReviewItem.class);
-				i.putExtra("Item", clickedText);
+				i.putExtra("Product", clickedText);
 				startActivity(i);
 			}
 		});

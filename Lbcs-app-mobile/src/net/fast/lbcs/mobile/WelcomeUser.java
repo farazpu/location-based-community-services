@@ -83,9 +83,10 @@ public class WelcomeUser extends Activity {
     			String Name=sName.getText().toString();
         		if(dataType.equals("Item")) {
 	        		Intent intent=new Intent(context, MapShow.class);
-	        		String strs [] = Name.split("\\:\\:");
-	        		String str = strs[0].trim();
-	        		intent.putExtra("clickedText" , str);
+//	        		String strs [] = Name.split("\\:\\:");
+//	        		String str = strs[0].trim();
+	        		String pid = itemList.get(position).getId().getId();
+	        		intent.putExtra("clickedText" , pid);
 	        		startActivity(intent);
         		}
         		else {
@@ -104,26 +105,35 @@ public class WelcomeUser extends Activity {
 				
 			}
 		});
+        
+        Button sendNotification = (Button) findViewById(R.id.sendNotification);
+        sendNotification.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				Intent intent = new Intent(context, SendNotificationActivity.class);
+				startActivity(intent);
+			}
+		});
 		
 
     
     }
     
     protected void makeList(String name) {
-    	List<Product> items = new ArrayList<Product>();
+    	List<Product> products = new ArrayList<Product>();
     	List<String> ids = new ArrayList<String>();
     	if(dataType.equals("Group")) {
-    		items = CurrentServiceInfo.getGroupProducts(name);
+    		products = CurrentServiceInfo.getGroupProducts(name);
     	}
     	else if(dataType.equals("Object")) {
-    		items = CurrentServiceInfo.getObjectProducts(name);
+    		products = CurrentServiceInfo.getObjectProducts(name);
     	}
     	
     	Spinner spinner = (Spinner) findViewById(R.id.SpinnerValue);
         spinner.setSelection(0, true);
     	
-    	for(int i=0;i<items.size();i++) {
-        	ids.add(items.get(i).getName() + " :: " + items.get(i).getPrice() + "RS :: " + items.get(i).getDistance());
+    	for(int i=0;i<products.size();i++) {
+        	ids.add(products.get(i).getName() + " :: " + products.get(i).getRating() + " :: " + products.get(i).getPublicRating());
     	}
 
 		ListView lv = (ListView) findViewById(R.id.objectList);
@@ -145,7 +155,7 @@ public class WelcomeUser extends Activity {
         	ArrayList<String> ids=new ArrayList<String>();
     		if (type.equals("Item")) {
     	        for(int i=0;i<itemList.size();i++)
-    	        	ids.add(itemList.get(i).getName() + " :: " + itemList.get(i).getPrice() + "RS :: " + itemList.get(i).getDistance());			
+    	        	ids.add(itemList.get(i).getName() + " :: " + itemList.get(i).getRating() + " :: " + itemList.get(i).getPublicRating());			
     		}
     		if (type.equals("Object")) {
     	        for(int i=0;i<objectList.size();i++)

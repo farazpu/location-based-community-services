@@ -38,6 +38,7 @@ public class AddProductActivity extends Activity {
 	Context context = this;
     List<ServiceItem> itemList = CurrentServiceInfo.getObjectList();
     ServiceItem selectedItem=null;
+    Product product;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +83,7 @@ public class AddProductActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
     	        ListView lw = (ListView) findViewById(R.id.attributeListView);
-				Product product = new Product();
+				product = new Product();
 				List<ProductAttribute> attrList = new ArrayList<ProductAttribute>();
     	        
     	        for(int i=0;i<lw.getCount();i++)
@@ -101,7 +102,7 @@ public class AddProductActivity extends Activity {
     	        	}
     	        }
     	        product.setAttrs(attrList);
-    	        product.setAverageRatting(3);
+    	        product.setRating("0");
     	        product.setLocation(new Location(0,0));
     	        product.setReviews(new ArrayList<ProductReview>());
     	        product.setServiceItem(selectedItem);
@@ -112,13 +113,18 @@ public class AddProductActivity extends Activity {
 	    	        		+ "&itemId=" + selectedItem.getId().getId() + "&name=" + product.getName()
 	    	        		+ "&productId=" + product.getId().getId();
 	    	        for(ProductAttribute pa : attrList ) {
+	    	        	if(pa.getValue().equals(""))
+	    	        		pa.setValue("NA");
 	    	        	url = url + "&" + pa.getKey() + "=" + pa.getValue();
 	    	        }
-	    	           	UrlTextLoader urlTextLoader = new UrlTextLoader() {
-	    				@Override
-	    				public void responseComplete(String result) {
-	   						Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-	    				}
+    	           	UrlTextLoader urlTextLoader = new UrlTextLoader() {
+    				@Override
+    				public void responseComplete(String result) {
+   						Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+   						if (result.equals("Product Added Successfully.")){
+   							CurrentServiceInfo.addProduct(product);
+   						}
+    				}
 	    			};
 	    			urlTextLoader.execute(url);
 	    	        
@@ -154,9 +160,9 @@ public class AddProductActivity extends Activity {
     	        List<KeyValuePair> resource = new ArrayList<KeyValuePair>();
     	        List<ServiceItemAttribute> attributeList = si.getAttrs().getAttrs();
     	        for(ServiceItemAttribute pa : attributeList) {
-    	        	resource.add( new KeyValuePair(pa.getName(),"a"));
+    	        	resource.add( new KeyValuePair(pa.getName(),""));
     	        }
-    	        resource.add(new KeyValuePair("ProductName", "a"));
+    	        resource.add(new KeyValuePair("ProductName", ""));
     	        ReviewAttriburesAdapter attrAdapter = new ReviewAttriburesAdapter(this, 0, resource);
     	        ListView lw = (ListView) findViewById(R.id.attributeListView);
     	        lw.setAdapter(attrAdapter);

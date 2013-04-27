@@ -1,0 +1,25 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Send Notification To Administrator about introducing new type of abjects by providing their characteristics.\nWARNING!! Abuse may effect in disabling of account.\nEnter Text:"
+        tools:context=".SendNotificationActivity" />
+	<EditText 
+	    android:layout_width="match_parent"
+	    android:lines="10"
+	    android:id="@+id/notificationText"
+	    android:inputType="textMultiLine"
+	    />
+	<Button 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sendNotificationButton"
+        android:text="Send Notification"
+	    />
+</LinearLayout>
