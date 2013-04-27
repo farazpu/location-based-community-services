@@ -131,6 +131,19 @@ public class MyDate {
 		second = Integer.parseInt(temp);
 	}
 	
+	public int compare(MyDate date){
+		if(year==date.year && month==date.month && day==date.day && hour==date.hour && minute==date.minute && second==date.second){
+			return 0;
+		}
+		else if(year<date.year && month<date.month && day<date.day && hour<date.hour && minute<date.minute && second<date.second){
+			return 1;
+		}
+		else{
+			return -1;
+		}
+		
+	}
+	
 	@Override
 	public String toString() {
 		return "" + year + "-" + month + "-" + day

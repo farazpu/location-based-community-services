@@ -14,15 +14,17 @@ public class ProductReview {
 	private String reviewRating = " ";
 	private MyDate date = new MyDate(new Date());
 	private String username = " ";
+	private String status = " ";
 	
 	public ProductReview() {
 	}
 
-	public ProductReview(String product, String reviewRating, MyDate date, String username) {
+	public ProductReview(String product, String reviewRating, MyDate date, String username, String status) {
 		this.productId = product;
 		this.reviewRating = reviewRating;
 		this.date = date;
 		this.username = username;
+		this.status = status;
 	}
 
 	public String getProduct() {
@@ -58,12 +60,21 @@ public class ProductReview {
 		this.username = username;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
 	@Override
 	public String toString() {
-		return "ProductReview [product=" + productId + ", reviewRating=" + reviewRating
-				+ ", date=" + date + ", username=" + username + "]";
+		return "ProductReview [productId=" + productId + ", reviewRating="
+				+ reviewRating + ", date=" + date + ", username=" + username
+				+ ", status=" + status + "]";
 	}
+
 	
 	
 }
