@@ -72,6 +72,11 @@ public class Product {
 	}
 
 	public ProductReview getReviewForUser(String userId) {
+		for(ProductReview pr : reviews){
+			if(pr.getUsername().equals(userId)){
+				return pr;
+			}
+		}
 		return null;
 	}
 
