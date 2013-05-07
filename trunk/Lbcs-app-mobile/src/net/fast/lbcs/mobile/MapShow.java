@@ -45,49 +45,46 @@ public class MapShow extends MapActivity {
         clickedText = getIntent().getExtras().getString("clickedText");
         Product product = CurrentServiceInfo.getProduct(clickedText);
 //        GeoPoint point = new GeoPoint( (int)(product.getLocation().getLat() * 1000000 ) , (int)(product.getLocation().getLon() *1000000));
-        GeoPoint point = new GeoPoint(46066940, 23570000);
+        GeoPoint point = new GeoPoint((int)(MyLocationListener.listener.getLatitude()*1000000), (int)(MyLocationListener.listener.getLongitude()*1000000));
               mapView.setBuiltInZoomControls(true);
         
         mapController = mapView.getController();
         mapController.setZoom(18); 
         mapController.setCenter(point);
         List< Overlay > mapOverlays = mapView.getOverlays();
-        Drawable drawable = this.getResources().getDrawable(R.drawable.ic_action_search);
+        Drawable drawable = this.getResources().getDrawable(R.drawable.ic_launcher);
          
         MyItemizedOverlay itemizedoverlay = new MyItemizedOverlay(drawable, this);
-        
-        String detail = "";
-//        List<ProductAttribute> = product.getAttrs();
-        List<ProductAttribute> attributes = product.getAttrs();
-        for(ProductAttribute pa : attributes) {
-        	List<ServiceItemAttribute> itemAttrList = product.getServiceItem().getAttrs().getAttrs();
-        	for(ServiceItemAttribute sia : itemAttrList){
-        		if(sia.getId().equals(pa.getKey()) && !pa.getValue().equals("-")){
-        			detail += sia.getName()+ " = " + pa.getValue() + "\n";
-        		}
-        	}
-        }
- 
-       //this will show you the map at the exact location you want (if you not set this you will see the map somewhere in America)
         mapView.getController().setCenter(point);
-        OverlayItem overlayitem = new OverlayItem(point, product.getName() + " (" + product.getId().getId() + ")" , detail);
- 
- 
+        OverlayItem overlayitem = new OverlayItem(point, product.getName() + " (" + product.getId().getId() + ")" , "Your Position");
         itemizedoverlay.addOverlay(overlayitem);
         mapOverlays.add(itemizedoverlay);
-
-        Button b = (Button) findViewById(R.id.review);
-        b.setOnClickListener(new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent i = new Intent(context, ReviewItem.class);
-				i.putExtra("Product", clickedText);
-				startActivity(i);
-			}
-		});
         
+        Drawable pdrawable = this.getResources().getDrawable(R.drawable.ic_action_search);
+         
+        MyItemizedOverlay pitemizedoverlay = new MyItemizedOverlay(pdrawable, this);
         
+        List<Product> plist = CurrentServiceInfo.getProductList();
+        for(Product product1 : plist){
+        	
+	        String detail = "Rating = "+ product1.getRating() + "\n";
+	        List<ProductAttribute> attributes = product1.getAttrs();
+	        for(ProductAttribute pa : attributes) {
+	        	List<ServiceItemAttribute> itemAttrList = product1.getServiceItem().getAttrs().getAttrs();
+	        	for(ServiceItemAttribute sia : itemAttrList){
+	        		if(sia.getId().equals(pa.getKey()) && !pa.getValue().equals("-")){
+	        			detail += sia.getName()+ " = " + pa.getValue() + "\n";
+	        		}
+	        	}
+	        }
+	        GeoPoint point1 = new GeoPoint((int)(product.getLocation().getLat()*1000000), (int)(product.getLocation().getLon()*1000000));
+	        OverlayItem poverlayitem = new OverlayItem(point1, product.getName() + " (" + product.getId().getId() + ")" , detail);
+	        pitemizedoverlay.addOverlay(poverlayitem);
+        } 
+        mapOverlays.add(pitemizedoverlay);
+       //this will show you the map at the exact location you want (if you not set this you will see the map somewhere in America)
+ 
+ 
         
     }
     

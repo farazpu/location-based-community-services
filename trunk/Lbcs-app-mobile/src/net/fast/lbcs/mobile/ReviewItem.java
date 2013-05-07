@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 import net.fast.lbcs.data.entities.MyDate;
 import net.fast.lbcs.data.entities.admin.item.ServiceItemAttribute;
 import net.fast.lbcs.data.entities.user.Location;
@@ -11,15 +12,20 @@ import net.fast.lbcs.data.entities.user.Product;
 import net.fast.lbcs.data.entities.user.ProductAttribute;
 import net.fast.lbcs.data.entities.user.ProductID;
 import net.fast.lbcs.data.entities.user.ProductReview;
+import net.fast.lbcs.data.entities.user.ProductValueReview;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -35,149 +41,10 @@ public class ReviewItem extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_item);        
-        spinner = (Spinner) findViewById(R.id.rating_spinner);
-		List<String> ids=new ArrayList<String>();
-       	ids.add("1");
-       	ids.add("2");
-       	ids.add("3");
-       	ids.add("4");
-       	ids.add("5");
-       	       	
-       	ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-       			android.R.layout.simple_spinner_item, ids);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        if(spinner!=null)
-        spinner.setAdapter(adapter);
+        ExpandableListView list = (ExpandableListView) findViewById(R.id.expandableList);
+        String clickedText = getIntent().getExtras().getString("clickedText");
+        product = CurrentServiceInfo.getProduct(clickedText);
         
-        product = CurrentServiceInfo.getProduct(getIntent().getExtras().getString("Product"));
-        
-        setTitle(product.getName() + " (" + product.getId().getId() + ")");
-        
-        TextView adminRating= (TextView) findViewById(R.id.admin_rating);
-        adminRating.setText("Admin Rating = "+product.getRating());
-        TextView publicRating= (TextView) findViewById(R.id.public_rating);
-        adminRating.setText("Public Rating("+product.getReviews().size()+") = "+product.getPublicRating());
-        
-/*        List<KeyValuePair> resource = new ArrayList<KeyValuePair>();
-        List<ProductAttribute> attributeList = product.getAttrs();
-        for(ProductAttribute pa : attributeList) {
-        	List<ServiceItemAttribute> itemAttrList = product.getServiceItem().getAttrs().getAttrs();
-        	for(ServiceItemAttribute sia : itemAttrList){
-        		if(sia.getId().equals(pa.getKey()) && sia.getFlag().equals("Yes")){
-                	resource.add( new KeyValuePair(sia.getName(),pa.getValue()));
-        		}
-        	}
-        }
-        resource.add(new KeyValuePair("Comment", ""));
-        ReviewAttriburesAdapter attrAdapter = new ReviewAttriburesAdapter(this, 0, resource);
-        ListView lw = (ListView) findViewById(R.id.review_attributes);
-        lw.setAdapter(attrAdapter);
-*/        
-        
-        Button sendReview = (Button) findViewById(R.id.review_post);
-        sendReview.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-    	        ListView lw = (ListView) findViewById(R.id.review_attributes);
-//				review = new ProductReview();
-//				List<ProductAttribute> attrList = new ArrayList<ProductAttribute>();
-//				review.setDate(new MyDate());
-//				review.setProduct(product.getId().getId());
-//				review.se
-
-	/*			for(int i=0;i<lw.getCount();i++)
-    	        {
-    	        	View view = lw.getChildAt(i);
-    	        	EditText et = (EditText) view.findViewById(R.id.review_value);
-    	        	String value = et.getText().toString();
-    	        	TextView tv = (TextView) view.findViewById(R.id.review_key);
-    	        	String key = tv.getText().toString();
-    	        	if( "Comment".equals(key)){
-    	        		review.setReviewText(value);
-    	        		if(value.length()==0){
-    	        			review.setReviewText("-");
-    	        		}
-    	        	}
-    	        	else{
-    	        		attrList.add(new ProductAttribute(key, value));
-    	        	}
-    	        }
-				Date now = new Date();
-*/
-//    	        review.setReviewValues(attrList);
-//    	        review.setDate(new MyDate(now));
-//    	        review.setReviewRating(spinner.getSelectedItem().toString());
-//    	        review.setId("" + product.getName() + review.getDate());
-//    	        if(doReviewAttrValidation(review)){
-    	        	MyDate currentDate = new MyDate();
-    	        String url = "http://"  + TempIP.ip + ":8888/user/add_product_review.jsp"
-    	        		+ "?serviceId=" + CurrentServiceInfo.getLocationService().getId().getId()
-    	        		+ "&itemId=" + product.getServiceItem().getId().getId() 
-    	        		+ "&productId=" + product.getId().getId() 
-    	        		+ "&rating=" +spinner.getSelectedItem()
-    	        		+ "&date=" +currentDate;
-	    	        		
-/*	    	        for(ProductAttribute pa : attrList ) {
-	    	        	if(pa.getValue().equals(""))
-	    	       		pa.setValue("-");
-	    	        	url = url + "&" + pa.getKey() + "=" + pa.getValue();
-	    	        }
-*/
-    	        ProductReview pr = new ProductReview(product.getId().getId(), spinner.getSelectedItem().toString()
-    	        		, currentDate, CurrentServiceInfo.currentUser, "unhandled");
-    	        List<ProductReview> reviews =product.getReviews();
-    	        reviews.add(pr);
-    	        product.setReviews(reviews);
-    	        UrlTextLoader urlTextLoader = new UrlTextLoader() {
-    				@Override
-    				public void responseComplete(String result) {
-   						Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-   						if (result.equals("Review Added Successfully.")){
-   							CurrentServiceInfo.addProduct(product);
-   						}
-    				}
-				};
-    			urlTextLoader.execute(url);
-    	        // send req with productXML and service id
-			}
-		});    
-	}
-
-	private List<ProductAttribute> computeCommunityValues() {
-		List<ProductAttribute> communityValues = new ArrayList<ProductAttribute>();
-		List<ServiceItemAttribute> attrList = product.getServiceItem().getAttrs().getAttrs();
-		for(ServiceItemAttribute attr : attrList) {
-			if(attr.getFlag().equals("true")){
-				List<ProductReview> reviews = product.getReviews();
-				List<ProductAttribute> attrVals= new ArrayList<ProductAttribute>();
-				for(ProductReview rev : reviews){
-					List<ProductAttribute> revAttrList = rev.getReviewValues();
-					for(ProductAttribute revattrval : revAttrList){
-						if(revattrval.getKey().equals(attr.getId())){
-							attrVals.add(revattrval);
-						}
-					}
-				}
-				
-				if(attr.getType().equals("number")){
-					float val=0;
-					int count=0;
-					for(ProductAttribute pa : attrVals){
-						if("".equals(pa.getValue()) || " ".equals(pa.getValue()) || "-".equals(pa.getValue())){}
-						else{
-							val=val + Integer.parseInt(pa.getValue());
-							count++;
-						}
-					}
-					val=val/count;
-					ProductAttribute resultVal = new ProductAttribute(attr.getId(),val+"");
-					communityValues.add(resultVal);
-				}
-				else if(attr.getType().equals("string")){
-					
-				}
-			}
-		}
-		return communityValues;
 	}
 
 	@Override
@@ -186,23 +53,97 @@ public class ReviewItem extends Activity {
 	    return true;
 	}
 	
-	public boolean doReviewAttrValidation(ProductReview review){
-		
-		List<ServiceItemAttribute> siaList =  CurrentServiceInfo.getProductById(review.getProduct()).getServiceItem().getAttrs().getAttrs();
-		List<ProductAttribute> paList = review.getReviewValues();
-		boolean retValue = true;
-		for(ServiceItemAttribute sia : siaList){
-			for(ProductAttribute pa : paList){
-				if(pa.getKey().equals(sia.getName())&& !pa.getValue().equals("")){
-					String result = Validator.validate(sia.getValidation(), pa.getValue(), sia.getName());
-					if(!(result.equals("true"))){
-						Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-						retValue=false;
+	private class AttributeAdapter extends BaseExpandableListAdapter{
+
+		public Object getChild(int groupPosition, int childPosition) {
+			return null;
+		}
+
+		public long getChildId(int groupPosition, int childPosition) {
+			return 0;
+		}
+
+		public View getChildView(int groupPosition, int childPosition,
+				boolean isLastChild, View convertView, ViewGroup parent) {
+			if(product.getServiceItem().getAttrs().getAttrs().get(groupPosition).getFlag().equals("true")){
+			    LayoutInflater inflater =  (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			    convertView = inflater.inflate(R.layout.child_row, null);
+			    EditText et = (EditText) convertView.findViewById(R.id.rvAttributeValue);
+			    List<ProductValueReview> vals=product.getValueReviews();
+			    int count=0;
+			    for(ProductValueReview rev :  vals){
+			    	if(rev.getAttributeId().equals(product.getServiceItem().getAttrs().getAttrs().get(groupPosition).getId())){
+			    		count++;
+			    		if(rev.getUsername().equals(CurrentServiceInfo.currentUser))
+			    			et.setText(rev.getValue());
+			    	}
+			    }
+			    TextView tv = (TextView) convertView.findViewById(R.id.rvAttributeRevs);
+			    tv.setText("Review Count = " + count + "   ");
+			    
+			    Button button = (Button) findViewById(R.id.rvSend);
+			    button.setOnClickListener(new View.OnClickListener() {
+					
+					public void onClick(View v) {
+//						if(Validator.validate(product.getServiceItem().getAttrs().getAttrs().get(groupPosition).getValidation(), value, attr))
+						
 					}
-				}
+				});
+			    
 			}
-    	}
-    	return retValue;
+			else{
+			    LayoutInflater inflater =  (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			    convertView = inflater.inflate(R.layout.unavailable_child_row, null);				
+			}
+			return convertView;
+		}
+
+		public int getChildrenCount(int groupPosition) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		public Object getGroup(int groupPosition) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		public int getGroupCount() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		public long getGroupId(int groupPosition) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		public View getGroupView(int groupPosition, boolean isExpanded,
+				View convertView, ViewGroup parent) {
+			if(convertView==null){
+			    LayoutInflater inflater =  (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			    convertView = inflater.inflate(R.layout.parent_row, null);								
+			}
+			TextView tv = (TextView) findViewById(R.id.attrAdminValue);
+			tv.setText(product.getAttributeValue(product.getServiceItem().getAttrs().getAttrs().get(groupPosition).getId()));
+				tv = (TextView) findViewById(R.id.attrPublicValue);
+			if(product.getServiceItem().getAttrs().getAttrs().get(groupPosition).getFlag().equals("true"))
+				tv.setText(product.getAttributePublicValue(product.getServiceItem().getAttrs().getAttrs().get(groupPosition).getId()));
+			else
+				tv.setText(" ");
+			return convertView;
+		}
+
+		public boolean hasStableIds() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		public boolean isChildSelectable(int groupPosition, int childPosition) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+		
 	}
     
 }

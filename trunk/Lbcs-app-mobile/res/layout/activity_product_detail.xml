@@ -1,14 +1,124 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent" 
+    android:background="@drawable/theme"
+    >
 
     <TextView
+        android:id="@+id/pdName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/hello_world"
-        tools:context=".ProductDetail" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:textSize="20dp"
+        android:textColor="#8B3A62"
+        />
 
+    <TextView
+        android:id="@+id/pdType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pdName"
+        android:layout_alignParentLeft="true"
+        android:textSize="20dp"
+        android:textColor="#8B3A62"
+        />
+    
+    <TextView
+        android:id="@+id/pdNumberOfRatings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pdType"
+        android:layout_alignParentLeft="true"
+        android:textSize="20dp"
+        android:textColor="#8B3A62"
+        />
+    
+    
+    <TextView
+        android:id="@+id/pdRatingLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pdNumberOfRatings"
+        android:text="Rating : 1 = lowest(worst) - - - 5 = highest(best)"
+        android:layout_alignParentLeft="true"
+        android:textSize="20dp"
+        android:textColor="#8B3A62"
+        />
+   
+    <TextView
+        android:id="@+id/pdAdminRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pdRatingLabel"
+        android:layout_alignParentLeft="true"
+        android:textSize="20dp"
+        android:textColor="#8B3A62"
+        />
+   
+   <TextView
+        android:id="@+id/pdPublicRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pdAdminRating"
+        android:layout_alignParentLeft="true"
+        android:textSize="20dp"
+        android:textColor="#8B3A62"
+        />
+   
+   <TextView
+        android:id="@+id/pdUserRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pdPublicRating"
+        android:layout_alignParentLeft="true"
+        android:textSize="20dp"
+        android:textColor="#8B3A62"
+        />
+   
+   <TextView
+        android:id="@+id/pdDivider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pdUserRating"
+        android:text="--------------------"
+        android:layout_alignParentLeft="true"
+        android:textSize="20dp"
+        android:textColor="#8B3A62"
+        />
+   
+   <TextView
+        android:id="@+id/pdUserRatingLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pdDivider"
+        android:text="Give Your Rating : "
+        android:layout_alignParentLeft="true"
+        android:textSize="20dp"
+        android:textColor="#8B3A62"
+        />
+   
+   
+   <Spinner 
+       android:id="@+id/pdRatingSpinner"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_toRightOf="@id/pdUserRatingLabel"
+       />
+   
+   
+   <Button
+       android:id="@+id/pdSubmit" 
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:layout_below="@id/pdRatingSpinner"
+       android:layout_alignParentLeft="true"
+       android:background="@drawable/button_menu"
+       android:text="Send"
+       />
+   
+   
+   
+   
 </RelativeLayout>

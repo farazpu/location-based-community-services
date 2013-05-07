@@ -11,6 +11,7 @@ import net.fast.lbcs.data.entities.admin.service.ServiceInfo;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
@@ -59,7 +60,10 @@ public class ServiceListActivity extends Activity {
 	        						updateResult(result);
 	        					}
 	        				};
-	        				urlTextLoader.execute("http://"  + TempIP.ip + ":8888/user/getServiceInfoById.jsp?serviceID=" + ls.getId().getId());
+	        		        MyLocationListener.activate(context);
+
+	        				Location l = MyLocationListener.listener.getLocation();
+	        				urlTextLoader.execute("http://"  + TempIP.ip + ":8888/user/getServiceInfoById.jsp?serviceID=" + ls.getId().getId()+"&gpslong="+l.getLongitude()+"&gpslat="+l.getLatitude());
 	        				break;
 	        			}
 	        		}
