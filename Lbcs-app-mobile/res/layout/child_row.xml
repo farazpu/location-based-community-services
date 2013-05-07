@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/theme"
+    >
+    
+    <TextView 
+        android:id="@+id/rvAttributeId"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentTop="true"
+	    android:layout_alignParentLeft="true"
+        android:textColor="#8B3A62"
+	/>
+    
+    <EditText 
+        android:id="@+id/rvAttributeValue"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_toRightOf="@id/rvAttributeId"
+	    android:layout_alignParentRight="true"	    
+	/>
+    
+    <TextView 
+        android:id="@+id/rvAttributeRevs"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/rvAttributeId"
+	    android:layout_alignParentLeft="true"
+        android:textColor="#8B3A62"
+	/>
+    
+    <Button 
+        android:id="@+id/rvSend"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+       android:background="@drawable/button_menu"
+        android:layout_toRightOf="@id/rvAttributeRevs"
+        android:text="Send"
+    />
+    
+    
+</RelativeLayout>

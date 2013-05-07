@@ -12,5 +12,7 @@
     <string name="title_activity_add_product">AddProductActivity</string>
     <string name="title_activity_send_notification">SendNotificationActivity</string>
     <string name="title_activity_product_detail">ProductDetail</string>
+    <string name="title_activity_product_detail_tabbed">ProductDetailTabbedActivity</string>
+    <string name="title_activity_comments">Comments</string>
 
 </resources>

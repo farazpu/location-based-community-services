@@ -1,8 +1,12 @@
 package net.fast.lbcs.mobile;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import android.text.GetChars;
+
+import net.fast.lbcs.data.entities.MyDate;
 import net.fast.lbcs.data.entities.admin.group.ServiceItemGroup;
 import net.fast.lbcs.data.entities.admin.item.ServiceItem;
 import net.fast.lbcs.data.entities.admin.item.Validation;
@@ -10,6 +14,7 @@ import net.fast.lbcs.data.entities.admin.service.LocationService;
 import net.fast.lbcs.data.entities.admin.service.ServiceInfo;
 import net.fast.lbcs.data.entities.user.Product;
 import net.fast.lbcs.data.entities.user.ProductResultSet;
+import net.fast.lbcs.data.entities.user.ProductReview;
 
 public class CurrentServiceInfo {
 
@@ -109,6 +114,21 @@ public class CurrentServiceInfo {
 		plist.add(product);
 		ProductResultSet prs = new ProductResultSet(plist, currentServiceInfo.getProductResultSet().getLocation());
 		currentServiceInfo.setProductResultSet(prs);
+	}
+
+	public static void addProductRating(Product product, String rating) {
+		List<ProductReview> rlist =product.getReviews();
+		for(int i=0 ; rlist!=null && i<rlist.size() ; i++){
+			if(rlist.get(i).getUsername().equals(currentUser)){
+				rlist.remove(i);
+				break;
+			}
+		}
+		rlist.add(new ProductReview(product.getId().getId(), rating, new MyDate(new Date()), currentUser, "unhandled"));
+		product.setReviews(rlist);
+		
+		addProduct(product);
+		
 	}
 	
 	
