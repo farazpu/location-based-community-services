@@ -1,3 +1,4 @@
+<%@page import="net.fast.lbcs.user.controller.ProductFilters"%>
 <%@page import="net.fast.lbcs.user.controller.UserController"%>
 <%@page import="net.fast.lbcs.data.entities.user.ProductResultSet"%>
 <%@page import="net.fast.lbcs.data.entities.user.Product"%>
@@ -18,10 +19,14 @@
 <%
 Serializer serializer = new Persister();
 ServiceID serviceId=new ServiceID(request.getParameter("serviceID"));
+String username=request.getParameter("username");
+double longitude=Double.parseDouble(request.getParameter("gpslong"));
+double latitude=Double.parseDouble(request.getParameter("gpslat"));
 AdminController controller = new HttpControllerFactory(request).getAdminController();
 LocationService locationService = controller.getServiceById(serviceId);
 ServiceInfo serviceInfo = new ServiceInfo();
 serviceInfo.setLocationService(locationService);
+Location location = new Location(longitude, latitude);
 
 
 ProductResultSet prs = new ProductResultSet();
@@ -29,8 +34,12 @@ ProductResultSet prs = new ProductResultSet();
 UserController ucontroller = new HttpControllerFactory(request).getUserController();
 List<Product> serviceProducts = ucontroller.getProductsByServiceId(serviceId);
 
+serviceProducts = ProductFilters.RatingFilter(serviceProducts, username, 75);
+
+
+
 prs.setProducts(serviceProducts);
-prs.setLocation(new Location(32,73));
+prs.setLocation(location);
 serviceInfo.setProductResultSet(prs);
 serializer.write(serviceInfo, response.getWriter());
 

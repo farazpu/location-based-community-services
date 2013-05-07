@@ -18,11 +18,14 @@ ServiceID serviceId = new ServiceID(request.getParameter("serviceId"));
 ServiceItemID itemId = new ServiceItemID(request.getParameter("itemId"));
 String username = request.getParameter("username");
 MyDate date = new MyDate(request.getParameter("date"));
-String rating = request.getParameter("rating");
+String text = request.getParameter("text");
+AdminController controller = new HttpControllerFactory(request).getAdminController();
+LocationService ls = controller.getServiceById(serviceId);
 
 UserController userController = new HttpControllerFactory(request).getUserController();
-ProductReview pr = userController.addProductReview(productId, serviceId, itemId, username, date, rating);
+userController.addProductComment(productId, serviceId, itemId, username, date, text);
 
-	response.getWriter().write("Product Added Successfully."); 
+response.getWriter().write("Comment Added Successfully."); 
 
 %>
+
