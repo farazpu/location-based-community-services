@@ -37,7 +37,7 @@
 				<input type="hidden" name="itemId" value="<%=itemId %>" />
 				<label>
 					<span>Enter Rating : </span>
-					<input type="text" name="value" />
+					<input style="background: #262626;; color: white;" type="text" name="value" />
 				</label>
 			<label class="submit">
 				<input type="submit" class="button" value="Save" />

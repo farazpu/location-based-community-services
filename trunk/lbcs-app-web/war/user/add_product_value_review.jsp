@@ -1,3 +1,4 @@
+<%@page import="net.fast.lbcs.data.entities.MyDate"%>
 <%@page import="net.fast.lbcs.ControllerFactory"%>
 <%@page import="net.fast.lbcs.user.controller.UserController"%>
 <%@page import="java.util.ArrayList"%>
@@ -11,32 +12,18 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%
-String productName = request.getParameter("name");
+
 ProductID productId = new ProductID(request.getParameter("productId"));
 ServiceID serviceId = new ServiceID(request.getParameter("serviceId"));
 ServiceItemID itemId = new ServiceItemID(request.getParameter("itemId"));
-double longitude = Double.parseDouble(request.getParameter("gpslong"));
-double latitude = Double.parseDouble(request.getParameter("gpslat"));
-AdminController controller = new HttpControllerFactory(request).getAdminController();
-LocationService ls = controller.getServiceById(serviceId);
-
-ServiceItem si = ls.getItemById(itemId);
-List<ServiceItemAttribute> attrList = si.getAttrs().getAttrs();
-List<ProductAttribute> paList = new ArrayList<ProductAttribute>();
-Location l = new Location();
-l.setLon(longitude);
-l.setLat(latitude);
-
-for(ServiceItemAttribute sia : attrList){
-	paList.add(new ProductAttribute(sia.getId(), request.getParameter(sia.getName())));
-}
+String attributeId = request.getParameter("attributeId");
+String username = request.getParameter("username");
+MyDate date = new MyDate(request.getParameter("date"));
+String value = request.getParameter("value");
 
 UserController userController = new HttpControllerFactory(request).getUserController();
-Product p = userController.createNewProductEntry(serviceId, itemId, productId, l, paList, productName);
+ProductValueReview pr = userController.addProductValueReview(productId, serviceId, itemId, attributeId, username, date, value);
 
-if(p==null){
-	response.getWriter().write("Failure!"); }
-else{
-	response.getWriter().write("Product Added Successfully."); }
+	response.getWriter().write("Success."); 
 
 %>

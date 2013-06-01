@@ -25,7 +25,7 @@ LocationService ls = controller.getServiceById(serviceId);
 UserController userController = new HttpControllerFactory(request).getUserController();
 userController.addProductComment(productId, serviceId, itemId, username, date, text);
 
-response.getWriter().write("Comment Added Successfully."); 
+response.getWriter().write("Success"); 
 
 %>
 

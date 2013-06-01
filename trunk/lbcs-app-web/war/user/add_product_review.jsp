@@ -23,6 +23,6 @@ String rating = request.getParameter("rating");
 UserController userController = new HttpControllerFactory(request).getUserController();
 ProductReview pr = userController.addProductReview(productId, serviceId, itemId, username, date, rating);
 
-	response.getWriter().write("Product Added Successfully."); 
+	response.getWriter().write("Success."); 
 
 %>
