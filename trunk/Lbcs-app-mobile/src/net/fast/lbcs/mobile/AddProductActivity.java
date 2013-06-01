@@ -117,6 +117,13 @@ public class AddProductActivity extends Activity {
 	    	        		pa.setValue("NA");
 	    	        	url = url + "&" + pa.getKey() + "=" + pa.getValue();
 	    	        }
+//    				android.location.Location l = MyLocationListener.listener.getLocation();
+    				GPSTracker l = new GPSTracker(context);
+	    	        if(l!=null && l.getLocation()!=null ){
+	    	        	url = url + "&gpslong="+ l.getLongitude() + "&gpslat=" + l.getLatitude() ;	    	        	
+	    	        }else{
+	    	        	url = url + "&gpslong=0&gpslat=0";
+	    	        }
     	           	UrlTextLoader urlTextLoader = new UrlTextLoader() {
     				@Override
     				public void responseComplete(String result) {
