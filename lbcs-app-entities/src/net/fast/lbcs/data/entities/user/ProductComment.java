@@ -2,8 +2,11 @@ package net.fast.lbcs.data.entities.user;
 
 import java.util.Date;
 
+import org.simpleframework.xml.Default;
+
 import net.fast.lbcs.data.entities.MyDate;
 
+@Default
 public class ProductComment {
 	private String productId = " ";
 	private String comment = " ";
