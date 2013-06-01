@@ -1569,10 +1569,10 @@ class InMemoryDataSource implements DataSource {
 	public void addProductComment(ProductID productId, ServiceID serviceId,
 			ServiceItemID itemId,String username, MyDate date, String text) {
 		
-			String insertQuery = "insert into "+ TblComments.TABLE_NAME + "(" + TblComments.C_ITEM_ID + "," 
+			String insertQuery = "insert into "+ TblComments.TABLE_NAME + "(" + TblComments.C_ID + "," + TblComments.C_ITEM_ID + "," 
 					+ TblComments.C_PRODUCT_ID + "," + TblComments.C_SERVICE_ID + "," + TblComments.C_USERNAME
 					+ "," + TblComments.C_DATE+"," + TblComments.C_TEXT+ 
-					") values ('" + itemId.getId() + "','" + productId.getId() + "','" 
+					") values ('" + (new Date()) + "','" + itemId.getId() + "','" + productId.getId() + "','" 
 					+ serviceId.getId() + "','" + username + "','" + date + "','" + text + "')";
 			DataAccessHelper.UpdateQuery(insertQuery);		
 	}

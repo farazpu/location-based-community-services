@@ -41,7 +41,7 @@
 				<input type="hidden" name="itemId" value="<%=itemId %>" />
 				<label>
 					<span>Adjust Value : </span>
-					<input type="text" name="value" value="" />
+					<input style="background: #262626;; color: white;" type="text" name="value" value="" />
 				</label>
 			<label class="submit">
 				<input type="submit" class="button" value="Save" />

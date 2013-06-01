@@ -37,7 +37,7 @@
 				<input type="hidden" name="productId" value="<%=productId %>" />
 				<input type="hidden" name="attributeId" value="<%=attributeId %>" />
 				<input type="hidden" name="itemId" value="<%=itemId %>" />
-				New Value : <input type="text" name="value" value="" />
+				New Value : <input style="background: #262626;; color: white;" type="text" name="value" value="" />
 			<label class="submit">
 				<input type="submit" class="button" value="Save" />
 			</label>

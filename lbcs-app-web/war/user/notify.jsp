@@ -14,9 +14,6 @@ ServiceID serviceId = new ServiceID(request.getParameter("serviceId"));
 UserController userController = new HttpControllerFactory(request).getUserController();
 userController.addNotification(notification, username, serviceId);
 
-if(pr==null){
-	response.getWriter().write("Failure!"); }
-else{
-	response.getWriter().write("Product Added Successfully."); }
+	response.getWriter().write("Success.");
 
 %>

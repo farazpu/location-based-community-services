@@ -1,5 +1,6 @@
 package net.fast.lbcs.user.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.fast.lbcs.data.entities.user.Location;
@@ -68,11 +69,25 @@ public class ProductFilters {
 		}
 		return products;			
 	}
+	
+	
+	public static List<Product> NameFilter(List<Product> products, String name){
+		List<Product> plist = new ArrayList<Product>();
+		for(int i=0;i<products.size();i++){
+			if(products.get(i).getName().contains(name)){
+				plist.add(products.get(i));
+			}
+		}
+		return plist;
+	
+	}
 
 
 	public static List<Product> RatingFilter(List<Product> products, String username, int threshold){
 		
-		while(products.size()<threshold){
+		
+		
+		while(products.size()>threshold){
 			int index=0;
 			double minvalue=0;
 			if(products.get(0).getReviewForUser(username)==null){				
