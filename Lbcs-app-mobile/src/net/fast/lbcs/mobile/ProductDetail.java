@@ -8,6 +8,7 @@ import net.fast.lbcs.data.entities.MyDate;
 import net.fast.lbcs.data.entities.user.Product;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -19,7 +20,7 @@ import android.widget.Toast;
 public class ProductDetail extends Activity {
 	
 	Product product;
-
+	Context context=this;
 	Spinner spinner;
 	
     @Override
@@ -46,7 +47,10 @@ public class ProductDetail extends Activity {
         tv.setText("Public Rating : "+product.getPublicRating());
         
         tv = (TextView) findViewById(R.id.pdUserRating);
-        tv.setText("You Rated : "+product.getReviewForUser(CurrentServiceInfo.currentUser));
+        if(product.getReviewForUser(CurrentServiceInfo.currentUser)==null)
+        	tv.setText("You Rated : NA");
+        else
+        	tv.setText("You Rated : "+product.getReviewForUser(CurrentServiceInfo.currentUser).getReviewRating());
         
         
         
@@ -78,12 +82,16 @@ public class ProductDetail extends Activity {
     	        UrlTextLoader urlTextLoader = new UrlTextLoader() {
     				@Override
     				public void responseComplete(String result) {
-						CurrentServiceInfo.addProductRating(product, spinner.getSelectedItem().toString());
-    			        TextView tv = (TextView) findViewById(R.id.pdPublicRating);
-    			        tv.setText("Public Rating : "+product.getPublicRating());
-    			        
-    			        tv = (TextView) findViewById(R.id.pdUserRating);
-    			        tv.setText("You Rated : "+product.getReviewForUser(CurrentServiceInfo.currentUser));
+    					Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+    					if(result.contains("Success.")){
+    					
+							CurrentServiceInfo.addProductRating(product, spinner.getSelectedItem().toString());
+	    			        TextView tv = (TextView) findViewById(R.id.pdPublicRating);
+	    			        tv.setText("Public Rating : "+product.getPublicRating());
+	    			        
+	    			        tv = (TextView) findViewById(R.id.pdUserRating);
+	    			        tv.setText("You Rated : "+product.getReviewForUser(CurrentServiceInfo.currentUser).getReviewRating());
+    					}
     				}
 				};
 				

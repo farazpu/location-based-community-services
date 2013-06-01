@@ -22,6 +22,7 @@ import org.simpleframework.xml.core.Persister;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
@@ -31,11 +32,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
+	
+	Context context=this;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        MyLocationListener.activate(context);
     	EditText usernameEditText = (EditText) findViewById(R.id.username);
     	EditText passwordEditText = (EditText) findViewById(R.id.password);
     	usernameEditText.setText("user1");
@@ -67,7 +71,7 @@ public class MainActivity extends Activity {
     	TextView textView1 = (TextView) findViewById(R.id.error);
     	
     	Serializer serializer = new Persister();
-
+    	Log.d("--resp--", result);
     	try {
 			UserLoginData lss = serializer.read(UserLoginData.class, result);
 			if(lss.isError()) {

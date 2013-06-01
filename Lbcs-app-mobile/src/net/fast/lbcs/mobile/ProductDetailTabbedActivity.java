@@ -34,12 +34,12 @@ public class ProductDetailTabbedActivity extends TabActivity {
         detail.setContent(detailIntent);
         
 
-        TabSpec rating = tabHost.newTabSpec("Value Reviews");
+/*        TabSpec rating = tabHost.newTabSpec("Value Reviews");
         rating.setIndicator("Value Reviews", getResources().getDrawable(R.drawable.ic_launcher));
         Intent ratingIntent = new Intent(this, ReviewItem.class);
         ratingIntent.putExtra("clickedText", clickedText);
         rating.setContent(ratingIntent);
-
+*/
         TabSpec comments = tabHost.newTabSpec("Comments");
         comments.setIndicator("Comments", getResources().getDrawable(R.drawable.ic_launcher));
         Intent commentsIntent = new Intent(this, Comments.class);
@@ -49,7 +49,7 @@ public class ProductDetailTabbedActivity extends TabActivity {
         
         tabHost.addTab(map);
         tabHost.addTab(detail);
-        tabHost.addTab(rating);
+//        tabHost.addTab(rating);
         tabHost.addTab(comments);
         
         

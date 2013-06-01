@@ -60,11 +60,18 @@ public class ServiceListActivity extends Activity {
 	        						updateResult(result);
 	        					}
 	        				};
-	        		        MyLocationListener.activate(context);
 
-	        				Location l = MyLocationListener.listener.getLocation();
-	        				urlTextLoader.execute("http://"  + TempIP.ip + ":8888/user/getServiceInfoById.jsp?serviceID=" + ls.getId().getId()+"&gpslong="+l.getLongitude()+"&gpslat="+l.getLatitude());
-	        				break;
+//	        				Location l = MyLocationListener.listener.getLocation();
+	        				GPSTracker l = new GPSTracker(context);
+	    	    	        if(l!=null && l.getLocation()!=null ){
+	        					urlTextLoader.execute("http://"  + TempIP.ip + ":8888/user/getServiceInfoById.jsp?serviceID=" + ls.getId().getId()+"&gpslong="+l.getLongitude()+"&gpslat="+l.getLatitude());
+	        					Toast.makeText(context, "http://"  + TempIP.ip + ":8888/user/getServiceInfoById.jsp?serviceID=" + ls.getId().getId()+"&gpslong="+l.getLongitude()+"&gpslat="+l.getLatitude(), Toast.LENGTH_LONG).show();
+	    	    	        }
+	        				else{
+	        					urlTextLoader.execute("http://"  + TempIP.ip + ":8888/user/getServiceInfoById.jsp?serviceID=" + ls.getId().getId()+"&gpslong=0&gpslat=0");
+	        					Toast.makeText(context, "http://"  + TempIP.ip + ":8888/user/getServiceInfoById.jsp?serviceID=" + ls.getId().getId()+"&gpslong=0&gpslat=0", Toast.LENGTH_LONG).show();
+	        				}
+	    	    	        break;
 	        			}
 	        		}
 	        	}
@@ -83,7 +90,8 @@ public class ServiceListActivity extends Activity {
     }
     
     public void updateResult(String result) {
-
+    	
+    	Log.d("response++--", result);
     	Serializer serializer = new Persister();
 
     	try {

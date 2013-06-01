@@ -9,6 +9,7 @@ import net.fast.lbcs.data.entities.user.ProductComment;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -36,6 +37,8 @@ public class Comments extends Activity {
         String clickedText = getIntent().getExtras().getString("clickedText");
         product = CurrentServiceInfo.getProduct(clickedText);
         
+        
+        context = this;
         List<ProductComment> comments= product.getComments();
         CommentAdapter ca = new CommentAdapter(context, R.layout.comment_row, comments);
         ListView lv = (ListView) findViewById(R.id.commentList);
@@ -48,6 +51,7 @@ public class Comments extends Activity {
         send.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
+				String commentt = commentbox.getText().toString().replaceAll(" ", "_").toLowerCase();
 				MyDate date = new MyDate(new Date());
 				String request="http://"  + TempIP.ip + ":8888/user/add_comment.jsp";
 				request+= "?serviceId=" + CurrentServiceInfo.getLocationService().getId().getId(); 
@@ -55,11 +59,11 @@ public class Comments extends Activity {
 				request+= "&productId=" + product.getId().getId();
 				request+= "&username=" + CurrentServiceInfo.currentUser;
 				request+= "&date=" + date;
-				request+= "&text=" + commentbox.getText().toString();
+				request+= "&text=" + commentt;
     	        UrlTextLoader urlTextLoader = new UrlTextLoader() {
     				@Override
     				public void responseComplete(String result) {
-    						if(result.equals("Comment Added Successfully.")){
+    						if(result.contains("Success")){
     					        List<ProductComment> comments= product.getComments();
     					        comments.add(new ProductComment(product.getId().getId(), commentbox.getText().toString(),
     					        		new MyDate(new Date()), CurrentServiceInfo.currentUser));
@@ -109,7 +113,7 @@ public class Comments extends Activity {
 			if(row==null)
 			{
 				LayoutInflater inflater=((Activity)context).getLayoutInflater();
-				row = inflater.inflate(R.layout.attribute_row, parent, false);
+				row = inflater.inflate(R.layout.comment_row, parent, false);
 				
 			}
 			

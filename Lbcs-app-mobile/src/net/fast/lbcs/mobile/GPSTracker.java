@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
+import android.util.Log;
 
 public class GPSTracker extends Service implements LocationListener{
     private final Context mContext;
@@ -25,7 +26,6 @@ public class GPSTracker extends Service implements LocationListener{
     // flag for GPS status
     boolean canGetLocation = false;
  
-	public Context context;
     Location location; // location
     double latitude; // latitude
     double longitude; // longitude
@@ -64,12 +64,13 @@ public class GPSTracker extends Service implements LocationListener{
                 // First get location from Network Provider
                 if (isNetworkEnabled) {
                     locationManager.requestLocationUpdates(
-                            LocationManager.GPS_PROVIDER,
+                            LocationManager.NETWORK_PROVIDER,
                             MIN_TIME_BW_UPDATES,
                             MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                    Log.d("Network", "Network");
                     if (locationManager != null) {
                         location = locationManager
-                                .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                                .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                         if (location != null) {
                             latitude = location.getLatitude();
                             longitude = location.getLongitude();
@@ -80,12 +81,13 @@ public class GPSTracker extends Service implements LocationListener{
                 if (isGPSEnabled) {
                     if (location == null) {
                         locationManager.requestLocationUpdates(
-                                LocationManager.NETWORK_PROVIDER,
+                                LocationManager.GPS_PROVIDER,
                                 MIN_TIME_BW_UPDATES,
                                 MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                        Log.d("GPS Enabled", "GPS Enabled");
                         if (locationManager != null) {
                             location = locationManager
-                                    .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
                             if (location != null) {
                                 latitude = location.getLatitude();
                                 longitude = location.getLongitude();
@@ -101,7 +103,7 @@ public class GPSTracker extends Service implements LocationListener{
  
         return location;
     }
- 
+     
     /**
      * Stop using GPS listener
      * Calling this function will stop using GPS in your app
@@ -109,9 +111,9 @@ public class GPSTracker extends Service implements LocationListener{
     public void stopUsingGPS(){
         if(locationManager != null){
             locationManager.removeUpdates(GPSTracker.this);
-        }
+        }       
     }
- 
+     
     /**
      * Function to get latitude
      * */
@@ -119,11 +121,11 @@ public class GPSTracker extends Service implements LocationListener{
         if(location != null){
             latitude = location.getLatitude();
         }
- 
+         
         // return latitude
         return latitude;
     }
- 
+     
     /**
      * Function to get longitude
      * */
@@ -131,11 +133,11 @@ public class GPSTracker extends Service implements LocationListener{
         if(location != null){
             longitude = location.getLongitude();
         }
- 
+         
         // return longitude
         return longitude;
     }
- 
+     
     /**
      * Function to check GPS/wifi enabled
      * @return boolean
@@ -143,20 +145,20 @@ public class GPSTracker extends Service implements LocationListener{
     public boolean canGetLocation() {
         return this.canGetLocation;
     }
- 
+     
     /**
      * Function to show settings alert dialog
      * On pressing Settings button will lauch Settings Options
      * */
     public void showSettingsAlert(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
- 
+      
         // Setting Dialog Title
         alertDialog.setTitle("GPS is settings");
- 
+  
         // Setting Dialog Message
         alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
- 
+  
         // On pressing Settings button
         alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int which) {
@@ -164,37 +166,42 @@ public class GPSTracker extends Service implements LocationListener{
                 mContext.startActivity(intent);
             }
         });
- 
+  
         // on pressing cancel button
         alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
             dialog.cancel();
             }
         });
- 
+  
         // Showing Alert Message
         alertDialog.show();
     }
-
-    public void onLocationChanged(Location location) {
-		longitude = location.getLongitude();
-		latitude = location.getLatitude();
-		this.location=location;
-   }
  
-    public void onProviderDisabled(String provider) {
-    }
- 
-    public void onProviderEnabled(String provider) {
-    }
- 
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-    }
  
     @Override
     public IBinder onBind(Intent arg0) {
         return null;
     }
 
+	public void onLocationChanged(Location location) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void onProviderDisabled(String provider) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void onProviderEnabled(String provider) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

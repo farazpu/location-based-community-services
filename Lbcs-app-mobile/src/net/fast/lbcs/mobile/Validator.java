@@ -10,7 +10,7 @@ public class Validator {
 	
 	public static boolean isNumeric(String str){
 		try{
-			Integer.parseInt(str);
+			Double.parseDouble(str);
 		}catch (Exception e){
 			return false;
 		}
@@ -38,7 +38,7 @@ public class Validator {
 		
 		if(v.getType().equals("Numeric Equal")){
 			if(isNumeric(v.getParams().get(0)) && isNumeric(value) ){
-				if(Integer.parseInt(v.getParams().get(0)) == Integer.parseInt(value)){
+				if(Double.parseDouble(v.getParams().get(0)) == Double.parseDouble(value)){
 					return "true";
 				} else{
 					return attr + " must be equal to " + v.getParams().get(0);
@@ -50,7 +50,7 @@ public class Validator {
 		
 		if(v.getType().equals("Numeric Greater")){
 			if(isNumeric(v.getParams().get(0)) && isNumeric(value) ){
-				if(Integer.parseInt(v.getParams().get(0)) < Integer.parseInt(value)){
+				if(Double.parseDouble(v.getParams().get(0)) < Double.parseDouble(value)){
 					return "true";
 				} else{
 					return attr + " must be greater than " + v.getParams().get(0);
@@ -62,7 +62,7 @@ public class Validator {
 		
 		if(v.getType().equals("Numeric Smaller")){
 			if(isNumeric(v.getParams().get(0)) && isNumeric(value) ){
-				if(Integer.parseInt(v.getParams().get(0)) > Integer.parseInt(value)){
+				if(Double.parseDouble(v.getParams().get(0)) > Double.parseDouble(value)){
 					return "true";
 				} else{
 					return attr + " must be smaller than " + v.getParams().get(0);
@@ -74,10 +74,10 @@ public class Validator {
 		
 		if(v.getType().equals("Numeric Between")){
 			if(isNumeric(v.getParams().get(0)) && isNumeric(v.getParams().get(1)) && isNumeric(value) ){
-				if((Integer.parseInt(v.getParams().get(0)) > Integer.parseInt(value) && 
-						Integer.parseInt(v.getParams().get(1)) < Integer.parseInt(value)) ||
-						(Integer.parseInt(v.getParams().get(0)) < Integer.parseInt(value) && 
-						Integer.parseInt(v.getParams().get(1)) > Integer.parseInt(value))){
+				if((Double.parseDouble(v.getParams().get(0)) > Double.parseDouble(value) && 
+						Double.parseDouble(v.getParams().get(1)) < Double.parseDouble(value)) ||
+						(Double.parseDouble(v.getParams().get(0)) < Double.parseDouble(value) && 
+						Double.parseDouble(v.getParams().get(1)) > Double.parseDouble(value))){
 					return "true";
 				} else{
 					return attr + " must be between " + v.getParams().get(0) + " and " + v.getParams().get(1);
@@ -89,7 +89,7 @@ public class Validator {
 		
 		if(v.getType().equals("Numeric GreaterEqual")){
 			if(isNumeric(v.getParams().get(0)) && isNumeric(value) ){
-				if(Integer.parseInt(v.getParams().get(0)) <= Integer.parseInt(value)){
+				if(Double.parseDouble(v.getParams().get(0)) <= Double.parseDouble(value)){
 					return "true";
 				} else{
 					return attr + " must be greater or equal to " + v.getParams().get(0);
@@ -101,7 +101,7 @@ public class Validator {
 		
 		if(v.getType().equals("Numeric LesserEqual")){
 			if(isNumeric(v.getParams().get(0)) && isNumeric(value) ){
-				if(Integer.parseInt(v.getParams().get(0)) >= Integer.parseInt(value)){
+				if(Double.parseDouble(v.getParams().get(0)) >= Double.parseDouble(value)){
 					return "true";
 				} else{
 					return attr + " must be smaller or equal to " + v.getParams().get(0);
@@ -113,7 +113,7 @@ public class Validator {
 		
 		if(v.getType().equals("Numeric NotEqual")){
 			if(isNumeric(v.getParams().get(0)) && isNumeric(value) ){
-				if(Integer.parseInt(v.getParams().get(0)) != Integer.parseInt(value)){
+				if(Double.parseDouble(v.getParams().get(0)) != Double.parseDouble(value)){
 					return "true";
 				} else{
 					return attr + " must not be equal to " + v.getParams().get(0);
@@ -125,10 +125,10 @@ public class Validator {
 		
 		if(v.getType().equals("Numeric BetweenInclusive")){
 			if(isNumeric(v.getParams().get(0)) && isNumeric(v.getParams().get(1)) && isNumeric(value) ){
-				if((Integer.parseInt(v.getParams().get(0)) >= Integer.parseInt(value) && 
-						Integer.parseInt(v.getParams().get(1)) <= Integer.parseInt(value)) ||
-						(Integer.parseInt(v.getParams().get(0)) <= Integer.parseInt(value) && 
-						Integer.parseInt(v.getParams().get(1)) >= Integer.parseInt(value))){
+				if((Double.parseDouble(v.getParams().get(0)) >= Double.parseDouble(value) && 
+						Double.parseDouble(v.getParams().get(1)) <= Double.parseDouble(value)) ||
+						(Double.parseDouble(v.getParams().get(0)) <= Double.parseDouble(value) && 
+						Double.parseDouble(v.getParams().get(1)) >= Double.parseDouble(value))){
 					return "true";
 				} else{
 					return attr + " must be between " + v.getParams().get(0) + " and " + v.getParams().get(1) + " inclusive";
@@ -140,7 +140,7 @@ public class Validator {
 		
 		if(v.getType().equals("Numeric Positive")){
 			if(isNumeric(value) ){
-				if(Integer.parseInt(value) > 0){
+				if(Double.parseDouble(value) > 0){
 					return "true";
 				} else{
 					return attr + " must be positive";
@@ -152,7 +152,7 @@ public class Validator {
 		
 		if(v.getType().equals("Numeric Negative")){
 			if(isNumeric(value) ){
-				if(Integer.parseInt(value)<0){
+				if(Double.parseDouble(value)<0){
 					return "true";
 				} else{
 					return attr + " must be negative";
@@ -164,7 +164,7 @@ public class Validator {
 		
 		if(v.getType().equals("Numeric NonNegative")){
 			if(isNumeric(value) ){
-				if(Integer.parseInt(value)>=0){
+				if(Double.parseDouble(value)>=0){
 					return "true";
 				} else{
 					return attr + " must be non-negative";
@@ -224,7 +224,7 @@ public class Validator {
 
 		if(v.getType().equals("String LengthEquals")){
 			if(value != null && isNumeric(v.getParams().get(0))){
-				if(value.length() == Integer.parseInt(v.getParams().get(0))){
+				if(value.length() == Double.parseDouble(v.getParams().get(0))){
 					return "true";
 				} else{
 					return attr + " length must be equal to " + v.getParams().get(0);
@@ -236,7 +236,7 @@ public class Validator {
 		
 		if(v.getType().equals("String LengthGreater")){
 			if(value != null && isNumeric(v.getParams().get(0))){
-				if(value.length() > Integer.parseInt(v.getParams().get(0))){
+				if(value.length() > Double.parseDouble(v.getParams().get(0))){
 					return "true";
 				} else{
 					return attr + " length must be greater than " + v.getParams().get(0);
@@ -248,7 +248,7 @@ public class Validator {
 		
 		if(v.getType().equals("String LengthLess")){
 			if(value != null && isNumeric(v.getParams().get(0))){
-				if(value.length() < Integer.parseInt(v.getParams().get(0))){
+				if(value.length() < Double.parseDouble(v.getParams().get(0))){
 					return "true";
 				} else{
 					return attr + " length must be less than " + v.getParams().get(0);
@@ -260,8 +260,8 @@ public class Validator {
 		
 		if(v.getType().equals("String LengthBetween")){
 			if(value != null && isNumeric(v.getParams().get(0)) && isNumeric(v.getParams().get(1))){
-				if((value.length() > Integer.parseInt(v.getParams().get(0)) && value.length() < Integer.parseInt(v.getParams().get(1)))
-						|| (value.length() < Integer.parseInt(v.getParams().get(0)) && value.length() > Integer.parseInt(v.getParams().get(1))))
+				if((value.length() > Double.parseDouble(v.getParams().get(0)) && value.length() < Double.parseDouble(v.getParams().get(1)))
+						|| (value.length() < Double.parseDouble(v.getParams().get(0)) && value.length() > Double.parseDouble(v.getParams().get(1))))
 				{
 					return "true";
 				} else{
